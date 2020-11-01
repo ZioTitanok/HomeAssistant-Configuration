@@ -1,0 +1,17 @@
+# Automation: House Main Power Control
+
+# Check Over Power
+- alias: home_power_check
+  initial_state: on
+  trigger:
+    - platform: template
+      value_template: "{{ sensor.shelly.potenza_casa|float > 3000 }}"
+      for:
+        seconds: 15
+  action:
+    - service: notify.mobile_app_samsung_s7e
+      data:
+        title: "Check Potenza"
+        message: "E' stata superata la soglia dei 3kW!"
+        data:
+          tag: Power

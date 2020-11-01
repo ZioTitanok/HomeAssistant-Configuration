@@ -1,0 +1,37 @@
+# Scripts
+
+# Speedtest Manual
+speedtest_manual:
+  alias: Speedtest Manuale
+  sequence:
+  - service: speedtestdotnet.speedtest
+
+# Onvif
+yi_up:
+  sequence:
+    - service: onvif.ptz
+      data:
+        entity_id: camera.yicamera_profile_1
+        tilt: UP
+        distance: 0.05
+yi_down:
+  sequence:
+    - service: onvif.ptz
+      data:
+        entity_id: camera.yicamera_profile_1
+        tilt: DOWN
+        distance: 0.05
+yi_right:
+  sequence:
+    - service: onvif.ptz
+      data:
+        entity_id: camera.yicamera_profile_1
+        pan: RIGHT
+        distance: 0.05
+yi_left:
+  sequence:
+    - service: onvif.ptz
+      data:
+        entity_id: camera.yicamera_profile_1
+        pan: LEFT
+        distance: 0.05

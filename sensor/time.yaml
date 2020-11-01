@@ -1,0 +1,24 @@
+# Sensor: Time-Based
+
+# Time
+- platform: time_date
+  display_options:
+    - 'time'
+    - 'date'
+    - 'time_utc'
+
+    # Seasonal
+- platform: season
+  type: astronomical
+
+# Moon
+- platform: moon
+
+# Recycle
+- platform: template
+  sensors:
+    recycle:
+      icon_template: mdi:trash-can-outline
+      value_template: >
+        {{ ['Organico','Multimateriale','Carta','-','Organico','-','Indifferenziato'][now().weekday()] }}       
+    

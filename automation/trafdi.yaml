@@ -1,0 +1,79 @@
+# Automation: Trafdi Remote Kit
+
+# On/Off
+- alias: loft_trafdi_toggle
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0x680ae2fffe3543f9_action
+      to: "toggle"
+  action:
+    - service: homeassistant.toggle
+      data_template:
+        entity_id: >
+         {% if is_state('input_select.loft_studio_lamps', 'Studio') %} switch.loft_studio_main
+         {% elif is_state('input_select.loft_studio_lamps', 'Faretti') %} switch.loft_studio_auxiliary
+         {% elif is_state('input_select.loft_studio_lamps', 'Scaffale') %} switch.loft_studio_shelf
+         {% endif %}
+
+# Dimmer
+- alias: loft_trafdi_dimup
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0x680ae2fffe3543f9_action
+      to: "brightness_up_click"
+  condition:
+    - condition: state
+      entity_id: switch.loft_studio_main
+      state: 'on'
+  action:
+    - data_template:
+        entity_id: light.0x000b57fffe48a1de_light
+        brightness: "{{ state_attr('light.0x000b57fffe48a1de_light', 'brightness') + 50 | int }}"
+      service: light.turn_on
+    - data_template:
+        entity_id: light.0x000b57fffe4baa6e_light
+        brightness: "{{ state_attr('light.0x000b57fffe4baa6e_light', 'brightness') + 50 | int }}"
+      service: light.turn_on
+
+- alias: loft_trafdi_dimdown
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0x680ae2fffe3543f9_action
+      to: "brightness_down_click"
+  condition:
+    - condition: state
+      entity_id: switch.loft_studio_main
+      state: 'on'
+  action:
+    - data_template:
+        entity_id: light.0x000b57fffe48a1de_light
+        brightness: "{{ [state_attr('light.0x000b57fffe48a1de_light', 'brightness') - 50, 1] | max }}"
+      service: light.turn_on
+    - data_template:
+        entity_id: light.0x000b57fffe4baa6e_light
+        brightness: "{{ [state_attr('light.0x000b57fffe4baa6e_light', 'brightness') - 50, 1] | max }}"
+      service: light.turn_on
+
+# Light Selection
+- alias: loft_trafdi_right
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0x680ae2fffe3543f9_action
+      to: "arrow_right_click"
+  action:
+  - service: input_select.select_next
+    entity_id: input_select.loft_studio_lamps
+
+- alias: loft_trafdi_left
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0x680ae2fffe3543f9_action
+      to: "arrow_left_click"
+  action:
+  - service: input_select.select_previous
+    entity_id: input_select.loft_studio_lamps

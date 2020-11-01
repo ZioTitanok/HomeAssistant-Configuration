@@ -1,0 +1,6 @@
+# Sensor: Zigbee2Mqtt
+
+- platform: mqtt
+  name: pi_zigbee2mqtt
+  state_topic: "zigbee2mqtt/bridge/state"
+  icon: mdi:router-wireless

@@ -1,0 +1,66 @@
+# Customize
+
+# Binary Sensor
+binary_sensor.rm_mini:
+  icon: mdi:remote
+binary_sensor.meross:
+  icon: mdi:power-socket
+binary_sensor.k4:
+  icon: mdi:desktop-classic
+binary_sensor.k9:
+  icon: mdi:laptop
+binary_sensor.k10:
+  icon: mdi:laptop
+binary_sensor.dell:
+  icon: mdi:laptop
+binary_sensor.epson:
+  icon: mdi:printer
+binary_sensor.yi_camera:
+  icon: mdi:webcam
+binary_sensor.pir_yi:
+  icon: mdi:run
+
+# Script
+script.radio_selection:
+  friendly_name: Radio
+  icon: mdi:play
+
+# Sensor:
+sensor.recycle:
+  friendly_name: 'Domani Ricicla'
+sensor.home_power:
+  friendly_name: 'Potenza'
+sensor.home_voltage:
+  friendly_name: 'Voltaggio'
+
+# Switch: 
+switch.loft_aircooler:
+  friendly_name: 'Condizionatore Mansarda' 
+switch.loft_thermostat:
+  friendly_name: 'Termostato Mansarda'
+switch.loft_den_main:
+  friendly_name: 'Tana'
+switch.loft_den_auxiliary:
+  friendly_name: 'Cielo'
+switch.loft_studio_main:
+  friendly_name: 'Studio'
+switch.loft_studio_auxiliary:
+  friendly_name: 'Faretti'
+switch.loft_studio_shelf:
+  friendly_name: 'Scaffale'
+switch.loft_studio_discoball:
+  friendly_name: 'Discoball'
+switch.main_entrance:
+  friendly_name: 'Ingresso'
+switch.main_bedroom:
+  friendly_name: 'Camera'
+switch.main_kitchen:
+  friendly_name: 'Cucina'
+switch.main_living:
+  friendly_name: 'Salotto'
+switch.main_gate:
+  friendly_name: Cancello
+  icon: mdi:gate
+
+
+

@@ -1,0 +1,8 @@
+# Sensor: WemosD1 (MQTT)
+
+# WemosA: Water Softener
+- platform: mqtt
+  name: main_softener
+  state_topic: "tele/WemosA/SENSOR"
+  unit_of_measurement: 'cm'
+  value_template: "{{ value_json.SR04.Distance }}"

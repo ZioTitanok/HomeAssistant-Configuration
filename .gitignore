@@ -1,0 +1,19 @@
+# Git Ignore
+
+# Folder Ignored
+.cloud
+.storage
+.vscode
+tts
+
+
+# File Ignored
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
+home-assistant_v2.db
+home-assistant.log
+homeassistant-28375056a62d.json
+
+*.mp3
+*.jpg

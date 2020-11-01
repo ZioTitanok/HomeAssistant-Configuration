@@ -1,0 +1,684 @@
+# Lovelace-UI 
+
+title: ZioTitanok's House
+
+# Background
+background: center / cover no-repeat url("/local/image/bubbles.jpg") fixed
+#background: center / cover no-repeat url("/local/image/mondrian.jpg") fixed
+resources:
+  - url: /hacsfiles/weather-card/weather-card.js
+    type: module
+  - url: /hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js
+    type: module
+  - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
+    type: module
+  - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js
+    type: module
+  - url: /hacsfiles/simple-thermostat/simple-thermostat.js
+    type: module
+
+# Schede
+views:
+
+# Home
+  - title: Home
+    path: home
+    id: home
+    icon: mdi:home
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities: 
+              - entity: sensor.date
+                type: custom:multiple-entity-row
+                name: Data e Ora
+                entities:
+                  - entity: sensor.time
+                    name: false
+              - entity: sun.sun
+                name: Sole
+              - entity: sensor.moon
+                name: Luna
+
+          - type: entities
+            entities:
+              - switch.main_gate
+              - sensor.recycle
+              - entity: sensor.home_power
+                type: custom:multiple-entity-row
+                toggle: false
+                name: Quadro Elettrico
+                state_header: Potenza
+                icon: mdi:transmission-tower
+                entities:
+                  - entity: sensor.home_voltage
+
+          - type: custom:mini-graph-card
+            name: Potenza (24h)
+            hours_to_show: 24
+            line_width: 3
+            points_per_hour: 5
+            icon: mdi:flash
+            entities:
+              - entity: sensor.home_power
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+
+          - type: custom:mini-graph-card
+            name: Tensione (24h)
+            hours_to_show: 24
+            line_width: 3
+            points_per_hour: 5
+            icon: mdi:sine-wave
+            entities:
+              - entity: sensor.home_voltage
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+              
+      - type: vertical-stack
+        cards:
+          - type: custom:weather-card
+            entity: weather.dark_sky
+            current: true
+            details: true
+            forecast: true
+          - type: iframe
+            url: https://embed.windy.com/embed2.html
+            aspect_ratio: 100%
+
+      - type: vertical-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperatura (7G)
+            hours_to_show: 168
+            line_width: 3
+            points_per_hour: 1
+            entities:
+              - entity: sensor.cfr_montopoli_temperature
+                name: CFR
+              - entity: sensor.0x00158d000346487a_temperature
+                name: Mansarda
+              - entity: sensor.0x00158d0003cd2888_temperature
+                name: Padronale
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+          
+          - type: custom:mini-graph-card
+            name: Vento (7G)
+            hours_to_show: 168
+            line_width: 3
+            points_per_hour: 1
+            entities:
+              - entity: sensor.cfr_montopoli_wind
+                name: CFR
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+              
+          - type: custom:mini-graph-card
+            name: Umidità (7G)
+            hours_to_show: 168
+            line_width: 3
+            points_per_hour: 1
+            entities:
+              - entity: sensor.cfr_montopoli_humidity
+                name: CFR
+              - entity: sensor.0x00158d000346487a_humidity
+                name: Mansarda
+              - entity: sensor.0x00158d0003cd2888_humidity
+                name: Padronale
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+          
+          - type: horizontal-stack
+            cards:              
+              - type: custom:mini-graph-card
+                name: Arno Fucecchio (7G)
+                hours_to_show: 168
+                line_width: 3
+                points_per_hour: 1
+                entities:
+                  - entity: sensor.cfr_fucecchio_idro
+                show:
+                  labels: true
+              - type: custom:mini-graph-card
+                name: Arno Pontedera (7G)
+                hours_to_show: 168
+                line_width: 3
+                points_per_hour: 1
+                entities:
+                  - entity: sensor.cfr_pontedera_idro
+                show:
+                  labels: true
+
+
+# Loft
+  - id: mansarda
+    title: Mansarda
+    path: mansarda
+    cards:
+
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities: 
+              - switch.main_gate
+              - person.nico
+              
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: switch.loft_studio_main
+                type: custom:multiple-entity-row
+                toggle: true
+                name: Studio
+                state_header: Studio
+                icon: mdi:sofa
+                entities:
+                  - entity: sensor.loft_studio_main_auxiliary_power   
+                    name: false
+                  - entity: switch.loft_studio_auxiliary
+                    toggle: true
+                  
+          - type: conditional
+            conditions:
+              - entity: switch.loft_studio_main
+                state: "on"
+            card:
+              type: entities
+              show_header_toggle: false
+              entities:
+                - type: custom:slider-entity-row
+                  entity: light.0x000b57fffe48a1de_light
+                  name: Esterno
+                - type: custom:slider-entity-row
+                  entity: light.0x000b57fffe4baa6e_light
+                  name: Interno
+
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: switch.loft_studio_shelf
+                type: custom:multiple-entity-row
+                toggle: true
+                name: Decorazioni
+                state_header: Scaffale
+                icon: mdi:party-popper
+                entities:
+                  - entity: sensor.loft_studio_discoball_shelf_power
+                    name: false      
+                  - entity: switch.loft_studio_discoball
+                    toggle: true
+
+              - entity: switch.loft_den_main
+                type: custom:multiple-entity-row
+                toggle: true
+                name: Tana
+                state_header: Tana
+                icon: mdi:bed
+                entities: 
+                  - entity: sensor.loft_den_power
+                    name: false   
+                  - entity: switch.loft_den_auxiliary
+                    toggle: true
+
+          - type: entities
+            entities:
+              - entity: input_select.loft_studio_lamps
+              - entity: binary_sensor.0x00158d0002ebcbee_occupancy
+                type: custom:multiple-entity-row
+                name: PIR Scale
+                entities:
+                  - entity: sensor.0x00158d0002ebcbee_illuminance
+                    name: false
+              - entity: binary_sensor.0x00158d000309ba25_contact
+                type: custom:multiple-entity-row
+                name: Finestre
+                state_header: Studio
+                entities:
+                  - entity: binary_sensor.0x00158d00032b7616_contact
+                    name: Tana
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: automation.loft_studio_shelf_off
+                type: custom:multiple-entity-row
+                name: Scaffale
+                toggle: true
+                state_header: Auto Off
+                entities:
+                  - entity: automation.loft_studio_shelf_on
+                    name: Auto On
+                    toggle: true
+              - entity: automation.loft_studio_shelf_off
+                type: custom:multiple-entity-row
+                name: Faretti
+                toggle: true
+                state_header: Auto Off
+                entities:
+                  - entity: automation.loft_studio_shelf_on
+                    name: Auto On
+                    toggle: true
+          - type: conditional
+            conditions:
+              - entity: automation.loft_studio_auxiliary_off
+                state: "on"
+              - entity: automation.loft_studio_auxiliary_on
+                state: "on"
+            card:
+              type: entities
+              entities:
+                - input_datetime.loft_auxiliary_on
+                - input_datetime.loft_auxiliary_off
+
+      - type: vertical-stack
+        cards:
+          - type: custom:simple-thermostat
+            entity: climate.loft
+            step_layout: row
+            icon: false
+            name: false
+            control:
+              _headings: false
+            sensors:
+              - entity: sensor.0x00158d000346487a_humidity
+                name: Umidità
+
+          - type: entities
+            entities:
+              - entity: switch.loft_aircooler
+                type: custom:multiple-entity-row
+                toggle: true
+                icon: mdi:air-conditioner
+                entities:
+                  - entity: sensor.loft_aircooler_power
+                    name: false
+
+          - type: custom:mini-graph-card
+            name: Temperatura (24h)
+            hours_to_show: 24
+            line_width: 3
+            points_per_hour: 5
+            entities:
+              - entity: sensor.0x00158d000346487a_temperature
+                name: Mansarda
+              - entity: sensor.cfr_montopoli_temperature
+                name: CFR
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+          
+          - type: plant-status
+            name: Grande
+            entity: plant.grande
+          - type: plant-status
+            name: Piccolo
+            entity: plant.piccolo
+              
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - input_select.radio_chromecast
+              - input_number.radio_volume
+              - input_select.radio_station
+              - input_boolean.radio_activate
+          - type: entities
+            entities:
+              - input_select.loft_discoball_song
+              - input_boolean.loft_discoball_activate
+          - type: media-control
+            entity: media_player.loft
+
+# Main
+  - id: padronale
+    title: Padronale
+    path: padronale
+    cards:
+
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities: 
+              - switch.main_gate
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: switch.main_entrance
+                type: custom:multiple-entity-row
+                toggle: true
+                icon: mdi:room-service
+                entities:
+                  - entity: sensor.main_entrance_power
+                    name: false
+              - entity: switch.main_living
+                type: custom:multiple-entity-row
+                toggle: true
+                icon: mdi:sofa
+                entities:
+                  - entity: sensor.main_living_power
+                    name: false
+              - entity: switch.main_kitchen
+                type: custom:multiple-entity-row
+                toggle: true
+                icon: mdi:fridge
+                entities:
+                  - entity: sensor.main_kitchen_power
+                    name: false
+              - entity: switch.main_bedroom
+                type: custom:multiple-entity-row
+                toggle: true
+                icon: mdi:bed
+                entities:
+                  - entity: sensor.main_bedroom_power
+                    name: false
+
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: binary_sensor.0x00158d0004020aa4_contact
+                type: custom:multiple-entity-row
+                name: Porta Ingresso
+              - entity: binary_sensor.0x00158d000414020a_occupancy
+                type: custom:multiple-entity-row
+                name: PIR Ingresso
+                entities:
+                  - entity: sensor.0x00158d000414020a_illuminance
+                    name: false
+
+      - type: custom:mini-graph-card
+        name: Temperatura (24h)
+        line_width: 3
+        points_per_hour: 5
+        entities:
+          - entity: sensor.0x00158d0003cd2888_temperature
+            name: Padronale
+          - entity: sensor.cfr_montopoli_temperature
+            name: CFR
+          - entity: input_number.night
+            color: gray
+            show_line: false
+            show_points: false
+            show_legend: false
+            y_axis: secondary
+        show:
+          labels: true
+          labels_secondary: true
+
+      - type: custom:mini-graph-card
+        name: Livello Addolcitore (7g)
+        hours_to_show: 168
+        line_width: 3
+        points_per_hour: 1
+        entities:
+          - entity: sensor.main_softener
+            name: Livello Sale
+          - entity: input_number.night
+            color: gray
+            show_line: false
+            show_points: false
+            show_legend: false
+            y_axis: secondary
+        show:
+          labels: true
+          labels_secondary: true
+
+      - type: media-control
+        entity: media_player.main
+
+      - type: shopping-list
+        title: Spesa
+
+# Tavern
+  - id: Taverna
+    title: Taverna
+    path: taverna
+    cards:
+
+      - id: taverna-luci
+        type: vertical-stack
+        cards:
+          - type: entities
+            entities: 
+              - switch.main_gate
+
+              
+      - type: picture-glance
+        title: Yi Camera
+        camera_image: camera.yicamera_profile_1
+#        camera_view: live
+        entities:
+          - entity: binary_sensor.pir_yi
+          - entity: script.yi_left
+            icon: mdi:arrow-left-circle
+            tap_action:
+              action: toggle
+          - entity: script.yi_right
+            icon: mdi:arrow-right-circle
+            tap_action:
+              action: toggle
+          - entity: script.yi_up
+            icon: mdi:arrow-up-circle
+            tap_action:
+              action: toggle
+          - entity: script.yi_down
+            icon: mdi:arrow-down-circle
+            tap_action:
+              action: toggle
+
+      - type: media-control
+        entity: media_player.tavern
+      
+      - type: picture-glance
+        title: Ufficio
+        entities: []
+        camera_image: camera.ender3pro
+#        camera_view: live
+
+      - type: glance
+        entities:
+        - entity: sensor.epson_wf_2530_series_black_ink
+          name: Nero
+        - entity: sensor.epson_wf_2530_series_cyan_ink
+          name: Ciano
+        - entity: sensor.epson_wf_2530_series_magenta_ink
+          name: Magenta
+        - entity: sensor.epson_wf_2530_series_yellow_ink
+          name: Giallo
+
+# System
+  - id: Sistema
+    title: Sistema
+    path: sistema
+    cards:
+
+      - type: vertical-stack
+        cards:
+          - type: glance
+            entities:
+              - entity: sensor.disk_use_percent
+                name: HDD
+              - entity: sensor.memory_free
+                name: RAM
+              - entity: sensor.processor_use
+                name: CPU
+              - entity: sensor.pi_temperature
+                name: Temperature
+              - entity: sensor.current_version
+                name: Versione
+
+          - type: entities
+            entities:
+              - entity: sensor.cert_expiry_ziotitanok_duckdns_org
+                name: SLL Expiry
+                icon: mdi:timer-sand
+              - entity: sensor.pi_zigbee2mqtt
+                name: Zigbee2Mqtt
+      
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: script.speedtest_manual
+                icon: mdi:speedometer          
+          - type: custom:mini-graph-card
+            name: Speed (7G)
+            hours_to_show: 168
+            line_width: 3
+            points_per_hour: 1
+            entities:
+            - entity: sensor.speedtest_download
+              name: Download
+            - entity: sensor.speedtest_upload
+              name: Upload
+            - entity: input_number.night
+              color: gray
+              show_line: false
+              show_points: false
+              show_legend: false
+              y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+
+          - type: custom:mini-graph-card
+            name: Ping (7G)
+            hours_to_show: 168
+            line_width: 3
+            points_per_hour: 1
+            entities:
+            - entity: sensor.speedtest_ping
+              name: Ping
+            - entity: input_number.night
+              color: gray
+              show_line: false
+              show_points: false
+              show_legend: false
+              y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+
+      - id: sensori
+        type: vertical-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperatura Shelly (24h)
+            line_width: 3
+            points_per_hour: 5
+            entities:
+              - entity: sensor.loft_aircooler_temperature
+                name: Shelly (Aircooler)
+              - entity: sensor.main_entrance_and_kitchen_temperature
+                name: Shelly (Entrance&Kitchen)
+              - entity: sensor.main_bedroom_and_living_temperature
+                name: Shelly (Bedroom&Living)
+            show:
+              labels: true
+          - type: custom:mini-graph-card
+            name: Batteria (24h)
+            fill: false
+            line_width: 3
+            points_per_hour: 5
+            entities:
+              - entity: sensor.flora1_battery
+                name: Big Bonsai
+              - entity: sensor.flora2_battery
+                name: Small Bonsai
+              - entity: sensor.0x00158d0002ebcbee_battery
+                name: PIR Scala
+              - entity: sensor.0x00158d000414020a_battery
+                name: PIR Ingresso                
+              - entity: sensor.0x00158d000309ba25_battery
+                name: Velux Sala
+              - entity: sensor.0x00158d00032b7616_battery
+                name: Velux Tana
+              - entity: sensor.0x00158d000346487a_battery
+                name: Clima Sala
+              - entity: sensor.0x00158d0003cd2888_battery
+                name: Clima Ingresso 
+              - entity: sensor.0x00158d0004020aa4_battery
+                name: Porta Ingresso
+              - entity: sensor.0x680ae2fffe3543f9_battery
+                name: Remote
+            show:
+              labels: true
+              fill: false
+          - type: custom:mini-graph-card
+            name: Segnale (24h)
+            line_width: 3
+            points_per_hour: 5
+            entities:
+              - entity: sensor.0x00158d0002ebcbee_linkquality
+                name: PIR Scala
+              - entity: sensor.0x00158d000414020a_linkquality
+                name: PIR Ingresso
+              - entity: sensor.0x00158d000309ba25_linkquality
+                name: Velux Sala
+              - entity: sensor.0x00158d00032b7616_linkquality
+                name: Velux Tana
+              - entity: sensor.0x00158d000346487a_linkquality
+                name: Clima Sala
+              - entity: sensor.0x00158d0003cd2888_linkquality
+                name: Clima Ingresso
+              - entity: sensor.0x00158d0004020aa4_linkquality
+                name: Porta Ingresso
+              - entity: sensor.0x680ae2fffe3543f9_linkquality
+                name: Remote
+            show:
+              labels: true
+              fill: false
+
+      - id: ping
+        type: entities
+        state_color: true
+        entities:
+          - entity: binary_sensor.k4
+          - entity: binary_sensor.k9
+#          - entity: binary_sensor.k10
+          - entity: binary_sensor.dell
+          - entity: binary_sensor.epson
+          - type: divider          
+          - entity: binary_sensor.yi_camera
+          - entity: binary_sensor.rm_mini

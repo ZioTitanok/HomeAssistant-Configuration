@@ -1,0 +1,67 @@
+# Sensor: Shelly (MQTT)
+
+# Shelly1PM: Loft Air Cooler (Power/Temperature)
+- platform: mqtt
+  name: loft_aircooler_power
+  state_topic: "shellies/shelly1pm-609CA4/relay/0/power"
+  unit_of_measurement: 'W'
+- platform: mqtt
+  name: loft_aircooler_temperature
+  state_topic: "shellies/shelly1pm-609CA4/temperature"
+  unit_of_measurement: '°C'
+
+# Shelly2: Loft Den Main/Auxiliary (Power)
+- platform: mqtt
+  name: loft_den_power
+  state_topic: "shellies/shellyswitch-55C39A/relay/power"
+  unit_of_measurement: 'W'
+
+# Shelly2: Loft Studio Main/auxiliary (Power)
+- platform: mqtt
+  name: loft_studio_main_auxiliary_power
+  state_topic: "shellies/shellyswitch-55C794/relay/power"
+  unit_of_measurement: 'W'
+
+# Shelly2: Loft Studio Discoball/Shelf (Momentary)
+- platform: mqtt
+  name: loft_studio_discoball_shelf_power
+  state_topic: "shellies/shellyswitch-559384/relay/power"
+  unit_of_measurement: 'W'
+
+# Shelly2.5: Main Entrance & Kitchen (Power/Temperature)
+- platform: mqtt
+  name: main_entrance_power
+  state_topic: "shellies/shellyswitch25-740859/relay/0/power"
+  unit_of_measurement: 'W'
+- platform: mqtt
+  name: main_kitchen_power
+  state_topic: "shellies/shellyswitch25-740859/relay/1/power"
+  unit_of_measurement: 'W'
+- platform: mqtt
+  name: main_entrance_and_kitchen_temperature
+  state_topic: "shellies/shellyswitch25-740859/temperature"
+  unit_of_measurement: '°C'
+
+# Shelly2.5: Main Bedroom & Living (Power/Temperature)
+- platform: mqtt
+  name: main_bedroom_power
+  state_topic: "shellies/shellyswitch25-740826/relay/0/power"
+  unit_of_measurement: 'W'
+- platform: mqtt
+  name: main_living_power
+  state_topic: "shellies/shellyswitch25-740826/relay/1/power"
+  unit_of_measurement: 'W'
+- platform: mqtt
+  name: main_bedroom_and_living_temperature
+  state_topic: "shellies/shellyswitch25-740826/temperature"
+  unit_of_measurement: '°C'
+
+# ShellyEM: Electical MainFrame (Power/Voltage)
+- platform: mqtt
+  name: home_power
+  state_topic: "shellies/shellyem-B9E2A0/emeter/0/power"
+  unit_of_measurement: 'W'
+- platform: mqtt
+  name: home_voltage
+  state_topic: "shellies/shellyem-B9E2A0/emeter/0/voltage"
+  unit_of_measurement: 'V'

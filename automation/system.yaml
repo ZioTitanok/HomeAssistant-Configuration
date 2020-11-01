@@ -1,0 +1,52 @@
+# Automation: Service and System
+
+# Reboot Notification
+- alias: pi_reboot
+  initial_state: true
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: notify.mobile_app_samsung_s7e
+      data:
+        title: "Homeassistant"
+        message: "Sistema riavviato con successo."
+        data:
+          tag: Sistema
+    - service: tts.google_say
+      entity_id: media_player.loft
+      data:
+        message: "Riavvio di sistema completato con successo."
+
+# Google Assistant Sync
+- alias: pi_google_sync
+  initial_state: on
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: google_assistant.request_sync
+      data:
+        agent_user_id: 4b10acc9468e4552934a07ba4ba9d7d2
+
+# Day/Night Graph Cicle
+- alias: pi_night
+  initial_state: on
+  trigger:
+    - platform: sun
+      event: sunset
+  action:
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.night
+        value: 1
+- alias: pi_day
+  initial_state: on
+  trigger:
+    - platform: sun
+      event: sunrise
+  action:
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.night
+        value: 0

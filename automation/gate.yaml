@@ -1,0 +1,32 @@
+# Automation: Gate Control
+
+# Pulse Auto-Off
+- alias: main_gate_management
+  initial_state: on
+  trigger:
+    - platform: state
+      entity_id: switch.main_gate
+      to: 'on'
+      for:
+        seconds: 1
+  action:
+    - service: homeassistant.turn_off
+      entity_id: switch.main_gate
+    - service: notify.mobile_app_samsung_s7e
+      data:
+        title: "Gate"
+        message: "Cancello in azione!"
+        data:
+          tag: Gate
+
+# Gate Tag NFC
+- alias: main_gate_nfc
+  initial_state: on
+  trigger:
+    - platform: tag
+      tag_id: 9ffc6d16-fc01-49ef-adfc-b8980973d00c
+    - platform: tag
+      tag_id: 9bed2085-1723-4250-bcdb-3467718a87d9
+  action:
+    - service: homeassistant.turn_on
+      entity_id: switch.main_gate   

@@ -1,0 +1,31 @@
+# Sensor: CFR
+
+# CFR TOS11000046
+- platform: cfr
+  name: cfr_montopoli_temperature
+  station: TOS11000046
+  type: termo
+- platform: cfr
+  name: cfr_montopoli_wind
+  station: TOS11000046
+  type: anemo
+- platform: cfr
+  name: cfr_montopoli_humidity
+  station: TOS11000046
+  type: igro
+- platform: cfr
+  name: cfr_montopoli_pluvio
+  station: TOS11000046
+  type: pluvio
+
+# CFR TOS01005181
+- platform: cfr
+  name: cfr_pontedera_idro
+  station: TOS01005181
+  type: idro
+
+# CFR TOS01005001 
+- platform: cfr
+  name: cfr_fucecchio_idro
+  station: TOS01005001
+  type: idro

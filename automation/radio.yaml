@@ -1,0 +1,62 @@
+# Automation: Radio Control
+
+# Radio Play On
+- alias: radio_on
+  initial_state: on
+  trigger:
+    - platform: state
+      entity_id: input_boolean.radio_activate
+      to: 'on'
+  action:
+    - service: media_player.volume_set
+      data_template:
+        entity_id: >
+          {% if is_state('input_select.radio_chromecast', 'Mansarda') %} media_player.lofr
+          {% elif is_state('input_select.radio_chromecast', 'Salotto') %} media_player.main
+          {% elif is_state('input_select.radio_chromecast', 'Taverna') %} media_player.tavern
+          {% endif %}
+        volume_level: 0.25
+    - service: media_player.play_media
+      data_template:
+        entity_id: >
+         {% if is_state('input_select.radio_chromecast', 'Mansarda') %} media_player.loft
+         {% elif is_state('input_select.radio_chromecast', 'Salotto') %} media_player.main
+         {% elif is_state('input_select.radio_chromecast', 'Taverna') %} media_player.tavern
+         {% endif %}
+        media_content_id: >
+         {% if is_state('input_select.radio_station', 'Radio 105') %} http://icecast.unitedradio.it/Radio105.mp3
+         {% elif is_state('input_select.radio_station', 'Virgin Radio') %} http://icecast.unitedradio.it/Virgin.mp3
+         {% endif %}
+        media_content_type: audio/mp4
+
+# Radio Play Off
+- alias: radio_off
+  initial_state: on
+  trigger:
+    - platform: state
+      entity_id: input_boolean.radio_activate
+      to: 'off'
+  action:
+    - service: media_player.turn_off
+      data_template:
+        entity_id: >
+         {% if is_state('input_select.radio_chromecast', 'Mansarda') %} media_player.loft
+         {% elif is_state('input_select.radio_chromecast', 'Salotto') %} nedia_player.main
+         {% elif is_state('input_select.radio_chromecast', 'Taverna') %} media_player.tavern
+         {% endif %}
+
+# Radio Volume
+- alias: radio_volume
+  initial_state: on
+  trigger:
+    - platform: state
+      entity_id: input_number.radio_volume
+  action:
+    - service: media_player.volume_set
+      data_template:
+        entity_id: >
+          {% if is_state('input_select.radio_chromecast', 'Mansarda') %} media_player.loft
+          {% elif is_state('input_select.radio_chromecast', 'Salotto') %} media_player.main
+          {% elif is_state('input_select.radio_chromecast', 'Taverna') %} media_player.tavern
+          {% endif %}
+        volume_level: '{{  states.input_number.radio_volume.state  }}'

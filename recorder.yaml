@@ -1,0 +1,49 @@
+# Recorder
+
+exclude:
+  domains:
+    - automation
+    - binary_sensor
+    - input_boolean
+    - input_datetime
+    - input_select
+    - script
+  entities:
+    - light.0x000b57fffe4baa6e_light
+    - light.0x000b57fffe48a1de_light
+    - sensor.date
+    - sensor.time
+    - sensor.time_utc
+    - sensor.season
+
+include:
+  domains:
+    - climate
+    - device_tracker
+    - light
+    - media_player
+    - person
+    - plant
+    - sensor
+    - switch
+  entities:
+    - automation.main_gate_nfc
+    - binary_sensor.dell
+    - binary_sensor.epson
+    - binary_sensor.k4
+    - binary_sensor.k9
+    - binary_sensor.pir_yi
+    - binary_sensor.rm_mini
+    - binary_sensor.rpi_power_status
+    - binary_sensor.updater
+    - binary_sensor.yi_camera
+    - input_boolean.discoball_activate
+    - input_boolean.radio_activate
+    - input_datetime.loft_auxiliary_on
+    - input_datetime.loft_auxiliary_off
+    - input_number.night
+    - input_number.radio_volume
+    - sun.sun
+  entity_globs:
+    - binary_sensor.*_occupancy
+    - binary_sensor.*_contact

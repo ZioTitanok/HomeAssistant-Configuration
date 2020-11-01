@@ -1,0 +1,274 @@
+# Main Configuration File
+
+# Homeassistant
+homeassistant:
+  name: 'Home CDB'
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: !secret home_elevation
+  unit_system: metric
+  time_zone: Europe/Rome
+  customize: !include customize.yaml
+
+zone:
+  - name: Home
+    latitude: !secret home_latitude
+    longitude: !secret home_longitude
+    radius: 75
+
+# Basic Functionality
+#cloud:
+config:
+conversation:
+discovery:
+frontend:
+image:
+map:
+media_source:
+mobile_app:
+person:
+shopping_list:
+ssdp:
+system_health:
+updater:
+wake_on_lan:
+webhook:
+
+# Split Config 1
+recorder: !include recorder.yaml 
+history:
+logbook:
+
+# Split Config 2
+automation: !include_dir_merge_list automation
+climate: !include climates.yaml
+sensor: !include_dir_merge_list sensor
+script: !include scripts.yaml
+switch: !include_dir_merge_list switch
+group: 
+scene:
+
+# Interface
+lovelace:
+  mode: yaml
+  resources:
+    - url: /hacsfiles/weather-card/weather-card.js
+      type: module
+    - url: /hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js
+      type: module
+    - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
+      type: module
+    - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js
+      type: module
+    - url: /hacsfiles/simple-thermostat/simple-thermostat.js
+      type: module
+
+panel_iframe:
+  blog:
+    title: 'Blog'
+    url: !secret iframe_blog
+    icon: mdi:blogger
+  octoprint:
+    title: 'Octoprint'
+    url: !secret iframe_octoprint
+    icon: mdi:printer-3d-nozzle
+  pihole:
+    title: 'PiHole'
+    url: !secret iframe_pihole
+    icon: mdi:delete-circle
+  plex:
+    title: 'Plex'
+    url: !secret iframe_plex
+    icon: mdi:plex
+  windy:
+    title: 'Windy'
+    url: !secret iframe_windy
+    icon: mdi:weather-hazy
+
+# Driver & Camera
+ffmpeg:
+  ffmpeg_bin: /usr/bin/ffmpeg
+
+camera:
+  - platform: mjpeg
+    mjpeg_url: 'http://192.168.1.215:8083/video.mjpg'
+    name: ender3pro
+
+# Weather
+sun:
+
+weather:
+  - platform: darksky
+    api_key: !secret darksky_api
+    mode: daily
+
+# Google Assistant
+google_assistant:
+  project_id: home-assistant-f6896
+  service_account: !include homeassistant-28375056a62d.json
+  report_state: true
+  expose_by_default: false
+  entity_config:
+    switch.main_entrance:
+      name: Ingresso
+      expose: true
+    switch.main_kitchen:
+      name: Cucina
+      expose: true
+    switch.main_living:
+      name: Salotto
+      expose: true
+    switch.main_bedroom:
+      name: Camera
+      expose: true
+    switch.loft_studio_auxiliary:
+      name: Faretti
+      expose: true
+    switch.loft_studio_main:
+      name: Studio
+      expose: true
+    switch.loft_den_main:
+      name: Tana
+      expose: true
+    switch.loft_den_auxiliary:
+      name: Cielo
+      expose: true
+    switch.loft_studio_shelf:
+      name: Scaffale
+      expose: true
+    switch.loft_studio_decoration:
+      name: DiscoBall
+      expose: true
+    switch.main_gate:
+      name: Cancello
+      expose: true
+    input_boolean.radio_activate:
+      name: Radio
+      expose: true
+    input_boolean.loft_discoball_activate:
+      name: Party
+      expose: true
+
+# TTS
+tts:
+  - platform: google_translate
+    service_name: google_say
+    language: it
+
+# Binary Sensor
+binary_sensor:
+  # Computer
+  - platform: ping
+    name: K9
+    host: !secret ip_k9
+    scan_interval: 300
+  - platform: ping
+    name: Dell
+    host: !secret ip_dell
+    scan_interval: 300
+  - platform: ping
+    name: K4
+    host: !secret ip_k4
+    scan_interval: 300
+  # Devices
+  - platform: ping
+    name: RM Mini
+    host: !secret ip_rmmini
+    scan_interval: 600
+  - platform: ping
+    name: Yi Camera
+    host: !secret ip_yicamera
+    scan_interval: 600
+  - platform: mqtt
+    name: Pir Yi
+    state_topic: "yicam/motion"
+    payload_on: "motion_start"
+    payload_off: "motion_stop"
+  - platform: ping
+    name: Epson
+    host: !secret ip_epson
+    scan_interval: 1000
+
+# Input
+input_datetime:
+  loft_auxiliary_on:
+    name: Faretti On
+    has_date: false
+    has_time: true
+  loft_auxiliary_off:
+    name: Faretti Off
+    has_date: false
+    has_time: true
+
+input_select:
+  radio_chromecast:
+    name: Speakers
+    icon: mdi:speaker-wireless
+    options:
+      - Mansarda
+      - Salotto
+      - Taverna
+  radio_station:
+    name: Stazione Radio
+    icon: mdi:radio
+    options:
+      - Radio 105
+      - Virgin Radio
+  loft_studio_lamps:
+    name: Bottone
+    icon: mdi:lamps
+    options:
+      - Studio
+      - Scaffale
+      - Faretti
+  loft_discoball_song:
+    name: Traccia
+    icon: mdi:music
+    options:
+      - Bee Gees - Stayin Alive
+      - Engelwood - Crystal Dolphin
+      - Sofi Tukker - Batshit
+      - Star Wars - The Imperial March
+      - Toscana MaremmaMaiala - Rap di Bacarello
+
+input_number:
+  radio_volume:
+    name: Volume
+    icon: mdi:volume-high
+    min: 0
+    max: 1
+    step: 0.05
+    initial: 0.2
+  night:
+    name: Night
+    min: 0
+    max: 1
+
+input_boolean:
+  radio_activate:
+    name: Play
+    initial: off
+    icon: mdi:play
+  loft_discoball_activate:
+    name: Party Time
+    initial: off
+    icon: mdi:music-note
+
+# Plant
+plant:
+  grande:
+    sensors:
+      moisture: sensor.flora1_moisture
+      battery: sensor.flora1_battery
+      temperature: sensor.flora1_temperature
+      conductivity: sensor.flora1_conductivity
+      brightness: sensor.flora1_light_intensity
+    min_battery: 10
+  piccolo:
+    sensors:
+      moisture: sensor.flora2_moisture
+      battery: sensor.flora2_battery
+      temperature: sensor.flora2_temperature
+      conductivity: sensor.flora2_conductivity
+      brightness: sensor.flora2_light_intensity
+    min_battery: 10

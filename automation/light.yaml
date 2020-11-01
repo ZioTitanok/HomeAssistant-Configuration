@@ -1,0 +1,42 @@
+# Automation: Light
+
+# Shelf Auto On
+- alias: loft_studio_shelf_on
+  initial_state: on
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: '-00:30:00'
+  action:
+    - service: homeassistant.turn_on
+      entity_id: switch.loft_studio_shelf
+
+# Shelf Auto Off
+- alias: loft_studio_shelf_off
+  initial_state: on
+  trigger:
+    - platform: time
+      at: '22:30:00'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: switch.loft_studio_shelf
+
+# Little Lights Auto On
+- alias: loft_studio_auxiliary_on
+  initial_state: True
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (states.input_datetime.loft_auxiliary_on.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+  action:
+    - service: homeassistant.turn_on
+      entity_id: switch.loft_studio_auxiliary
+
+# Little Lights Auto Off
+- alias: loft_studio_auxiliary_off
+  initial_state: True
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (states.input_datetime.loft_auxiliary_off.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+  action:
+    - service: homeassistant.turn_off
+      entity_id: switch.loft_studio_auxiliary

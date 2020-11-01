@@ -1,0 +1,42 @@
+# Automation: Discoball
+
+# Discoball On
+- alias: loft_studio_discoball_on
+  initial_state: on
+  trigger:
+    - platform: state
+      entity_id: input_boolean.loft_discoball_activate
+      to: 'on'
+  action:
+    - service: homeassistant.turn_on
+      entity_id: switch.loft_studio_discoball
+    - service:  media_player.volume_set
+      entity_id: media_player.loft
+      data:
+        volume_level: 0.2
+    - service: media_player.play_media
+      entity_id: media_player.loft
+      data_template:
+        media_content_id: >
+          {% if is_state('input_select.loft_discoball_song', 'Bee Gees - Stayin Alive') %} /local/music/bee_gees-stayin_alive.mp3
+          {% elif is_state('input_select.loft_discoball_song', 'Engelwood - Crystal Dolphin') %} /local/music/engelwood-crystal_dolphin.mp3
+          {% elif is_state('input_select.loft_discoball_song', 'Sofi Tukker - Batshit') %} /local/music/sofi_tukker-batshit.mp3
+          {% elif is_state('input_select.loft_discoball_song', 'Star Wars - The Imperial March') %} /local/music/star_wars-imperial_march.mp3
+          {% elif is_state('input_select.loft_discoball_song', 'Toscana MaremmaMaiala - Rap di Bacarello') %} /local/music/toscana_maremmamaiala-rap_di_bacarello.mp3
+          {% endif %}
+        media_content_type: audio/mp3
+
+# Discoball Off
+- alias: loft_studio_discoball_off
+  initial_state: on
+  trigger:
+    - platform: state
+      entity_id: input_boolean.loft_discoball_activate
+      to: 'off'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: switch.loft_studio_discoball
+    - service: media_player.turn_off
+      data:
+        entity_id: media_player.loft
+        
