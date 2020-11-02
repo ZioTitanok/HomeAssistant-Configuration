@@ -18,11 +18,11 @@
       entity_id: media_player.loft
       data_template:
         media_content_id: >
-          {% if is_state('input_select.loft_discoball_song', 'Bee Gees - Stayin Alive') %} /local/music/bee_gees-stayin_alive.mp3
-          {% elif is_state('input_select.loft_discoball_song', 'Engelwood - Crystal Dolphin') %} /local/music/engelwood-crystal_dolphin.mp3
-          {% elif is_state('input_select.loft_discoball_song', 'Sofi Tukker - Batshit') %} /local/music/sofi_tukker-batshit.mp3
-          {% elif is_state('input_select.loft_discoball_song', 'Star Wars - The Imperial March') %} /local/music/star_wars-imperial_march.mp3
-          {% elif is_state('input_select.loft_discoball_song', 'Toscana MaremmaMaiala - Rap di Bacarello') %} /local/music/toscana_maremmamaiala-rap_di_bacarello.mp3
+          {% if is_state('input_select.loft_discoball_song', 'Bee Gees - Stayin Alive') %} media-source://media_source/local/bee_gees-stayin_alive.mp3
+          {% elif is_state('input_select.loft_discoball_song', 'Engelwood - Crystal Dolphin') %} media-source://media_source/local/engelwood-crystal_dolphin.mp3
+          {% elif is_state('input_select.loft_discoball_song', 'Sofi Tukker - Batshit') %} media-source://media_source/local/sofi_tukker-batshit.mp3
+          {% elif is_state('input_select.loft_discoball_song', 'Star Wars - The Imperial March') %} media-source://media_source/local/star_wars-imperial_march.mp3
+          {% elif is_state('input_select.loft_discoball_song', 'Toscana MaremmaMaiala - Rap di Bacarello') %} media-source://media_source/local/toscana_maremmamaiala-rap_di_bacarello.mp3
           {% endif %}
         media_content_type: audio/mp3
 
