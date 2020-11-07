@@ -14,6 +14,8 @@ secrets.yaml
 known_devices.yaml
 home-assistant_v2.db
 home-assistant.log
+home-assistant_v2.db-shm
+home-assistant_v2.db-wal
 homeassistant-28375056a62d.json
 
 *.mp3
