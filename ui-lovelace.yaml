@@ -289,13 +289,13 @@ views:
                   - entity: automation.loft_studio_shelf_on
                     name: Auto On
                     toggle: true
-              - entity: automation.loft_studio_shelf_off
+              - entity: automation.loft_studio_auxiliary_off
                 type: custom:multiple-entity-row
                 name: Faretti
                 toggle: true
                 state_header: Auto Off
                 entities:
-                  - entity: automation.loft_studio_shelf_on
+                  - entity: automation.loft_studio_auxiliary_on
                     name: Auto On
                     toggle: true
           - type: conditional
