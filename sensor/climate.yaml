@@ -1,4 +1,4 @@
-# Sensor: CFR
+# Sensor: Climate
 
 # CFR TOS11000046
 - platform: cfr
@@ -29,3 +29,19 @@
   name: cfr_fucecchio_idro
   station: TOS01005001
   type: idro
+
+# Loft Relevant Temperature
+- platform: template
+  sensors:
+    loft_relevant_temperature:
+      unit_of_measurement: "°C"
+      value_template: >
+        {% if 8 <= strptime(states('sensor.time'), "%H:%M").hour < 23 %} {{states.sensor['0x00158d000346487a_temperature'].attributes.temperature}}
+        {% else %} {{states.sensor['0x00158d0004183f08_temperature'].attributes.temperature}}
+        {% endif %}
+    loft_relevant_text:
+      icon_template: mdi:map-clock
+      value_template: >
+        {% if 8 <= strptime(states('sensor.time'), "%H:%M").hour < 23 %} Studio
+        {% else %} Tana
+        {% endif %}

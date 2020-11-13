@@ -4,11 +4,11 @@
 - platform: generic_thermostat
   name: loft
   heater: switch.loft_thermostat
-  target_sensor: sensor.0x00158d000346487a_temperature
+  target_sensor: sensor.loft_relevant_temperature
   min_temp: 16
   max_temp: 32
   target_temp: 19.5
   cold_tolerance: 0.2
-  hot_tolerance: 0.3
+  hot_tolerance: 0.2
   ac_mode: false
   precision: 0.1

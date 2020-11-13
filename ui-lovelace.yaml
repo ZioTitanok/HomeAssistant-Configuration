@@ -324,6 +324,8 @@ views:
                 name: Umidità (S)
               - entity: sensor.0x00158d0004183f08_humidity
                 name: Umidità (T)
+              - entity: sensor.loft_relevant_text
+                name: Comando
 
           - type: entities
             entities:
