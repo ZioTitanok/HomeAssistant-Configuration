@@ -427,9 +427,14 @@ views:
           - type: entities
             show_header_toggle: false
             entities:
-              - entity: binary_sensor.0x00158d0004020aa4_contact
+              - entity: binary_sensor.0x00158d00040209a6_contact
                 type: custom:multiple-entity-row
-                name: Porta Ingresso
+                name: Porta
+                state_header: Sala
+                entities:
+                  - entity: binary_sensor.0x00158d0004020aa4_contact
+                    name: Ingresso            
+    
               - entity: binary_sensor.0x00158d000414020a_occupancy
                 type: custom:multiple-entity-row
                 name: PIR Ingresso
@@ -652,6 +657,8 @@ views:
                 name: Clima Ingresso 
               - entity: sensor.0x00158d0004020aa4_battery
                 name: Porta Ingresso
+              - entity: sensor.0x00158d00040209a6_battery
+                name: Porta Sala
               - entity: sensor.0x680ae2fffe3543f9_battery
                 name: Remote
             show:
@@ -678,6 +685,8 @@ views:
                 name: Clima Ingresso
               - entity: sensor.0x00158d0004020aa4_linkquality
                 name: Porta Ingresso
+              - entity: sensor.0x00158d00040209a6_linkquality
+                name: Porta Sala
               - entity: sensor.0x680ae2fffe3543f9_linkquality
                 name: Remote
             show:
