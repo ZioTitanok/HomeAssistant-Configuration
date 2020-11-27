@@ -60,6 +60,7 @@
 - platform: mqtt
   name: home_power
   state_topic: "shellies/shellyem-B9E2A0/emeter/0/power"
+  qos: 1
   unit_of_measurement: 'W'
 - platform: mqtt
   name: home_voltage

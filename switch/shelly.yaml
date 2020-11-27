@@ -103,3 +103,11 @@
   command_topic: "shellies/shelly1-5551CC/relay/0/command"
   payload_on: "on"
   payload_off: "off"
+
+# Shelly1: Main Thermostat (Toggle)
+- platform: mqtt
+  name: main_thermostat
+  state_topic: "shellies/shelly1-3C71BF2C02AE/relay/0"
+  command_topic: "shellies/shelly1-3C71BF2C02AE/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"

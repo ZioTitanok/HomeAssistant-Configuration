@@ -41,10 +41,10 @@
         # Estiva: 25.5
     - service: notify.mobile_app_samsung_s7e
       data:
-        title: "Piattaforma Climate"
+        title: "Climate Loft"
         message: "Temperatura giorno (19.5°C) in vigore!"
         data:
-          tag: Termostato
+          tag: Termostato_Loft
 
 - alias: loft_climate_setpoint_night
   initial_state: on
@@ -59,7 +59,26 @@
         # Estivo 26
     - service: notify.mobile_app_samsung_s7e
       data:
-        title: "Piattaforma Climate"
+        title: "Climate Loft"
         message: "Temperatura notte (18°C) entrata in vigore!"
         data:
-          tag: Termostato
+          tag: Termostato_Loft
+
+# Climate Main Set-Point
+- alias: main_climate_setpoint_night
+  initial_state: on
+  trigger:
+    - platform: time
+      at: '23:30:00'
+  action: 
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.main
+        temperature: 17
+        # Estivo 26
+    - service: notify.mobile_app_samsung_s7e
+      data:
+        title: "Piattaforma Climate"
+        message: "Temperatura notte (17°C) entrata in vigore!"
+        data:
+          tag: Termostato_Main

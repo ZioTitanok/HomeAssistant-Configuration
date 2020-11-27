@@ -392,6 +392,16 @@ views:
           - type: entities
             entities: 
               - switch.main_gate
+          - type: custom:simple-thermostat
+            entity: climate.main
+            step_layout: row
+            icon: false
+            name: false
+            control:
+              _headings: false
+            sensors:
+              - entity: sensor.0x00158d0003cd2888_humidity
+                name: Umidità  
           - type: entities
             show_header_toggle: false
             entities:
