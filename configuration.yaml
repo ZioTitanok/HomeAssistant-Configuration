@@ -115,8 +115,11 @@ google_assistant:
     switch.main_kitchen:
       name: Cucina
       expose: true
-    switch.main_living:
+    switch.main_living_main:
       name: Salotto
+      expose: true
+    switch.main_living_auxiliary:
+      name: Aba
       expose: true
     switch.main_bedroom:
       name: Camera

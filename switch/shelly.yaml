@@ -32,7 +32,7 @@
   payload_on: "on"
   payload_off: "off"
 
-# Shelly2: Lofr Studio Main (Momentary)
+# Shelly2: Loft Studio Main (Momentary)
 - platform: mqtt
   name: loft_studio_main
   state_topic: "shellies/shellyswitch-55C794/relay/0"
@@ -90,9 +90,17 @@
 
 # Shelly2.5: Main Living (Momentary)
 - platform: mqtt
-  name: main_living
+  name: main_living_main
   state_topic: "shellies/shellyswitch25-740826/relay/1"
   command_topic: "shellies/shellyswitch25-740826/relay/1/command"
+  payload_on: "on"
+  payload_off: "off"
+
+# Shelly1PM: Main Living Auxiliary (Momentary)
+- platform: mqtt
+  name: main_living_auxiliary
+  state_topic: "shellies/shelly1pm-E09806A9EFCF/relay/0"
+  command_topic: "shellies/shelly1pm-E09806A9EFCF/relay/0/command"
   payload_on: "on"
   payload_off: "off"
 

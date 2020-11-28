@@ -56,8 +56,10 @@ switch.main_bedroom:
   friendly_name: 'Camera'
 switch.main_kitchen:
   friendly_name: 'Cucina'
-switch.main_living:
+switch.main_living_main:
   friendly_name: 'Salotto'
+switch.main_living_auxiliary:
+  friendly_name: 'Aba'
 switch.main_gate:
   friendly_name: Cancello
   icon: mdi:gate

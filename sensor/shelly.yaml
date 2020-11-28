@@ -48,12 +48,22 @@
   state_topic: "shellies/shellyswitch25-740826/relay/0/power"
   unit_of_measurement: 'W'
 - platform: mqtt
-  name: main_living_power
+  name: main_living_main_power
   state_topic: "shellies/shellyswitch25-740826/relay/1/power"
   unit_of_measurement: 'W'
 - platform: mqtt
-  name: main_bedroom_and_living_temperature
+  name: main_bedroom_and_living_main_temperature
   state_topic: "shellies/shellyswitch25-740826/temperature"
+  unit_of_measurement: '°C'
+
+# Shelly1PM: Main Living Auxiliary (Momentary)
+- platform: mqtt
+  name: main_living_auxiliary_power
+  state_topic: "shellies/shelly1pm-E09806A9EFCF/relay/0/power"
+  unit_of_measurement: 'W'
+- platform: mqtt
+  name: main_living_auxiliary_temperature
+  state_topic: "shellies/shelly1pm-E09806A9EFCF/temperature"
   unit_of_measurement: '°C'
 
 # ShellyEM: Electical MainFrame (Power/Voltage)

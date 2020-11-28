@@ -412,12 +412,19 @@ views:
                 entities:
                   - entity: sensor.main_entrance_power
                     name: false
-              - entity: switch.main_living
+              - entity: switch.main_living_main
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:sofa
                 entities:
-                  - entity: sensor.main_living_power
+                  - entity: sensor.main_living_main_power
+                    name: false
+              - entity: switch.main_living_auxiliary
+                type: custom:multiple-entity-row
+                toggle: true
+                icon: mdi:lamp
+                entities:
+                  - entity: sensor.main_living_auxiliary_power
                     name: false
               - entity: switch.main_kitchen
                 type: custom:multiple-entity-row
@@ -637,8 +644,10 @@ views:
                 name: Shelly (Aircooler)
               - entity: sensor.main_entrance_and_kitchen_temperature
                 name: Shelly (Entrance&Kitchen)
-              - entity: sensor.main_bedroom_and_living_temperature
+              - entity: sensor.main_bedroom_and_living_main_temperature
                 name: Shelly (Bedroom&Living)
+              - entity: sensor.main_living_auxiliary_temperature
+                name: Shelly (Aba)
             show:
               labels: true
           - type: custom:mini-graph-card
