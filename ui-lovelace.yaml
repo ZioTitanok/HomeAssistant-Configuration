@@ -48,11 +48,14 @@ views:
               - entity: sensor.home_power
                 type: custom:multiple-entity-row
                 toggle: false
-                name: Quadro Elettrico
-                state_header: Potenza
-                icon: mdi:transmission-tower
+                name: Potenze
+                state_header: Casa
+                icon: mdi:flash
                 entities:
-                  - entity: sensor.home_voltage
+                  - entity: sensor.loft_and_main_power
+                  - entity: sensor.tavern_and_garage_power
+              - entity: sensor.home_voltage
+                icon: mdi:power-plug
 
           - type: custom:mini-graph-card
             name: Potenza (24h)
@@ -62,6 +65,8 @@ views:
             icon: mdi:flash
             entities:
               - entity: sensor.home_power
+              - entity: sensor.loft_and_main_power
+              - entity: sensor.tavern_and_garage_power
               - entity: input_number.night
                 color: gray
                 show_line: false

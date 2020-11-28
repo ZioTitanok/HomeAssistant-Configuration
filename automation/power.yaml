@@ -4,10 +4,10 @@
 - alias: home_power_check
   initial_state: on
   trigger:
-    - platform: template
-      value_template: "{{ sensor.shelly.potenza_casa|float > 3000 }}"
-      for:
-        seconds: 15
+    platform: numeric_state
+    entity_id: sensor.home_power
+    above: 3000
+    for: "00:00:05"
   action:
     - service: notify.mobile_app_samsung_s7e
       data:

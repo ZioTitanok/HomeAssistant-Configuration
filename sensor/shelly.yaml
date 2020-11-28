@@ -73,6 +73,17 @@
   qos: 1
   unit_of_measurement: 'W'
 - platform: mqtt
+  name: tavern_and_garage_power
+  state_topic: "shellies/shellyem-B9E2A0/emeter/1/power"
+  qos: 1
+  unit_of_measurement: 'W'
+- platform: template
+  sensors:
+    loft_and_main_power:
+      unit_of_measurement: "W"
+      value_template: >
+        {{ (states("sensor.home_power")|float - states("sensor.tavern_and_garage_power")|float) | round(2) }}
+- platform: mqtt
   name: home_voltage
   state_topic: "shellies/shellyem-B9E2A0/emeter/0/voltage"
   unit_of_measurement: 'V'
