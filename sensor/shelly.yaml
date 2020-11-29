@@ -68,7 +68,7 @@
 
 # ShellyEM: Electical MainFrame (Power/Voltage)
 - platform: mqtt
-  name: home_power
+  name: loft_and_main_power
   state_topic: "shellies/shellyem-B9E2A0/emeter/0/power"
   qos: 1
   unit_of_measurement: 'W'
@@ -79,10 +79,10 @@
   unit_of_measurement: 'W'
 - platform: template
   sensors:
-    loft_and_main_power:
+    home_power:
       unit_of_measurement: "W"
       value_template: >
-        {{ (states("sensor.home_power")|float - states("sensor.tavern_and_garage_power")|float) | round(2) }}
+        {{ (states("sensor.loft_and_main_power")|float + states("sensor.tavern_and_garage_power")|float) | round(2) }}
 - platform: mqtt
   name: home_voltage
   state_topic: "shellies/shellyem-B9E2A0/emeter/0/voltage"

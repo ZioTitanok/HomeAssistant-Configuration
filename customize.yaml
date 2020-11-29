@@ -29,7 +29,7 @@ script.radio_selection:
 sensor.recycle:
   friendly_name: 'Domani Ricicla'
 sensor.home_power:
-  friendly_name: 'Casa'
+  friendly_name: 'Totale'
 sensor.loft_and_main_power:
   friendly_name: 'Loft&Main'
 sensor.tavern_and_garage_power:
