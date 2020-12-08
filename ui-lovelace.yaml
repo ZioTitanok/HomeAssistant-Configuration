@@ -238,6 +238,12 @@ views:
                 - type: custom:slider-entity-row
                   entity: light.0x000b57fffe4baa6e_light
                   name: Interno
+                  
+          - type: entities
+            entities: 
+              - entity: switch.ciabatta_1_mss425f_main_channel
+                name: Albero Natalizio
+                icon: mdi:pine-tree              
 
           - type: entities
             show_header_toggle: false

@@ -1,0 +1,27 @@
+# Automation: Quake Near Home
+
+- alias: quake_notify
+  mode: queued
+  max_exceeded: silent
+  initial_state: true
+  trigger:
+    - platform: geo_location
+      source: "ingv_centro_nazionale_terremoti"
+      zone: zone.geoalert
+      event: enter
+  condition: >-
+    {{((as_timestamp(utcnow())-as_timestamp(trigger.to_state.attributes.publication_date))/3600*60)|int < 60}}
+  action:
+    - service: notify.mobile_app_samsung_s7e
+      data:
+        title: "Terremoto"
+        message: >-
+          {% set data_utc = trigger.to_state.attributes.publication_date %}
+          Rilevato terremoto di magnitudo: {{trigger.to_state.attributes.magnitude}} 
+          a una distanza di {{trigger.to_state.state}} km da casa. Epicentro: {{trigger.to_state.attributes.region}} 
+          {{as_timestamp(data_utc)|timestamp_custom ('Data %d/%m/%Y Ore %H:%M:%S')}}
+          {% if trigger.to_state.attributes.image_url and trigger.to_state.attributes.magnitude >= 3%}
+          {{trigger.to_state.attributes.image_url}}
+          {% endif %}
+        data:
+          tag: Quake

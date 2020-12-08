@@ -102,6 +102,11 @@ weather:
     api_key: !secret darksky_api
     mode: daily
 
+# Earthquake INGV 
+geo_location:
+  - platform: ingv_centro_nazionale_terremoti
+    radius: 100
+
 # Google Assistant
 google_assistant:
   project_id: home-assistant-f6896
