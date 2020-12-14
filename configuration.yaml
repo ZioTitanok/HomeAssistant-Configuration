@@ -15,6 +15,10 @@ zone:
     latitude: !secret home_latitude
     longitude: !secret home_longitude
     radius: 75
+  - name: Quake
+    latitude: !secret home_latitude
+    longitude: !secret home_longitude
+    radius: 250000
 
 # Basic Functionality
 #cloud:

@@ -28,6 +28,8 @@ include:
     - switch
   entities:
     - automation.main_gate_nfc
+    - climate.loft
+    - climate.main
     - input_boolean.discoball_activate
     - input_boolean.radio_activate
     - input_datetime.loft_auxiliary_on

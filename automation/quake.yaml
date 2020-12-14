@@ -7,7 +7,7 @@
   trigger:
     - platform: geo_location
       source: "ingv_centro_nazionale_terremoti"
-      zone: zone.geoalert
+      zone: zone.quake
       event: enter
   condition: >-
     {{((as_timestamp(utcnow())-as_timestamp(trigger.to_state.attributes.publication_date))/3600*60)|int < 60}}
