@@ -197,8 +197,7 @@ views:
 
 
 # Loft
-  - id: mansarda
-    title: Mansarda
+  - title: Mansarda
     path: mansarda
     cards:
 
@@ -393,8 +392,7 @@ views:
             entity: media_player.loft
 
 # Main
-  - id: padronale
-    title: Padronale
+  - title: Padronale
     path: padronale
     cards:
 
@@ -469,43 +467,34 @@ views:
                 entities:
                   - entity: sensor.0x00158d000414020a_illuminance
                     name: false
-
-      - type: custom:mini-graph-card
-        name: Temperatura (24h)
-        line_width: 3
-        points_per_hour: 5
-        entities:
-          - entity: sensor.0x00158d0003cd2888_temperature
-            name: Ingresso
-          - entity: sensor.cfr_montopoli_temperature
-            name: CFR
-          - entity: input_number.night
-            color: gray
-            show_line: false
-            show_points: false
-            show_legend: false
-            y_axis: secondary
-        show:
-          labels: true
-          labels_secondary: true
-
-      - type: custom:mini-graph-card
-        name: Livello Addolcitore (7g)
-        hours_to_show: 168
-        line_width: 3
-        points_per_hour: 1
-        entities:
-          - entity: sensor.main_softener
-            name: Livello Sale
-          - entity: input_number.night
-            color: gray
-            show_line: false
-            show_points: false
-            show_legend: false
-            y_axis: secondary
-        show:
-          labels: true
-          labels_secondary: true
+      - type: vertical-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperatura (24h)
+            line_width: 3
+            points_per_hour: 5
+            entities:
+              - entity: sensor.0x00158d0003cd2888_temperature
+                name: Ingresso
+              - entity: sensor.cfr_montopoli_temperature
+                name: CFR
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+          
+          - type: gauge
+            entity: sensor.main_softener_percentage
+            name: Addolcitore
+            severity:
+              green: 60
+              yellow: 40
+              red: 20
 
       - type: media-control
         entity: media_player.main
@@ -514,13 +503,11 @@ views:
         title: Spesa
 
 # Tavern
-  - id: Taverna
-    title: Taverna
+  - title: Taverna
     path: taverna
     cards:
 
-      - id: taverna-luci
-        type: vertical-stack
+      - type: vertical-stack
         cards:
           - type: entities
             entities: 
@@ -571,8 +558,7 @@ views:
           name: Giallo
 
 # System
-  - id: Sistema
-    title: Sistema
+  - title: Sistema
     path: sistema
     cards:
 
@@ -598,13 +584,26 @@ views:
                 icon: mdi:timer-sand
               - entity: sensor.pi_zigbee2mqtt
                 name: Zigbee2Mqtt
-      
+          
+          - type: entities
+            state_color: true
+            entities:
+              - entity: binary_sensor.k4
+              - entity: binary_sensor.k9
+    #          - entity: binary_sensor.k10
+              - entity: binary_sensor.dell
+              - entity: binary_sensor.epson      
+              - entity: binary_sensor.yi_camera
+              - entity: binary_sensor.rm_mini
+          
       - type: vertical-stack
         cards:
+
           - type: entities
             entities:
               - entity: script.speedtest_manual
-                icon: mdi:speedometer          
+                icon: mdi:speedometer         
+
           - type: custom:mini-graph-card
             name: Speed (7G)
             hours_to_show: 168
@@ -643,8 +642,7 @@ views:
               labels: true
               labels_secondary: true
 
-      - id: sensori
-        type: vertical-stack
+      - type: vertical-stack
         cards:
           - type: custom:mini-graph-card
             name: Temperatura Shelly (24h)
@@ -661,6 +659,28 @@ views:
                 name: Shelly (Aba)
             show:
               labels: true
+
+          - type: custom:mini-graph-card
+            name: Livello Addolcitore (7g)
+            hours_to_show: 168
+            line_width: 3
+            points_per_hour: 1
+            entities:
+              - entity: sensor.main_softener
+                name: Livello Sale
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+        
+      - type: vertical-stack
+        cards:
+        
           - type: custom:mini-graph-card
             name: Batteria (24h)
             fill: false
@@ -723,15 +743,4 @@ views:
               labels: true
               fill: false
 
-      - id: ping
-        type: entities
-        state_color: true
-        entities:
-          - entity: binary_sensor.k4
-          - entity: binary_sensor.k9
-#          - entity: binary_sensor.k10
-          - entity: binary_sensor.dell
-          - entity: binary_sensor.epson
-          - type: divider          
-          - entity: binary_sensor.yi_camera
-          - entity: binary_sensor.rm_mini
+

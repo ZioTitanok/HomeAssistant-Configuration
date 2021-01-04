@@ -6,3 +6,11 @@
   state_topic: "tele/WemosA/SENSOR"
   unit_of_measurement: 'cm'
   value_template: "{{ value_json.SR04.Distance }}"
+
+# WemosA: Water Softener Percentage
+- platform: template
+  sensors:
+    main_softener_percentage:
+      unit_of_measurement: "%"
+      value_template: "{{ ((-2.86*states('sensor.main_softener')|float + 243)|round(1))|max(0)|min(100) }}"
+      icon_template: mdi:hydraulic-oil-temperature
