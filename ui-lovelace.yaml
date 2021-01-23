@@ -23,7 +23,6 @@ views:
 # Home
   - title: Home
     path: home
-    id: home
     icon: mdi:home
     cards:
       - type: vertical-stack
@@ -200,7 +199,6 @@ views:
   - title: Mansarda
     path: mansarda
     cards:
-
       - type: vertical-stack
         cards:
           - type: entities
