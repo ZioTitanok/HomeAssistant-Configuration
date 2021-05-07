@@ -236,11 +236,11 @@ views:
                   entity: light.0x000b57fffe4baa6e_light
                   name: Interno
                   
-          - type: entities
-            entities: 
-              - entity: switch.ciabatta_1_mss425f_main_channel
-                name: Albero Natalizio
-                icon: mdi:pine-tree              
+#          - type: entities
+#            entities: 
+#              - entity: switch.ciabatta_1_mss425f_main_channel
+#                name: Albero Natalizio
+#                icon: mdi:pine-tree              
 
           - type: entities
             show_header_toggle: false
@@ -323,10 +323,7 @@ views:
           - type: custom:simple-thermostat
             entity: climate.loft
             step_layout: row
-            icon: false
-            name: false
-            control:
-              _headings: false
+            header: false
             sensors:
               - entity: sensor.0x00158d000346487a_humidity
                 name: Umidità (S)
@@ -402,10 +399,7 @@ views:
           - type: custom:simple-thermostat
             entity: climate.main
             step_layout: row
-            icon: false
-            name: false
-            control:
-              _headings: false
+            header: false
             sensors:
               - entity: sensor.0x00158d0003cd2888_humidity
                 name: Umidità  
@@ -544,17 +538,6 @@ views:
         camera_image: camera.ender3pro
 #        camera_view: live
 
-      - type: glance
-        entities:
-        - entity: sensor.epson_wf_2530_series_black_ink
-          name: Nero
-        - entity: sensor.epson_wf_2530_series_cyan_ink
-          name: Ciano
-        - entity: sensor.epson_wf_2530_series_magenta_ink
-          name: Magenta
-        - entity: sensor.epson_wf_2530_series_yellow_ink
-          name: Giallo
-
 # System
   - title: Sistema
     path: sistema
@@ -577,7 +560,7 @@ views:
 
           - type: entities
             entities:
-              - entity: sensor.cert_expiry_ziotitanok_duckdns_org
+              - entity: sensor.cert_expiry_timestamp_home_ziotitanok_duckdns_org
                 name: SLL Expiry
                 icon: mdi:timer-sand
               - entity: sensor.pi_zigbee2mqtt
@@ -595,12 +578,7 @@ views:
               - entity: binary_sensor.rm_mini
           
       - type: vertical-stack
-        cards:
-
-          - type: entities
-            entities:
-              - entity: script.speedtest_manual
-                icon: mdi:speedometer         
+        cards:  
 
           - type: custom:mini-graph-card
             name: Speed (7G)
@@ -636,42 +614,6 @@ views:
               show_points: false
               show_legend: false
               y_axis: secondary
-            show:
-              labels: true
-              labels_secondary: true
-
-      - type: vertical-stack
-        cards:
-          - type: custom:mini-graph-card
-            name: Temperatura Shelly (24h)
-            line_width: 3
-            points_per_hour: 5
-            entities:
-              - entity: sensor.loft_aircooler_temperature
-                name: Shelly (Aircooler)
-              - entity: sensor.main_entrance_and_kitchen_temperature
-                name: Shelly (Entrance&Kitchen)
-              - entity: sensor.main_bedroom_and_living_main_temperature
-                name: Shelly (Bedroom&Living)
-              - entity: sensor.main_living_auxiliary_temperature
-                name: Shelly (Aba)
-            show:
-              labels: true
-
-          - type: custom:mini-graph-card
-            name: Livello Addolcitore (7g)
-            hours_to_show: 168
-            line_width: 3
-            points_per_hour: 1
-            entities:
-              - entity: sensor.main_softener
-                name: Livello Sale
-              - entity: input_number.night
-                color: gray
-                show_line: false
-                show_points: false
-                show_legend: false
-                y_axis: secondary
             show:
               labels: true
               labels_secondary: true
@@ -741,4 +683,38 @@ views:
               labels: true
               fill: false
 
+      - type: vertical-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperatura Shelly (24h)
+            line_width: 3
+            points_per_hour: 5
+            entities:
+              - entity: sensor.loft_aircooler_temperature
+                name: Shelly (Aircooler)
+              - entity: sensor.main_entrance_and_kitchen_temperature
+                name: Shelly (Entrance&Kitchen)
+              - entity: sensor.main_bedroom_and_living_main_temperature
+                name: Shelly (Bedroom&Living)
+              - entity: sensor.main_living_auxiliary_temperature
+                name: Shelly (Aba)
+            show:
+              labels: true
 
+          - type: custom:mini-graph-card
+            name: Livello Addolcitore (7g)
+            hours_to_show: 168
+            line_width: 3
+            points_per_hour: 1
+            entities:
+              - entity: sensor.main_softener
+                name: Livello Sale
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true

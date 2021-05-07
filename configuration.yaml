@@ -95,7 +95,7 @@ ffmpeg:
 
 camera:
   - platform: mjpeg
-    mjpeg_url: 'http://192.168.1.215:8083/video.mjpg'
+    mjpeg_url: 'http://192.168.1.60:8083/video.mjpg'
     name: ender3pro
 
 # Weather

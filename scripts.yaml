@@ -1,11 +1,5 @@
 # Scripts
 
-# Speedtest Manual
-speedtest_manual:
-  alias: Speedtest Manuale
-  sequence:
-  - service: speedtestdotnet.speedtest
-
 # Onvif
 yi_up:
   sequence:
