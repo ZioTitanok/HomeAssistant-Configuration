@@ -1,27 +1,27 @@
 # Sensor: MiiFlora
 
 # Big Bonsai
-- platform: miflora
-  mac: 'C4:7C:8D:67:63:F4'
-  name: flora1
-  force_update: true
-  median: 3
-  monitored_conditions:
-    - moisture
-    - light
-    - temperature
-    - conductivity
-    - battery
+#- platform: miflora
+#  mac: 'C4:7C:8D:67:63:F4'
+#  name: flora1
+#  force_update: true
+#  median: 3
+#  monitored_conditions:
+#    - moisture
+#    - light
+#    - temperature
+#    - conductivity
+#    - battery
 
 # Small Bonsai
-- platform: miflora
-  mac: 'C4:7C:8D:67:4F:67'
-  name: flora2
-  force_update: true
-  median: 3
-  monitored_conditions:
-    - moisture
-    - light
-    - temperature
-    - conductivity
-    - battery
+#- platform: miflora
+#  mac: 'C4:7C:8D:67:4F:67'
+#  name: flora2
+#  force_update: true
+#  median: 3
+#  monitored_conditions:
+#    - moisture
+#    - light
+#    - temperature
+#    - conductivity
+#    - battery

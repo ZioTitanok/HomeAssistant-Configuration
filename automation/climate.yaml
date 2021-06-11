@@ -37,8 +37,8 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.loft
-        temperature: 19.5
-        # Estiva: 25.5
+        temperature: 25.5
+        # Invernale: 19.5
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Climate Loft"
@@ -55,15 +55,15 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.loft
-        temperature: 18
-        # Estivo 26
+        temperature: 26
+        # Invernale 18
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Climate Loft"
         message: "Temperatura notte (18°C) entrata in vigore!"
         data:
           tag: Termostato_Loft
-
+          
 # Climate Main Set-Point
 - alias: main_climate_setpoint_night
   initial_state: on

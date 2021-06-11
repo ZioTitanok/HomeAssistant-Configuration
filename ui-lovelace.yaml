@@ -506,28 +506,28 @@ views:
               - switch.main_gate
 
               
-      - type: picture-glance
-        title: Yi Camera
-        camera_image: camera.yicamera_profile_1
+#      - type: picture-glance
+#        title: Yi Camera
+#        camera_image: camera.yicamera_profile_1
 #        camera_view: live
-        entities:
-          - entity: binary_sensor.pir_yi
-          - entity: script.yi_left
-            icon: mdi:arrow-left-circle
-            tap_action:
-              action: toggle
-          - entity: script.yi_right
-            icon: mdi:arrow-right-circle
-            tap_action:
-              action: toggle
-          - entity: script.yi_up
-            icon: mdi:arrow-up-circle
-            tap_action:
-              action: toggle
-          - entity: script.yi_down
-            icon: mdi:arrow-down-circle
-            tap_action:
-              action: toggle
+#        entities:
+#          - entity: binary_sensor.pir_yi
+#          - entity: script.yi_left
+#            icon: mdi:arrow-left-circle
+#            tap_action:
+#              action: toggle
+#          - entity: script.yi_right
+#            icon: mdi:arrow-right-circle
+#            tap_action:
+#              action: toggle
+#          - entity: script.yi_up
+#            icon: mdi:arrow-up-circle
+#            tap_action:
+#              action: toggle
+#          - entity: script.yi_down
+#            icon: mdi:arrow-down-circle
+#            tap_action:
+#              action: toggle
 
       - type: media-control
         entity: media_player.tavern

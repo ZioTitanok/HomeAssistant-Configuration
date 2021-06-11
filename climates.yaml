@@ -3,14 +3,16 @@
 # Climate Loft
 - platform: generic_thermostat
   name: loft
-  heater: switch.loft_thermostat
+  heater: switch.mitsubishi
+  # Invernale switch.loft_thermostat
   target_sensor: sensor.loft_relevant_temperature
   min_temp: 16
   max_temp: 32
-  target_temp: 19.5
+  target_temp: 25.5
+  # Estivo 19.2
   cold_tolerance: 0.2
   hot_tolerance: 0.1
-  ac_mode: false
+  ac_mode: true
   precision: 0.1
 
 # Climate Main
