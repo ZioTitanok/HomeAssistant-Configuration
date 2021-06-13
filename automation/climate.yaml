@@ -73,11 +73,11 @@
       to: 'on'
   action:
     - delay:
-        seconds: 10
+        seconds: 5
     - service: homeassistant.turn_on
       entity_id: switch.mitsubishi
     - delay:
-        seconds: 15
+        seconds: 5
     - service: homeassistant.turn_on
       entity_id: switch.mitsubishi    
 
@@ -89,11 +89,11 @@
       to: 'off'
   action:
     - delay:
-        seconds: 10
+        seconds: 5
     - service: homeassistant.turn_off
       entity_id: switch.mitsubishi
     - delay:
-        seconds: 15
+        seconds: 5
     - service: homeassistant.turn_off
       entity_id: switch.mitsubishi    
 
