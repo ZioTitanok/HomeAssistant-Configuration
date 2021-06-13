@@ -42,7 +42,7 @@
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Climate Loft"
-        message: "Temperatura giorno (19.5°C) in vigore!"
+        message: "Temperatura giorno (25.5°C) in vigore!"
         data:
           tag: Termostato_Loft
 
@@ -60,10 +60,43 @@
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Climate Loft"
-        message: "Temperatura notte (18°C) entrata in vigore!"
+        message: "Temperatura notte (26°C) entrata in vigore!"
         data:
           tag: Termostato_Loft
-          
+
+# Climate Loft Cooler Check
+- alias: loft_climate_cooler_check_on
+  initial_state: on
+  trigger:
+    - platform: state
+      entity_id: switch.mitsubishi
+      to: 'on'
+  action:
+    - delay:
+        seconds: 10
+    - service: homeassistant.turn_on
+      entity_id: switch.mitsubishi
+    - delay:
+        seconds: 15
+    - service: homeassistant.turn_on
+      entity_id: switch.mitsubishi    
+
+- alias: loft_climate_cooler_check_off
+  initial_state: on
+  trigger:
+    - platform: state
+      entity_id: switch.mitsubishi
+      to: 'off'
+  action:
+    - delay:
+        seconds: 10
+    - service: homeassistant.turn_off
+      entity_id: switch.mitsubishi
+    - delay:
+        seconds: 15
+    - service: homeassistant.turn_off
+      entity_id: switch.mitsubishi    
+
 # Climate Main Set-Point
 - alias: main_climate_setpoint_night
   initial_state: on
