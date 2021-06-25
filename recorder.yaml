@@ -36,6 +36,7 @@ include:
     - input_datetime.loft_auxiliary_off
     - input_number.night
     - input_number.radio_volume
+    - vacuum.roomba
     - sun.sun
   entity_globs:
     - binary_sensor.*_occupancy

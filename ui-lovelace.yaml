@@ -370,7 +370,19 @@ views:
           - type: plant-status
             name: Piccolo
             entity: plant.piccolo
-              
+
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - vacuum.roomba
+          - type: entities
+            entities:
+              - entity: sensor.roomba_battery_level
+                name: Batteria Roomba
+              - entity: binary_sensor.roomba_bin_full
+                name: Serbatoio Roomba
+
       - type: vertical-stack
         cards:
           - type: entities

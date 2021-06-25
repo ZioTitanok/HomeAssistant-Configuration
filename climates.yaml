@@ -9,10 +9,10 @@
   # Invernale sensor.loft_relevant_temperature
   min_temp: 16
   max_temp: 35
-  target_temp: 25.5
+  target_temp: 26
   # Estivo 19.5
   cold_tolerance: 0.2
-  hot_tolerance: 0.2
+  hot_tolerance: 0.1
   ac_mode: true
   precision: 0.1
 
