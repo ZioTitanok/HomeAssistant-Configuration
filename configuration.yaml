@@ -38,6 +38,12 @@ updater:
 wake_on_lan:
 webhook:
 
+# Http
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+
 # Split Config 1
 recorder: !include recorder.yaml 
 history:

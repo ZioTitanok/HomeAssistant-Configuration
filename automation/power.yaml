@@ -1,7 +1,7 @@
 # Automation: House Main Power Control
 
 # Check Over Power
-- alias: home_power_check
+- alias: home_power_check_5s
   initial_state: on
   trigger:
     - platform: numeric_state
@@ -12,6 +12,25 @@
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Check Potenza"
-        message: "E' stata superata la soglia dei 3kW!"
+        message: "E' stata superata la soglia dei 3kW per 5s!"
         data:
           tag: Power
+
+- alias: home_power_check_100s
+  initial_state: on
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.home_power
+      above: 3000
+      for: "00:01:00"
+  action:
+    - service: notify.mobile_app_samsung_s7e
+      data:
+        title: "Check Potenza"
+        message: "E' stata superata la soglia dei 3kW per 100s!"
+        data:
+          tag: Power
+    - service: tts.google_say
+      entity_id: media_player.loft
+      data:
+        message: "Superata la soglia di 3 kilowatt per 100 secondi!"

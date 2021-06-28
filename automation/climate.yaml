@@ -55,12 +55,12 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.loft
-        temperature: 26.5
+        temperature: 26
         # Invernale 18
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Climate Loft"
-        message: "Temperatura notte (26.5°C) entrata in vigore!"
+        message: "Temperatura notte (26°C) entrata in vigore!"
         data:
           tag: Termostato_Loft
 
