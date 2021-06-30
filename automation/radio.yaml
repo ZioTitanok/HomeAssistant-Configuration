@@ -2,7 +2,7 @@
 
 # Radio Play On
 - alias: radio_on
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: state
       entity_id: input_boolean.radio_activate
@@ -31,7 +31,7 @@
 
 # Radio Play Off
 - alias: radio_off
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: state
       entity_id: input_boolean.radio_activate
@@ -47,7 +47,7 @@
 
 # Radio Volume
 - alias: radio_volume
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: state
       entity_id: input_number.radio_volume

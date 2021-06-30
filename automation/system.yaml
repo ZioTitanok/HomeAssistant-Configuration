@@ -20,7 +20,7 @@
 
 # Google Assistant Sync
 - alias: pi_google_sync
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: homeassistant
       event: start
@@ -31,7 +31,7 @@
 
 # Day/Night Graph Cicle
 - alias: pi_night
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: sun
       event: sunset
@@ -40,8 +40,9 @@
       data:
         entity_id: input_number.night
         value: 1
+
 - alias: pi_day
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: sun
       event: sunrise

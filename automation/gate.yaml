@@ -2,7 +2,7 @@
 
 # Pulse Auto-Off
 - alias: main_gate_management
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: state
       entity_id: switch.main_gate
@@ -21,7 +21,7 @@
 
 # Gate Tag NFC
 - alias: main_gate_nfc
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: tag
       tag_id: 9ffc6d16-fc01-49ef-adfc-b8980973d00c

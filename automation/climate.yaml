@@ -2,7 +2,7 @@
 
 # External vs Loft Temperature
 - alias: loft_climate_deltapositive
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: template
       value_template: "{{ states.sensor.cfr_montopoli_temperature.state|float + 2 > states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}"
@@ -15,7 +15,7 @@
           tag: temperatura
 
 - alias: loft_climate_deltanegative
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: template
       value_template: "{{ states.sensor.cfr_montopoli_temperature.state|float + 2 < states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}"
@@ -29,7 +29,7 @@
 
 # Climate Loft Set-Point
 - alias: loft_climate_setpoint_day
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: time
       at: '07:00:00'
@@ -47,7 +47,7 @@
           tag: Termostato_Loft
 
 - alias: loft_climate_setpoint_night
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: time
       at: '23:30:00'
@@ -66,7 +66,7 @@
 
 # Climate Loft Cooler Check
 - alias: loft_climate_cooler_check_on
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: state
       entity_id: switch.mitsubishi
@@ -99,7 +99,7 @@
 
 # Climate Main Set-Point
 - alias: main_climate_setpoint_night
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: time
       at: '23:30:00'

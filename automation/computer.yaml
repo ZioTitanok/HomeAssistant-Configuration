@@ -2,7 +2,7 @@
 
 # K4 Online
 - alias: k4_online
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: state
       entity_id: binary_sensor.k4  
@@ -21,7 +21,7 @@
 
 # K9 Online
 - alias: k9_online
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: state
       entity_id: binary_sensor.k9 

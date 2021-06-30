@@ -2,7 +2,7 @@
 
 # Check Over Power
 - alias: home_power_check_5s
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: numeric_state
       entity_id: sensor.home_power
@@ -17,7 +17,7 @@
           tag: Power
 
 - alias: home_power_check_100s
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: numeric_state
       entity_id: sensor.home_power

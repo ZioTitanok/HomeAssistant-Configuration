@@ -2,7 +2,7 @@
 
 # Discoball On
 - alias: loft_studio_discoball_on
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: state
       entity_id: input_boolean.loft_discoball_activate
@@ -29,7 +29,7 @@
 
 # Discoball Off
 - alias: loft_studio_discoball_off
-  initial_state: on
+  initial_state: true
   trigger:
     - platform: state
       entity_id: input_boolean.loft_discoball_activate
