@@ -5,8 +5,7 @@
   name: loft
   heater: switch.mitsubishi
   # Invernale switch.loft_thermostat
-  target_sensor: sensor.0x00158d000346487a_temperature
-  # Invernale sensor.loft_relevant_temperature
+  target_sensor: sensor.loft_relevant_temperature
   min_temp: 16
   max_temp: 35
   target_temp: 26

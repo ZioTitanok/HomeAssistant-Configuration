@@ -33,6 +33,20 @@
 # Loft Relevant Temperature
 - platform: template
   sensors:
+    cfr_esterno_deltatemperature:
+      unit_of_measurement: "°C"
+      icon_template: mdi:thermometer
+      value_template: > 
+        {{ (states.sensor.cfr_montopoli_temperature.state|float - states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float)|round(2) }}
+    cfr_esterno_deltahumidity:
+      unit_of_measurement: "%"
+      icon_template: mid:water-percent
+      value_template: >
+        {{ (states.sensor.cfr_montopoli_humidity.state|float - states.sensor['0x00158d00041e2833_humidity'].attributes.humidity|float)|round(2) }}
+
+# Loft Relevant Temperature
+- platform: template
+  sensors:
     loft_relevant_temperature:
       unit_of_measurement: "°C"
       value_template: >

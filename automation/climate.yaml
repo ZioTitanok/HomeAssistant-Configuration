@@ -5,7 +5,7 @@
   initial_state: true
   trigger:
     - platform: template
-      value_template: "{{ states.sensor.cfr_montopoli_temperature.state|float + 2 > states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}"
+      value_template: "{{ states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float + 2 > states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}"
   action:
     - service: notify.mobile_app_samsung_s7e
       data:
@@ -18,7 +18,7 @@
   initial_state: true
   trigger:
     - platform: template
-      value_template: "{{ states.sensor.cfr_montopoli_temperature.state|float + 2 < states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}"
+      value_template: "{{ states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float + 2 < states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}"
   action:
     - service: notify.mobile_app_samsung_s7e
       data:
