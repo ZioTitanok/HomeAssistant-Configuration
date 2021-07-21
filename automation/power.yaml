@@ -7,12 +7,12 @@
     - platform: numeric_state
       entity_id: sensor.home_power
       above: 3000
-      for: "00:00:05"
+      for: "00:00:15"
   action:
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Check Potenza"
-        message: "E' stata superata la soglia dei 3kW per 5s!"
+        message: "E' stata superata la soglia dei 3kW per 15s!"
         data:
           tag: Power
 
@@ -21,16 +21,20 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.home_power
-      above: 3000
-      for: "00:01:00"
+      above: 3300
+      for: "00:01:30"
   action:
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Check Potenza"
-        message: "E' stata superata la soglia dei 3kW per 100s!"
+        message: "E' stata superata la soglia dei 3.3kW per 90s!"
         data:
           tag: Power
     - service: tts.google_say
       entity_id: media_player.loft
       data:
-        message: "Superata la soglia di 3 kilowatt per 100 secondi!"
+        message: "Superata la soglia di 3.3 kilowatt per 90 secondi!"
+    - service: tts.google_say
+      entity_id: media_player.main
+      data:
+        message: "Superata la soglia di 3.3 kilowatt per 90 secondi!"
