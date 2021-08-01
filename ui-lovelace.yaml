@@ -241,10 +241,30 @@ views:
                   name: Interno
                   
           - type: entities
-            entities: 
-              - entity: switch.ciabatta_mss425f_main_channel
-                name: Ciabatta
-                icon: mdi:power-plug     
+            show_header_toggle: false
+            entities:
+              - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet
+                type: custom:multiple-entity-row
+                toggle: true
+                name: Prese
+                state_header: Ciabatta
+                icon: mdi:power-plug
+                entities:
+                  - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_2
+                    toggle: true
+                    name: 1
+                  - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_3
+                    toggle: true
+                    name: 2
+                  - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_4
+                    toggle: true
+                    name: 3
+                  - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_5
+                    toggle: true
+                    name: 4    
+                  - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_6
+                    toggle: true
+                    name: USB    
 
           - type: entities
             show_header_toggle: false
