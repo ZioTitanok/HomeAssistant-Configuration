@@ -243,11 +243,11 @@ views:
           - type: entities
             show_header_toggle: false
             entities:
-              - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet
+              - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_6
                 type: custom:multiple-entity-row
                 toggle: true
-                name: Prese
-                state_header: Ciabatta
+                name: Ciabatta
+                state_header: USB
                 icon: mdi:power-plug
                 entities:
                   - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_2
@@ -261,10 +261,7 @@ views:
                     name: 3
                   - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_5
                     toggle: true
-                    name: 4    
-                  - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_6
-                    toggle: true
-                    name: USB    
+                    name: 4   
 
           - type: entities
             show_header_toggle: false
