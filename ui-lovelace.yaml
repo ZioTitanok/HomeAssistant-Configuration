@@ -365,6 +365,11 @@ views:
                   - entity: sensor.loft_aircooler_power
                     name: false
 
+          - type: entities
+            entities:
+              - entity: sensor.vindriktning_d4049c_pm_2_5
+                name: PM 2.5
+
           - type: custom:mini-graph-card
             name: Temperatura (24h)
             hours_to_show: 24
@@ -388,7 +393,7 @@ views:
             show:
               labels: true
               labels_secondary: true
-          
+
           - type: plant-status
             name: Grande
             entity: plant.grande
@@ -524,10 +529,11 @@ views:
           - type: gauge
             entity: sensor.main_softener_percentage
             name: Addolcitore
+            needle: true
             severity:
-              green: 60
-              yellow: 40
-              red: 20
+              green: 40
+              yellow: 20
+              red: 0
 
       - type: media-control
         entity: media_player.main
