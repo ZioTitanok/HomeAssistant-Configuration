@@ -23,21 +23,25 @@ zone:
 # Basic Functionality
 #cloud:
 config:
-conversation:
-dhcp:
-discovery:
+counter:
+#dhcp:
+energy:
 frontend:
 image:
 map:
 media_source:
 mobile_app:
+my:
 person:
-shopping_list:
 ssdp:
+#stream:
 system_health:
+tag:
+timer:
 updater:
-wake_on_lan:
+usb:
 webhook:
+zeroconf:
 
 # Http
 http:
@@ -58,6 +62,17 @@ script: !include scripts.yaml
 switch: !include_dir_merge_list switch
 group: 
 scene:
+
+# Utility Meter
+utility_meter:
+  home_consumption_daily:
+    source: sensor.home_consumption
+    name: Consumo Casa Giornaliero
+    cycle: daily
+  home_consumption_monthly:
+    source: sensor.home_consumption
+    name: Consumo Casa Mensile
+    cycle: monthly
 
 # Interface
 lovelace:

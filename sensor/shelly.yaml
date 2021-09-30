@@ -83,6 +83,11 @@
       unit_of_measurement: "W"
       value_template: >
         {{ (states("sensor.loft_and_main_power")|float + states("sensor.tavern_and_garage_power")|float) | round(2) }}
+- platform: integration
+  source: sensor.home_power
+  name: home_consumption
+  unit_prefix: k
+  round: 2
 - platform: mqtt
   name: home_voltage
   state_topic: "shellies/shellyem-B9E2A0/emeter/0/voltage"
