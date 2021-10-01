@@ -1,9 +1,13 @@
-2021-09-30 22:30:49 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration cfr which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-09-30 22:30:49 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration meross_lan which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-09-30 22:30:49 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration ingv_centro_nazionale_terremoti which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-09-30 22:30:49 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-09-30 22:31:06 ERROR (Thread-7) [custom_components.cfr.sensor] Error parsing data from url http://www.cfr.toscana.it/monitoraggio/dettaglio.php?id=TOS11000046&type=igro&1633033866.2439363 (station:TOS11000046  dataType:igro)
-2021-09-30 22:31:12 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{ (states.sensor.cfr_montopoli_temperature.state|float - states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float)|round(2) }}")
+2021-10-01 10:37:36 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration meross_lan which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-01 10:37:36 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration cfr which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-01 10:37:36 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-01 10:37:36 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration ingv_centro_nazionale_terremoti which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-01 10:37:51 WARNING (MainThread) [homeassistant.setup] Setup of input_number is taking over 10 seconds.
+2021-10-01 10:37:51 WARNING (MainThread) [homeassistant.setup] Setup of input_boolean is taking over 10 seconds.
+2021-10-01 10:37:51 WARNING (MainThread) [homeassistant.setup] Setup of zone is taking over 10 seconds.
+2021-10-01 10:37:51 WARNING (MainThread) [homeassistant.setup] Setup of input_select is taking over 10 seconds.
+2021-10-01 10:37:51 WARNING (MainThread) [homeassistant.setup] Setup of input_datetime is taking over 10 seconds.
+2021-10-01 10:38:01 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{ (states.sensor.cfr_montopoli_temperature.state|float - states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float)|round(2) }}")
 Traceback (most recent call last):
   File "/srv/homeassistant/lib/python3.8/site-packages/homeassistant/helpers/template.py", line 394, in async_render
     render_result = _render_with_context(self.template, compiled, **kwargs)
@@ -26,8 +30,8 @@ Traceback (most recent call last):
   File "/srv/homeassistant/lib/python3.8/site-packages/homeassistant/helpers/template.py", line 396, in async_render
     raise TemplateError(err) from err
 homeassistant.exceptions.TemplateError: UndefinedError: 'mappingproxy object' has no attribute 'temperature'
-2021-09-30 22:31:13 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('UndefinedError: 'mappingproxy object' has no attribute 'temperature'') while processing template 'Template("{{ (states.sensor.cfr_montopoli_temperature.state|float - states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float)|round(2) }}")' for attribute '_attr_native_value' in entity 'sensor.cfr_esterno_deltatemperature'
-2021-09-30 22:31:13 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{ (states.sensor.cfr_montopoli_humidity.state|float - states.sensor['0x00158d00041e2833_humidity'].attributes.humidity|float)|round(2) }}")
+2021-10-01 10:38:01 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('UndefinedError: 'mappingproxy object' has no attribute 'temperature'') while processing template 'Template("{{ (states.sensor.cfr_montopoli_temperature.state|float - states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float)|round(2) }}")' for attribute '_attr_native_value' in entity 'sensor.cfr_esterno_deltatemperature'
+2021-10-01 10:38:01 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{ (states.sensor.cfr_montopoli_humidity.state|float - states.sensor['0x00158d00041e2833_humidity'].attributes.humidity|float)|round(2) }}")
 Traceback (most recent call last):
   File "/srv/homeassistant/lib/python3.8/site-packages/homeassistant/helpers/template.py", line 394, in async_render
     render_result = _render_with_context(self.template, compiled, **kwargs)
@@ -50,12 +54,12 @@ Traceback (most recent call last):
   File "/srv/homeassistant/lib/python3.8/site-packages/homeassistant/helpers/template.py", line 396, in async_render
     raise TemplateError(err) from err
 homeassistant.exceptions.TemplateError: UndefinedError: 'mappingproxy object' has no attribute 'humidity'
-2021-09-30 22:31:13 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('UndefinedError: 'mappingproxy object' has no attribute 'humidity'') while processing template 'Template("{{ (states.sensor.cfr_montopoli_humidity.state|float - states.sensor['0x00158d00041e2833_humidity'].attributes.humidity|float)|round(2) }}")' for attribute '_attr_native_value' in entity 'sensor.cfr_esterno_deltahumidity'
-2021-09-30 22:31:13 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'mappingproxy object' has no attribute 'temperature' when rendering '{% if 8 <= strptime(states('sensor.time'), "%H:%M").hour < 23 %} {{states.sensor['0x00158d000346487a_temperature'].attributes.temperature}} {% else %} {{states.sensor['0x00158d0004183f08_temperature'].attributes.temperature}} {% endif %}'
-2021-09-30 22:31:13 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'mappingproxy object' has no attribute 'temperature' when rendering '{% if 8 <= strptime(states('sensor.time'), "%H:%M").hour < 23 %} {{states.sensor['0x00158d000346487a_temperature'].attributes.temperature}} {% else %} {{states.sensor['0x00158d0004183f08_temperature'].attributes.temperature}} {% endif %}'
-2021-09-30 22:31:13 ERROR (MainThread) [homeassistant.components.generic_thermostat.climate] Unable to update from sensor: could not convert string to float: ''
-2021-09-30 22:31:13 WARNING (MainThread) [homeassistant.components.template.trigger] Error initializing 'template' trigger for 'loft_climate_deltapositive': UndefinedError: 'mappingproxy object' has no attribute 'temperature'
-2021-09-30 22:31:13 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{ states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float + 2 > states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}")
+2021-10-01 10:38:01 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('UndefinedError: 'mappingproxy object' has no attribute 'humidity'') while processing template 'Template("{{ (states.sensor.cfr_montopoli_humidity.state|float - states.sensor['0x00158d00041e2833_humidity'].attributes.humidity|float)|round(2) }}")' for attribute '_attr_native_value' in entity 'sensor.cfr_esterno_deltahumidity'
+2021-10-01 10:38:01 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'mappingproxy object' has no attribute 'temperature' when rendering '{% if 8 <= strptime(states('sensor.time'), "%H:%M").hour < 23 %} {{states.sensor['0x00158d000346487a_temperature'].attributes.temperature}} {% else %} {{states.sensor['0x00158d0004183f08_temperature'].attributes.temperature}} {% endif %}'
+2021-10-01 10:38:01 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'mappingproxy object' has no attribute 'temperature' when rendering '{% if 8 <= strptime(states('sensor.time'), "%H:%M").hour < 23 %} {{states.sensor['0x00158d000346487a_temperature'].attributes.temperature}} {% else %} {{states.sensor['0x00158d0004183f08_temperature'].attributes.temperature}} {% endif %}'
+2021-10-01 10:38:01 ERROR (MainThread) [homeassistant.components.generic_thermostat.climate] Unable to update from sensor: could not convert string to float: ''
+2021-10-01 10:38:01 WARNING (MainThread) [homeassistant.components.template.trigger] Error initializing 'template' trigger for 'loft_climate_deltapositive': UndefinedError: 'mappingproxy object' has no attribute 'temperature'
+2021-10-01 10:38:01 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{ states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float + 2 > states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}")
 Traceback (most recent call last):
   File "/srv/homeassistant/lib/python3.8/site-packages/homeassistant/helpers/template.py", line 394, in async_render
     render_result = _render_with_context(self.template, compiled, **kwargs)
@@ -78,8 +82,8 @@ Traceback (most recent call last):
   File "/srv/homeassistant/lib/python3.8/site-packages/homeassistant/helpers/template.py", line 396, in async_render
     raise TemplateError(err) from err
 homeassistant.exceptions.TemplateError: UndefinedError: 'mappingproxy object' has no attribute 'temperature'
-2021-09-30 22:31:13 WARNING (MainThread) [homeassistant.components.template.trigger] Error initializing 'template' trigger for 'loft_climate_deltanegative': UndefinedError: 'mappingproxy object' has no attribute 'temperature'
-2021-09-30 22:31:13 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{ states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float + 2 < states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}")
+2021-10-01 10:38:01 WARNING (MainThread) [homeassistant.components.template.trigger] Error initializing 'template' trigger for 'loft_climate_deltanegative': UndefinedError: 'mappingproxy object' has no attribute 'temperature'
+2021-10-01 10:38:01 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{ states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float + 2 < states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}")
 Traceback (most recent call last):
   File "/srv/homeassistant/lib/python3.8/site-packages/homeassistant/helpers/template.py", line 394, in async_render
     render_result = _render_with_context(self.template, compiled, **kwargs)
@@ -102,6 +106,6 @@ Traceback (most recent call last):
   File "/srv/homeassistant/lib/python3.8/site-packages/homeassistant/helpers/template.py", line 396, in async_render
     raise TemplateError(err) from err
 homeassistant.exceptions.TemplateError: UndefinedError: 'mappingproxy object' has no attribute 'temperature'
-2021-09-30 22:31:13 WARNING (MainThread) [homeassistant.components.template.trigger] Error evaluating 'template' trigger for 'loft_climate_deltapositive': UndefinedError: 'mappingproxy object' has no attribute 'temperature'
-2021-09-30 22:31:13 WARNING (MainThread) [homeassistant.components.template.trigger] Error evaluating 'template' trigger for 'loft_climate_deltanegative': UndefinedError: 'mappingproxy object' has no attribute 'temperature'
-2021-09-30 22:31:17 ERROR (MainThread) [homeassistant.components.google_assistant.http] Request for https://homegraph.googleapis.com/v1/devices:requestSync failed: 429
+2021-10-01 10:38:01 WARNING (MainThread) [homeassistant.components.template.trigger] Error evaluating 'template' trigger for 'loft_climate_deltapositive': UndefinedError: 'mappingproxy object' has no attribute 'temperature'
+2021-10-01 10:38:01 WARNING (MainThread) [homeassistant.components.template.trigger] Error evaluating 'template' trigger for 'loft_climate_deltanegative': UndefinedError: 'mappingproxy object' has no attribute 'temperature'
+2021-10-01 10:38:04 ERROR (MainThread) [homeassistant.components.google_assistant.http] Request for https://homegraph.googleapis.com/v1/devices:requestSync failed: 429

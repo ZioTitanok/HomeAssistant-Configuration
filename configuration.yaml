@@ -73,6 +73,22 @@ utility_meter:
     source: sensor.home_consumption
     name: Consumo Casa Mensile
     cycle: monthly
+  tavern_and_garage_consumption_daily:
+    source: sensor.tavern_and_garage_consumption
+    name: Consumo Taverna&Garage Giornaliero
+    cycle: daily
+  tavern_and_garage_consumption_monthly:
+    source: sensor.tavern_and_garage_consumption
+    name: Consumo Taverna&Garage Mensile
+    cycle: monthly
+  loft_and_main_consumption_daily:
+    source: sensor.loft_and_main_consumption
+    name: Consumo Loft&Main Giornaliero
+    cycle: daily
+  loft_and_main_consumption_monthly:
+    source: sensor.loft_and_main_consumption
+    name: Consumo Loft&Main Mensile
+    cycle: monthly
 
 # Interface
 lovelace:
