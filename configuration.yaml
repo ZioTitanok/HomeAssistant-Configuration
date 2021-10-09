@@ -110,10 +110,6 @@ panel_iframe:
     title: 'Blog'
     url: !secret iframe_blog
     icon: mdi:blogger
-  octoprint:
-    title: 'Octoprint'
-    url: !secret iframe_octoprint
-    icon: mdi:printer-3d-nozzle
   pihole:
     title: 'PiHole'
     url: !secret iframe_pihole
@@ -122,10 +118,6 @@ panel_iframe:
     title: 'Plex'
     url: !secret iframe_plex
     icon: mdi:plex
-  windy:
-    title: 'Windy'
-    url: !secret iframe_windy
-    icon: mdi:weather-hazy
 
 # Driver & Camera
 ffmpeg:
