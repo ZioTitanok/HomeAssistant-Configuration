@@ -27,7 +27,10 @@
         data:
           tag: temperatura
 
-# Climate Loft Set-Point
+# Climate Loft Set-Po,int
+# Season: temperature (day); temperature (night);
+# Winter: 19.5; 18
+# Summer: 26; 26
 - alias: loft_climate_setpoint_day
   initial_state: true
   trigger:
@@ -37,12 +40,11 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.loft
-        temperature: 26
-        # Invernale: 19.5
+        temperature: 19.5
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Climate Loft"
-        message: "Temperatura giorno (26°C) in vigore!"
+        message: "Temperatura giorno (19.5°C) in vigore!"
         data:
           tag: Termostato_Loft
 
@@ -55,12 +57,11 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.loft
-        temperature: 26
-        # Invernale 18
+        temperature: 18
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Climate Loft"
-        message: "Temperatura notte (26°C) entrata in vigore!"
+        message: "Temperatura notte (18°C) entrata in vigore!"
         data:
           tag: Termostato_Loft
 
@@ -108,7 +109,6 @@
       data:
         entity_id: climate.main
         temperature: 17
-        # Estivo 26
     - service: notify.mobile_app_samsung_s7e
       data:
         title: "Piattaforma Climate"
