@@ -3,29 +3,29 @@
 # Onvif
 yi_up:
   sequence:
-    - service: onvif.ptz
+    - service: yi_hack.ptz
       data:
         entity_id: camera.yi_hack_m_20fe4c_cam
-        tilt: UP
-        distance: 0.05
+        movement: up
+        travel_time: 0.1
 yi_down:
   sequence:
-    - service: onvif.ptz
+    - service: yi_hack.ptz
       data:
         entity_id: camera.yi_hack_m_20fe4c_cam
-        tilt: DOWN
-        distance: 0.05
+        movement: down
+        travel_time: 0.1
 yi_right:
   sequence:
-    - service: onvif.ptz
+    - service: yi_hack.ptz
       data:
         entity_id: camera.yi_hack_m_20fe4c_cam
-        pan: RIGHT
-        distance: 0.05
+        movement: right
+        travel_time: 0.1
 yi_left:
   sequence:
-    - service: onvif.ptz
+    - service: yi_hack.ptz
       data:
         entity_id: camera.yi_hack_m_20fe4c_cam
-        pan: LEFT
-        distance: 0.05
+        movement: left
+        travel_time: 0.1
