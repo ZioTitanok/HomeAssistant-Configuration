@@ -5,27 +5,27 @@ yi_up:
   sequence:
     - service: onvif.ptz
       data:
-        entity_id: camera.yicamera_profile_1
+        entity_id: camera.yi_hack_m_20fe4c_cam
         tilt: UP
         distance: 0.05
 yi_down:
   sequence:
     - service: onvif.ptz
       data:
-        entity_id: camera.yicamera_profile_1
+        entity_id: camera.yi_hack_m_20fe4c_cam
         tilt: DOWN
         distance: 0.05
 yi_right:
   sequence:
     - service: onvif.ptz
       data:
-        entity_id: camera.yicamera_profile_1
+        entity_id: camera.yi_hack_m_20fe4c_cam
         pan: RIGHT
         distance: 0.05
 yi_left:
   sequence:
     - service: onvif.ptz
       data:
-        entity_id: camera.yicamera_profile_1
+        entity_id: camera.yi_hack_m_20fe4c_cam
         pan: LEFT
         distance: 0.05
