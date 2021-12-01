@@ -24,7 +24,7 @@ zone:
 #cloud:
 config:
 counter:
-#dhcp:
+dhcp:
 energy:
 frontend:
 image:
@@ -137,54 +137,54 @@ geo_location:
     radius: 100
 
 # Google Assistant
-google_assistant:
-  project_id: home-assistant-f6896
-  service_account: !include homeassistant-28375056a62d.json
-  report_state: true
-  expose_by_default: false
-  entity_config:
-    switch.main_entrance:
-      name: Ingresso
-      expose: true
-    switch.main_kitchen:
-      name: Cucina
-      expose: true
-    switch.main_living_main:
-      name: Salotto
-      expose: true
-    switch.main_living_auxiliary:
-      name: Aba
-      expose: true
-    switch.main_bedroom:
-      name: Camera
-      expose: true
-    switch.loft_studio_auxiliary:
-      name: Faretti
-      expose: true
-    switch.loft_studio_main:
-      name: Studio
-      expose: true
-    switch.loft_den_main:
-      name: Tana
-      expose: true
-    switch.loft_den_auxiliary:
-      name: Cielo
-      expose: true
-    switch.loft_studio_shelf:
-      name: Scaffale
-      expose: true
-    switch.loft_studio_decoration:
-      name: DiscoBall
-      expose: true
-    switch.main_gate:
-      name: Cancello
-      expose: true
-    input_boolean.radio_activate:
-      name: Radio
-      expose: true
-    input_boolean.loft_discoball_activate:
-      name: Party
-      expose: true
+#google_assistant:
+#  project_id: home-assistant-f6896
+#  service_account: !include homeassistant-28375056a62d.json
+#  report_state: true
+#  expose_by_default: false
+#  entity_config:
+#    switch.main_entrance:
+#      name: Ingresso
+#      expose: true
+#    switch.main_kitchen:
+#      name: Cucina
+#      expose: true
+#    switch.main_living_main:
+#      name: Salotto
+#      expose: true
+#    switch.main_living_auxiliary:
+#      name: Aba
+#      expose: true
+#    switch.main_bedroom:
+#      name: Camera
+#      expose: true
+#    switch.loft_studio_auxiliary:
+#      name: Faretti
+#      expose: true
+#    switch.loft_studio_main:
+#      name: Studio
+#      expose: true
+#    switch.loft_den_main:
+#      name: Tana
+#      expose: true
+#    switch.loft_den_auxiliary:
+#      name: Cielo
+#      expose: true
+#    switch.loft_studio_shelf:
+#      name: Scaffale
+#      expose: true
+#    switch.loft_studio_decoration:
+#      name: DiscoBall
+#      expose: true
+#    switch.main_gate:
+#      name: Cancello
+#      expose: true
+#    input_boolean.radio_activate:
+#      name: Radio
+#      expose: true
+#    input_boolean.loft_discoball_activate:
+#      name: Party
+#      expose: true
 
 # TTS
 tts:

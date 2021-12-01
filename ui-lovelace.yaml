@@ -728,7 +728,7 @@ views:
             line_width: 3
             points_per_hour: 1
             entities:
-              - entity: sensor.main_softener
+              - entity: sensor.watersoftener_sr04_distance
                 name: Livello Sale
               - entity: input_number.night
                 color: gray
