@@ -1,6 +1,5 @@
-# Scripts
+# Script: Yi Camera Onvif
 
-# Onvif
 yi_up:
   sequence:
     - service: yi_hack.ptz

@@ -3,8 +3,8 @@
 title: ZioTitanok's House
 
 # Background
-background: center / cover no-repeat url("/local/image/bubbles.jpg") fixed
-#background: center / cover no-repeat url("/local/image/mondrian.jpg") fixed
+#background: center / cover no-repeat url("/local/image/bubbles.jpg") fixed
+
 resources:
   - url: /hacsfiles/weather-card/weather-card.js
     type: module
@@ -234,10 +234,10 @@ views:
               show_header_toggle: false
               entities:
                 - type: custom:slider-entity-row
-                  entity: light.0x000b57fffe48a1de_light
+                  entity: light.0x000b57fffe48a1de
                   name: Esterno
                 - type: custom:slider-entity-row
-                  entity: light.0x000b57fffe4baa6e_light
+                  entity: light.0x000b57fffe4baa6e
                   name: Interno
                   
           - type: entities
