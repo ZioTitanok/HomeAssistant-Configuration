@@ -12,7 +12,7 @@
   condition: >-
     {{((as_timestamp(utcnow())-as_timestamp(trigger.to_state.attributes.publication_date))/3600*60)|int < 60}}
   action:
-    - service: notify.mobile_app_samsung_s7e
+    - service: notify.mobile_app_s7_nico
       data:
         title: "Terremoto"
         message: >-

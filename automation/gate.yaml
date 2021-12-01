@@ -12,7 +12,7 @@
   action:
     - service: homeassistant.turn_off
       entity_id: switch.main_gate
-    - service: notify.mobile_app_samsung_s7e
+    - service: notify.mobile_app_s7_nico
       data:
         title: "Gate"
         message: "Cancello in azione!"
