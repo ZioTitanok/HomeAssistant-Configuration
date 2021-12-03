@@ -24,9 +24,9 @@
   initial_state: true
   trigger:
     - platform: tag
-      tag_id: 9ffc6d16-fc01-49ef-adfc-b8980973d00c
+      tag_id: 34236b65-3737-4d32-bc79-1b8fe4f479d7
     - platform: tag
-      tag_id: 9bed2085-1723-4250-bcdb-3467718a87d9
+      tag_id: 42799d6f-c3bf-4bb5-9b4e-b6df30fb23aa
   action:
     - service: homeassistant.turn_on
       entity_id: switch.main_gate   

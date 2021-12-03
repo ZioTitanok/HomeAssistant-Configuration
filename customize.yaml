@@ -20,11 +20,6 @@ binary_sensor.yi_camera:
 binary_sensor.pir_yi:
   icon: mdi:run
 
-# Script
-script.radio_selection:
-  friendly_name: Radio
-  icon: mdi:play
-
 # Sensor:
 sensor.recycle:
   friendly_name: 'Domani Ricicla'

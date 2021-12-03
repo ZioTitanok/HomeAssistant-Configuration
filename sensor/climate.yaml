@@ -30,7 +30,7 @@
   station: TOS01005001
   type: idro
 
-# Loft Relevant Temperature
+# Delta CFR/Sensor
 - platform: template
   sensors:
     cfr_esterno_deltatemperature:

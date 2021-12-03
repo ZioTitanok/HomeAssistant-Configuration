@@ -534,7 +534,14 @@ views:
               green: 40
               yellow: 20
               red: 0
-
+            
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: sensor.main_softener
+                name: Serbatoio
+                icon: mdi:diving-scuba-tank
+                
       - type: media-control
         entity: media_player.main
 
@@ -623,6 +630,19 @@ views:
       - type: vertical-stack
         cards:
           - type: custom:mini-graph-card
+            name: Vibration
+            hours_to_show: 168
+            line_width: 3
+            points_per_hour: 5
+            entities:
+              - entity: sensor.0x00158d0005870496_strength
+                name: Strenght
+            show:
+              labels: true
+
+      - type: vertical-stack
+        cards:
+          - type: custom:mini-graph-card
             name: Temperatura Shelly (24h)
             line_width: 3
             points_per_hour: 5
@@ -675,7 +695,6 @@ views:
             show:
               labels: true
               labels_secondary: true
-
 
 
 

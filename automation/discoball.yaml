@@ -23,7 +23,6 @@
           {% elif is_state('input_select.loft_discoball_song', 'Sofi Tukker - Batshit') %} media-source://media_source/local/sofi_tukker-batshit.mp3
           {% elif is_state('input_select.loft_discoball_song', 'Star Wars - The Imperial March') %} media-source://media_source/local/star_wars-imperial_march.mp3
           {% elif is_state('input_select.loft_discoball_song', 'The Drifters feat - White Christmas') %} media-source://media_source/local/the_drifters_feat-white_christmas.mp3
-          {% elif is_state('input_select.loft_discoball_song', 'Toscana MaremmaMaiala - Rap di Bacarello') %} media-source://media_source/local/toscana_maremmamaiala-rap_di_bacarello.mp3
           {% endif %}
         media_content_type: audio/mp3
 

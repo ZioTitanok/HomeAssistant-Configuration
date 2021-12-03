@@ -54,7 +54,7 @@ logbook:
 automation: !include_dir_merge_list automation
 climate: !include climates.yaml
 sensor: !include_dir_merge_list sensor
-script: !include_dir_merge_list script
+script: !include_dir_merge_named ./script
 switch: !include_dir_merge_list switch
 group: 
 scene:
@@ -105,7 +105,7 @@ panel_iframe:
   blog:
     title: 'Blog'
     url: !secret iframe_blog
-    icon: mdi:blogger
+    icon: mdi:post
   pihole:
     title: 'PiHole'
     url: !secret iframe_pihole
@@ -262,7 +262,6 @@ input_select:
       - Sofi Tukker - Batshit
       - Star Wars - The Imperial March
       - The Drifters feat - White Christmas
-      - Toscana MaremmaMaiala - Rap di Bacarello
 
 input_number:
   radio_volume:

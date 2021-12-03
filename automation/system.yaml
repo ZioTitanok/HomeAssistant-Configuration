@@ -18,17 +18,6 @@
       data:
         message: "Riavvio di sistema completato con successo."
 
-# Google Assistant Sync
-- alias: pi_google_sync
-  initial_state: true
-  trigger:
-    - platform: homeassistant
-      event: start
-  action:
-    - service: google_assistant.request_sync
-      data:
-        agent_user_id: 4b10acc9468e4552934a07ba4ba9d7d2
-
 # Day/Night Graph Cicle
 - alias: pi_night
   initial_state: true
