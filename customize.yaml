@@ -49,6 +49,8 @@ switch.loft_studio_shelf:
   friendly_name: 'Scaffale'
 switch.loft_studio_discoball:
   friendly_name: 'Discoball'
+switch.loft_studio_portable:
+  friendly_name: 'Albero'
 switch.main_entrance:
   friendly_name: 'Ingresso'
 switch.main_bedroom:

@@ -159,6 +159,9 @@ google_assistant:
     switch.loft_studio_main:
       name: Studio
       expose: true
+    switch.loft_studio_portable:
+      name: Albero
+      expose: true
     switch.loft_den_main:
       name: Tana
       expose: true
