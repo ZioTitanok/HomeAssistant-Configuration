@@ -64,6 +64,14 @@
   payload_on: "on"
   payload_off: "off"
 
+# Shelly1PM: Loft Studio Portable (Momentary)
+- platform: mqtt
+  name: loft_studio_portable
+  state_topic: "shellies/shelly1pm-84CCA8A855B6/relay/0"
+  command_topic: "shellies/shelly1pm-84CCA8A855B6/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+
 # Shelly2.5: Main Entrance (Momentary)
 - platform: mqtt
   name: main_entrance

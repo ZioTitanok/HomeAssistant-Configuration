@@ -16,7 +16,7 @@
   state_topic: "shellies/shellyswitch-55C39A/relay/power"
   unit_of_measurement: 'W'
 
-# Shelly2: Loft Studio Main/auxiliary (Power)
+# Shelly2: Loft Studio Main/Auxiliary (Power)
 - platform: mqtt
   name: loft_studio_main_auxiliary_power
   state_topic: "shellies/shellyswitch-55C794/relay/power"
@@ -27,6 +27,16 @@
   name: loft_studio_discoball_shelf_power
   state_topic: "shellies/shellyswitch-559384/relay/power"
   unit_of_measurement: 'W'
+
+# Shelly1PM: Loft Studio Portable (Momentary)
+- platform: mqtt
+  name: loft_studio_portable_power
+  state_topic: "shellies/shelly1pm-84CCA8A855B6/relay/0/power"
+  unit_of_measurement: 'W'
+- platform: mqtt
+  name: loft_studio_portable_temperature
+  state_topic: "shellies/shelly1pm-84CCA8A855B6/temperature"
+  unit_of_measurement: '°C'
 
 # Shelly2.5: Main Entrance & Kitchen (Power/Temperature)
 - platform: mqtt

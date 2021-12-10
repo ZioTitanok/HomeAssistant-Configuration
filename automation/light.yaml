@@ -1,6 +1,6 @@
 # Automation: Light
 
-# Shelf Auto On
+# Loft Studio Shelf Auto On
 - alias: loft_studio_shelf_on
   initial_state: true
   trigger:
@@ -11,7 +11,7 @@
     - service: homeassistant.turn_on
       entity_id: switch.loft_studio_shelf
 
-# Shelf Auto Off
+# Loft Studio Shelf Auto Off
 - alias: loft_studio_shelf_off
   initial_state: true
   trigger:
@@ -21,7 +21,27 @@
     - service: homeassistant.turn_off
       entity_id: switch.loft_studio_shelf
 
-# Little Lights Auto On
+# Loft Studio Portable Auto On
+- alias: loft_studio_portable_on
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '08:00:00'
+  action:
+    - service: homeassistant.turn_on
+      entity_id: switch.loft_studio_shelf
+
+# Loft Studio Portable Auto Off
+- alias: loft_studio_portable_off
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '23:55:00'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: switch.loft_studio_shelf
+
+# Loft Studio Auxiliary Auto On
 - alias: loft_studio_auxiliary_on
   initial_state: false
   trigger:
@@ -31,7 +51,7 @@
     - service: homeassistant.turn_on
       entity_id: switch.loft_studio_auxiliary
 
-# Little Lights Auto Off
+# Loft Studio Auxiliary Auto Off
 - alias: loft_studio_auxiliary_off
   initial_state: false
   trigger:

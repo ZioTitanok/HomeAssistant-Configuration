@@ -277,7 +277,19 @@ views:
                     name: false      
                   - entity: switch.loft_studio_discoball
                     toggle: true
+              - entity: switch.loft_studio_portable
+                type: custom:multiple-entity-row
+                toggle: true
+                name: Albero
+                state_header: Albero
+                icon: mdi:string-lights
+                entities:
+                  - entity: sensor.loft_studio_portable_power
+                    name: false      
 
+          - type: entities
+            show_header_toggle: false
+            entities:
               - entity: switch.loft_den_main
                 type: custom:multiple-entity-row
                 toggle: true
@@ -649,6 +661,8 @@ views:
             entities:
               - entity: sensor.loft_aircooler_temperature
                 name: Shelly (Aircooler)
+              - entity: sensor.loft_studio_portable_temperature
+                name: Shelly (Albero)
               - entity: sensor.main_entrance_and_kitchen_temperature
                 name: Shelly (Entrance&Kitchen)
               - entity: sensor.main_bedroom_and_living_main_temperature
