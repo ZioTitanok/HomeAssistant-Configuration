@@ -9,7 +9,7 @@
       above: 3000
       for: "00:00:15"
   action:
-    - service: mobile_app_redmi_6a
+    - service: notify.mobile_app_redmi_6a
       data:
         title: "Check Potenza"
         message: "E' stata superata la soglia dei 3kW per 15s!"
@@ -24,7 +24,7 @@
       above: 3300
       for: "00:01:30"
   action:
-    - service: mobile_app_redmi_6a
+    - service: notify.mobile_app_redmi_6a
       data:
         title: "Check Potenza"
         message: "E' stata superata la soglia dei 3.3kW per 90s!"
