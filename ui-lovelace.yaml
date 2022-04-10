@@ -1,26 +1,8 @@
-# Lovelace-UI 
-
+# Lovelace-UI
 title: ZioTitanok's House
 
-# Background
-#background: center / cover no-repeat url("/local/image/bubbles.jpg") fixed
-
-resources:
-  - url: /hacsfiles/weather-card/weather-card.js
-    type: module
-  - url: /hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js
-    type: module
-  - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
-    type: module
-  - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js
-    type: module
-  - url: /hacsfiles/simple-thermostat/simple-thermostat.js
-    type: module
-
-# Schede
 views:
-
-# Home
+  # Home
   - title: Home
     path: home
     icon: mdi:home
@@ -28,82 +10,23 @@ views:
       - type: vertical-stack
         cards:
           - type: entities
-            entities: 
+            entities:
               - entity: sensor.date
                 type: custom:multiple-entity-row
                 name: Data e Ora
                 entities:
                   - entity: sensor.time
                     name: false
-              - entity: sun.sun
-                name: Sole
-              - entity: sensor.moon
-                name: Luna
-
-          - type: entities
-            entities:
-              - switch.main_gate
-              - sensor.recycle
-              - entity: sensor.home_power
-                type: custom:multiple-entity-row
-                toggle: false
-                name: Potenze
-                state_header: Casa
-                icon: mdi:flash
-                entities:
-                  - entity: sensor.loft_and_main_power
-                  - entity: sensor.tavern_and_garage_power
-              - entity: sensor.home_voltage
-                icon: mdi:power-plug
-
-          - type: custom:mini-graph-card
-            name: Potenza (24h)
-            hours_to_show: 24
-            line_width: 3
-            points_per_hour: 5
-            icon: mdi:flash
-            entities:
-              - entity: sensor.home_power
-              - entity: sensor.loft_and_main_power
-              - entity: sensor.tavern_and_garage_power
-              - entity: input_number.night
-                color: gray
-                show_line: false
-                show_points: false
-                show_legend: false
-                y_axis: secondary
-            show:
-              labels: true
-              labels_secondary: true
-
-          - type: custom:mini-graph-card
-            name: Tensione (24h)
-            hours_to_show: 24
-            line_width: 3
-            points_per_hour: 5
-            icon: mdi:sine-wave
-            entities:
-              - entity: sensor.home_voltage
-              - entity: input_number.night
-                color: gray
-                show_line: false
-                show_points: false
-                show_legend: false
-                y_axis: secondary
-            show:
-              labels: true
-              labels_secondary: true
-              
-      - type: vertical-stack
-        cards:
           - type: custom:weather-card
             entity: weather.dark_sky
             current: true
             details: true
             forecast: true
-          - type: iframe
-            url: https://embed.windy.com/embed2.html
-            aspect_ratio: 100%
+          - type: custom:sun-card
+          - type: entities
+            entities:
+              - entity: sensor.moon
+                name: Luna
 
       - type: vertical-stack
         cards:
@@ -113,10 +36,10 @@ views:
             line_width: 3
             points_per_hour: 1
             entities:
-              - entity: sensor.cfr_montopoli_temperature
-                name: CFR
               - entity: sensor.0x00158d00041e2833_temperature
                 name: Esterno
+              - entity: sensor.cfr_montopoli_temperature
+                name: CFR
               - entity: sensor.0x00158d000346487a_temperature
                 name: Studio
               - entity: sensor.0x00158d0004183f08_temperature
@@ -132,35 +55,17 @@ views:
             show:
               labels: true
               labels_secondary: true
-          
-          - type: custom:mini-graph-card
-            name: Vento (7G)
-            hours_to_show: 168
-            line_width: 3
-            points_per_hour: 1
-            entities:
-              - entity: sensor.cfr_montopoli_wind
-                name: CFR
-              - entity: input_number.night
-                color: gray
-                show_line: false
-                show_points: false
-                show_legend: false
-                y_axis: secondary
-            show:
-              labels: true
-              labels_secondary: true
-              
+
           - type: custom:mini-graph-card
             name: Umidità (7G)
             hours_to_show: 168
             line_width: 3
             points_per_hour: 1
             entities:
-              - entity: sensor.cfr_montopoli_humidity
-                name: CFR
               - entity: sensor.0x00158d00041e2833_humidity
                 name: Esterno
+              - entity: sensor.cfr_montopoli_humidity
+                name: CFR
               - entity: sensor.0x00158d000346487a_humidity
                 name: Studio
               - entity: sensor.0x00158d0004183f08_humidity
@@ -176,58 +81,108 @@ views:
             show:
               labels: true
               labels_secondary: true
-          
+
           - type: horizontal-stack
-            cards:              
+            cards:
               - type: custom:mini-graph-card
-                name: Arno Fucecchio (7G)
+                name: Vento (7G)
                 hours_to_show: 168
                 line_width: 3
                 points_per_hour: 1
                 entities:
-                  - entity: sensor.cfr_fucecchio_idro
+                  - entity: sensor.cfr_montopoli_wind
+                    name: CFR
+                  - entity: input_number.night
+                    color: gray
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
                 show:
                   labels: true
+                  labels_secondary: true
               - type: custom:mini-graph-card
-                name: Arno Pontedera (7G)
+                name: Arno (7G)
                 hours_to_show: 168
                 line_width: 3
                 points_per_hour: 1
                 entities:
                   - entity: sensor.cfr_pontedera_idro
+                    name: Pontedera
+                  - entity: sensor.cfr_fucecchio_idro
+                    name: Fucecchio
                 show:
                   labels: true
 
+      - type: vertical-stack
+        cards:
+          - type: iframe
+            url: !secret windy_url
+            aspect_ratio: 60%
+          - type: custom:mini-graph-card
+            name: Potenza (24h)
+            hours_to_show: 24
+            line_width: 3
+            points_per_hour: 5
+            icon: mdi:flash
+            entities:
+              - entity: sensor.home_power
+              - entity: sensor.shellyem_b9e2a0_channel_1_power
+              - entity: sensor.shellyem_b9e2a0_channel_2_power
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+          - type: custom:mini-graph-card
+            name: Voltaggio (24h)
+            hours_to_show: 24
+            line_width: 3
+            points_per_hour: 5
+            icon: mdi:sine-wave
+            entities:
+              - entity: sensor.shellyem_b9e2a0_channel_1_voltage
+              - entity: sensor.shellyem_b9e2a0_channel_2_voltage
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
 
-# Loft
+  # Loft
   - title: Mansarda
     path: mansarda
     cards:
       - type: vertical-stack
         cards:
           - type: entities
-            entities: 
-              - switch.main_gate
-              - person.nico
-              
+            entities:
+              - switch.shelly1_5551cc
           - type: entities
             show_header_toggle: false
             entities:
-              - entity: switch.loft_studio_main
+              - entity: switch.shellyswitch_55c794_channel_1
                 type: custom:multiple-entity-row
                 toggle: true
                 name: Studio
                 state_header: Studio
                 icon: mdi:sofa
                 entities:
-                  - entity: sensor.loft_studio_main_auxiliary_power   
+                  - entity: sensor.shellyswitch_55c794_power
                     name: false
-                  - entity: switch.loft_studio_auxiliary
+                  - entity: switch.shellyswitch_55c794_channel_2
                     toggle: true
-                  
           - type: conditional
             conditions:
-              - entity: switch.loft_studio_main
+              - entity: switch.shellyswitch_55c794_channel_1
                 state: "on"
             card:
               type: entities
@@ -239,10 +194,30 @@ views:
                 - type: custom:slider-entity-row
                   entity: light.0x000b57fffe4baa6e
                   name: Interno
-                  
+
           - type: entities
             show_header_toggle: false
             entities:
+              - entity: switch.shellyswitch_559384_channel_2
+                type: custom:multiple-entity-row
+                toggle: true
+                name: Decorazioni
+                state_header: Scaffale
+                icon: mdi:party-popper
+                entities:
+                  - entity: sensor.shellyswitch_559384_power
+                    name: false
+                  - entity: switch.shellyswitch_559384_channel_1
+                    toggle: true
+              - entity: switch.shelly1pm_84cca8a855b6
+                type: custom:multiple-entity-row
+                toggle: true
+                name: Albero
+                state_header: Albero
+                icon: mdi:string-lights
+                entities:
+                  - entity: sensor.shelly1pm_84cca8a855b6_power
+                    name: false
               - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_6
                 type: custom:multiple-entity-row
                 toggle: true
@@ -261,45 +236,21 @@ views:
                     name: 3
                   - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_5
                     toggle: true
-                    name: 4   
+                    name: 4
 
           - type: entities
             show_header_toggle: false
             entities:
-              - entity: switch.loft_studio_shelf
-                type: custom:multiple-entity-row
-                toggle: true
-                name: Decorazioni
-                state_header: Scaffale
-                icon: mdi:party-popper
-                entities:
-                  - entity: sensor.loft_studio_discoball_shelf_power
-                    name: false      
-                  - entity: switch.loft_studio_discoball
-                    toggle: true
-              - entity: switch.loft_studio_portable
-                type: custom:multiple-entity-row
-                toggle: true
-                name: Albero
-                state_header: Albero
-                icon: mdi:string-lights
-                entities:
-                  - entity: sensor.loft_studio_portable_power
-                    name: false      
-
-          - type: entities
-            show_header_toggle: false
-            entities:
-              - entity: switch.loft_den_main
+              - entity: switch.shellyswitch_55c39a_channel_2
                 type: custom:multiple-entity-row
                 toggle: true
                 name: Tana
                 state_header: Tana
                 icon: mdi:bed
-                entities: 
-                  - entity: sensor.loft_den_power
-                    name: false   
-                  - entity: switch.loft_den_auxiliary
+                entities:
+                  - entity: sensor.shellyswitch_55c39a_power
+                    name: false
+                  - entity: switch.shellyswitch_55c39a_channel_1
                     toggle: true
 
           - type: entities
@@ -369,12 +320,12 @@ views:
 
           - type: entities
             entities:
-              - entity: switch.loft_aircooler
+              - entity: switch.shelly1pm_609ca4
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:air-conditioner
                 entities:
-                  - entity: sensor.loft_aircooler_power
+                  - entity: sensor.shelly1pm_609ca4_power
                     name: false
 
           - type: entities
@@ -406,12 +357,12 @@ views:
               labels: true
               labels_secondary: true
 
-          - type: plant-status
-            name: Grande
-            entity: plant.grande
-          - type: plant-status
-            name: Piccolo
-            entity: plant.piccolo
+      #          - type: plant-status
+      #            name: Grande
+      #            entity: plant.grande
+      #          - type: plant-status
+      #            name: Piccolo
+      #            entity: plant.piccolo
 
       - type: vertical-stack
         cards:
@@ -440,16 +391,16 @@ views:
           - type: media-control
             entity: media_player.loft
 
-# Main
+  # Main
   - title: Padronale
     path: padronale
     cards:
-
       - type: vertical-stack
         cards:
           - type: entities
-            entities: 
-              - switch.main_gate
+            entities:
+              - switch.shelly1_5551cc
+              - sensor.recycle
           - type: custom:simple-thermostat
             entity: climate.main
             step_layout: row
@@ -462,42 +413,41 @@ views:
           - type: entities
             show_header_toggle: false
             entities:
-              - entity: switch.main_entrance
+              - entity: switch.shellyswitch25_740859_channel_1
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:room-service
                 entities:
-                  - entity: sensor.main_entrance_power
+                  - entity: sensor.shellyswitch25_740859_channel_1_power
                     name: false
-              - entity: switch.main_living_main
+              - entity: switch.shellyswitch25_740826_channel_2
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:sofa
                 entities:
-                  - entity: sensor.main_living_main_power
+                  - entity: sensor.shellyswitch25_740826_channel_2_power
                     name: false
-              - entity: switch.main_living_auxiliary
+              - entity: switch.shelly1pm_e09806a9efcf
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:lamp
                 entities:
-                  - entity: sensor.main_living_auxiliary_power
+                  - entity: sensor.shelly1pm_e09806a9efcf_power
                     name: false
-              - entity: switch.main_kitchen
+              - entity: switch.shellyswitch25_740859_channel_2
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:fridge
                 entities:
-                  - entity: sensor.main_kitchen_power
+                  - entity: sensor.shellyswitch25_740859_channel_2_power
                     name: false
-              - entity: switch.main_bedroom
+              - entity: switch.shellyswitch25_740826_channel_1
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:bed
                 entities:
-                  - entity: sensor.main_bedroom_power
+                  - entity: sensor.shellyswitch25_740826_channel_1_power
                     name: false
-
           - type: entities
             show_header_toggle: false
             entities:
@@ -507,14 +457,14 @@ views:
                 state_header: Sala
                 entities:
                   - entity: binary_sensor.0x00158d0004020aa4_contact
-                    name: Ingresso            
-    
+                    name: Ingresso
               - entity: binary_sensor.0x00158d000414020a_occupancy
                 type: custom:multiple-entity-row
                 name: PIR Ingresso
                 entities:
                   - entity: sensor.0x00158d000414020a_illuminance
                     name: false
+
       - type: vertical-stack
         cards:
           - type: custom:mini-graph-card
@@ -524,10 +474,10 @@ views:
             entities:
               - entity: sensor.0x00158d0003cd2888_temperature
                 name: Ingresso
-              - entity: sensor.cfr_montopoli_temperature
-                name: CFR
               - entity: sensor.0x00158d00041e2833_temperature
                 name: Esterno
+              - entity: sensor.cfr_montopoli_temperature
+                name: CFR
               - entity: input_number.night
                 color: gray
                 show_line: false
@@ -537,7 +487,6 @@ views:
             show:
               labels: true
               labels_secondary: true
-          
           - type: gauge
             entity: sensor.main_softener_percentage
             name: Addolcitore
@@ -546,32 +495,29 @@ views:
               green: 40
               yellow: 20
               red: 0
-            
           - type: entities
             show_header_toggle: false
             entities:
               - entity: sensor.main_softener
                 name: Serbatoio
                 icon: mdi:diving-scuba-tank
-                
+
       - type: media-control
         entity: media_player.main
 
       - type: shopping-list
         title: Spesa
 
-# Tavern
+  # Tavern
   - title: Taverna
     path: taverna
     cards:
-
       - type: vertical-stack
         cards:
           - type: entities
-            entities: 
-              - switch.main_gate
+            entities:
+              - switch.shelly1_5551cc
 
-              
       - type: picture-glance
         title: Yi Camera
         camera_image: camera.yi_hack_m_20fe4c_cam
@@ -598,12 +544,10 @@ views:
       - type: media-control
         entity: media_player.tavern
 
-
-# System
+  # System
   - title: Sistema
     path: sistema
     cards:
-
       - type: vertical-stack
         cards:
           - type: glance
@@ -614,30 +558,38 @@ views:
                 name: RAM
               - entity: sensor.processor_use
                 name: CPU
-              - entity: sensor.pi_temperature
+              - entity: sensor.nuc_temperature
                 name: Temperature
-              - entity: sensor.current_version
+              - entity: sensor.home_assistant_operating_system_version
                 name: Versione
-
-          - type: entities
-            entities:
-              - entity: sensor.cert_expiry_timestamp_home_ziotitanok_duckdns_org
-                name: SLL Expiry
-                icon: mdi:timer-sand
-              - entity: sensor.pi_zigbee2mqtt
-                name: Zigbee2Mqtt
-          
           - type: entities
             state_color: true
             entities:
+              - entity: sensor.pi_zigbee2mqtt
+                name: Zigbee2Mqtt
+
               - entity: binary_sensor.k4
               - entity: binary_sensor.k9
-    #          - entity: binary_sensor.k10
-              - entity: binary_sensor.dell
-              - entity: binary_sensor.epson      
               - entity: binary_sensor.yi_hack_m_20fe4c_status
                 name: Yi Camera
               - entity: binary_sensor.rm_mini
+          - type: custom:mini-graph-card
+            name: Temperatura Shelly (24h)
+            line_width: 3
+            points_per_hour: 5
+            entities:
+              - entity: sensor.shelly1pm_609ca4_device_temperature
+                name: Shelly (Aircooler)
+              - entity: sensor.shelly1pm_84cca8a855b6_device_temperature
+                name: Shelly (Albero)
+              - entity: sensor.shellyswitch25_740859_device_temperature
+                name: Shelly (Entrance&Kitchen)
+              - entity: sensor.shellyswitch25_740826_device_temperature
+                name: Shelly (Bedroom&Living)
+              - entity: sensor.shelly1pm_e09806a9efcf_device_temperature
+                name: Shelly (Aba)
+            show:
+              labels: true
 
       - type: vertical-stack
         cards:
@@ -651,27 +603,26 @@ views:
                 name: Strenght
             show:
               labels: true
+          - type: custom:mini-graph-card
+            name: Livello Addolcitore (7g)
+            hours_to_show: 168
+            line_width: 3
+            points_per_hour: 1
+            entities:
+              - entity: sensor.main_softener
+                name: Livello Sale
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
 
       - type: vertical-stack
         cards:
-          - type: custom:mini-graph-card
-            name: Temperatura Shelly (24h)
-            line_width: 3
-            points_per_hour: 5
-            entities:
-              - entity: sensor.loft_aircooler_temperature
-                name: Shelly (Aircooler)
-              - entity: sensor.loft_studio_portable_temperature
-                name: Shelly (Albero)
-              - entity: sensor.main_entrance_and_kitchen_temperature
-                name: Shelly (Entrance&Kitchen)
-              - entity: sensor.main_bedroom_and_living_main_temperature
-                name: Shelly (Bedroom&Living)
-              - entity: sensor.main_living_auxiliary_temperature
-                name: Shelly (Aba)
-            show:
-              labels: true
-
           - type: custom:mini-graph-card
             name: Delta Temperatura CFR-Esterno (24h)
             line_width: 3
@@ -691,24 +642,3 @@ views:
                 name: Umidità
             show:
               labels: true
-
-          - type: custom:mini-graph-card
-            name: Livello Addolcitore (7g)
-            hours_to_show: 168
-            line_width: 3
-            points_per_hour: 1
-            entities:
-              - entity: sensor.watersoftener_sr04_distance
-                name: Livello Sale
-              - entity: input_number.night
-                color: gray
-                show_line: false
-                show_points: false
-                show_legend: false
-                y_axis: secondary
-            show:
-              labels: true
-              labels_secondary: true
-
-
-

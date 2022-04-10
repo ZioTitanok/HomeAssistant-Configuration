@@ -5,13 +5,13 @@
   initial_state: true
   trigger:
     - platform: state
-      entity_id: binary_sensor.k4  
+      entity_id: binary_sensor.k4
       to: "on"
     - platform: state
-      entity_id: binary_sensor.k4  
+      entity_id: binary_sensor.k4
       to: "off"
   action:
-    - service: notify.mobile_app_s7_nico
+    - service: mobile_app_redmi_6a
       data:
         title: "Computer K4"
         message: >
@@ -24,21 +24,20 @@
   initial_state: true
   trigger:
     - platform: state
-      entity_id: binary_sensor.k9 
+      entity_id: binary_sensor.k9
       to: "on"
     - platform: state
-      entity_id: binary_sensor.k9  
+      entity_id: binary_sensor.k9
       to: "off"
   action:
-    - service: notify.mobile_app_s7_nico
+    - service: mobile_app_redmi_6a
       data:
         title: "Computer K9"
         message: >
           K9 è {{ trigger.to_state.state }}line!
         data:
           tag: k9
-
-# Dell Online          
+# Dell Online
 #- alias: dell_online
 #  initial_state: on
 #  trigger:
@@ -51,7 +50,7 @@
 #        title: "Computer Dell Online"
 #        message: "HomeAssistant ti augura buon lavoro!"
 #        data:
-#          tag: Dell      
+#          tag: Dell
 #    - service:  media_player.volume_set
 #      entity_id: media_player.mansarda
 #      data:
@@ -61,6 +60,4 @@
 #      data_template:
 #        media_content_id: https://home.ziotitanok.duckdns.org/local/music/star_wars-imperial_march.mp3
 #        media_content_type: audio/mp3
-
-
 

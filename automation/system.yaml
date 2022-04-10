@@ -7,7 +7,7 @@
     - platform: homeassistant
       event: start
   action:
-    - service: notify.mobile_app_s7_nico
+    - service: mobile_app_redmi_6a
       data:
         title: "Homeassistant"
         message: "Sistema riavviato con successo."
@@ -19,7 +19,7 @@
         message: "Riavvio di sistema completato con successo."
 
 # Day/Night Graph Cicle
-- alias: pi_night
+- alias: home_night
   initial_state: true
   trigger:
     - platform: sun
@@ -30,7 +30,7 @@
         entity_id: input_number.night
         value: 1
 
-- alias: pi_day
+- alias: home_day
   initial_state: true
   trigger:
     - platform: sun

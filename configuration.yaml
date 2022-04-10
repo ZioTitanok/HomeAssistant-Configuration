@@ -2,7 +2,7 @@
 
 # Homeassistant
 homeassistant:
-  name: 'Home CDB'
+  name: "Home CDB"
   latitude: !secret home_latitude
   longitude: !secret home_longitude
   elevation: !secret home_elevation
@@ -43,10 +43,11 @@ zeroconf:
 http:
   use_x_forwarded_for: true
   trusted_proxies:
+    - 192.168.1.252
     - 127.0.0.1
 
 # Split Config 1
-recorder: !include recorder.yaml 
+recorder: !include recorder.yaml
 history:
 logbook:
 
@@ -56,8 +57,8 @@ climate: !include climates.yaml
 sensor: !include_dir_merge_list sensor
 script: !include_dir_merge_named ./script
 switch: !include_dir_merge_list switch
-group: 
-scene:
+#group:
+#scene:
 
 # Utility Meter
 utility_meter:
@@ -100,24 +101,8 @@ lovelace:
       type: module
     - url: /hacsfiles/simple-thermostat/simple-thermostat.js
       type: module
-
-panel_iframe:
-  blog:
-    title: 'Blog'
-    url: !secret iframe_blog
-    icon: mdi:post
-  pihole:
-    title: 'PiHole'
-    url: !secret iframe_pihole
-    icon: mdi:delete-circle
-  plex:
-    title: 'Plex'
-    url: !secret iframe_plex
-    icon: mdi:plex
-  zigbee2mqtt:
-    title: 'Zigbee2Mqtt'
-    url: !secret iframe_zigbee2mqtt
-    icon: mdi:zigbee
+    - url: /hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js
+      type: module
 
 # Driver & Camera
 ffmpeg:
@@ -133,48 +118,51 @@ weather:
 
 # Google Assistant
 google_assistant:
-  project_id: homeassistant-23c7d
-  service_account: !include homeassistant-23c7d-2736d08c68e3.json
+  project_id: hassos-2020f
+  service_account: !include hassos-2020f-a212bf5e55ff.json
   report_state: true
   expose_by_default: false
+  exposed_domains:
+    - switch
+    - climate
   entity_config:
-    switch.main_entrance:
+    switch.shellyswitch25_740859_channel_1:
       name: Ingresso
       expose: true
-    switch.main_kitchen:
+    switch.shellyswitch25_740859_channel_2:
       name: Cucina
       expose: true
-    switch.main_living_main:
+    switch.shellyswitch25_740826_channel_2:
       name: Salotto
       expose: true
-    switch.main_living_auxiliary:
+    switch.shelly1pm_e09806a9efcf:
       name: Aba
       expose: true
-    switch.main_bedroom:
+    switch.shellyswitch25_740826_channel_1:
       name: Camera
       expose: true
-    switch.loft_studio_auxiliary:
+    switch.shellyswitch_55c794_channel_2:
       name: Faretti
       expose: true
-    switch.loft_studio_main:
+    switch.shellyswitch_55c794_channel_1:
       name: Studio
       expose: true
-    switch.loft_studio_portable:
+    switch.shelly1pm_84cca8a855b6:
       name: Albero
       expose: true
-    switch.loft_den_main:
+    switch.shellyswitch_55c39a_channel_2:
       name: Tana
       expose: true
-    switch.loft_den_auxiliary:
+    switch.shellyswitch_55c39a_channel_1:
       name: Cielo
       expose: true
-    switch.loft_studio_shelf:
+    switch.shellyswitch_559384_channel_2:
       name: Scaffale
       expose: true
-    switch.loft_studio_decoration:
+    sensor.shellyswitch_559384_power:
       name: DiscoBall
       expose: true
-    switch.main_gate:
+    switch.shelly1_5551cc:
       name: Cancello
       expose: true
     input_boolean.radio_activate:
@@ -184,7 +172,7 @@ google_assistant:
       name: Party
       expose: true
 
-# TTS
+      # TTS
 tts:
   - platform: google_translate
     service_name: google_say
@@ -198,10 +186,6 @@ binary_sensor:
     host: !secret ip_k9
     scan_interval: 300
   - platform: ping
-    name: Dell
-    host: !secret ip_dell
-    scan_interval: 300
-  - platform: ping
     name: K4
     host: !secret ip_k4
     scan_interval: 300
@@ -209,20 +193,16 @@ binary_sensor:
   - platform: ping
     name: RM Mini
     host: !secret ip_rmmini
-    scan_interval: 600
+    scan_interval: 300
   - platform: ping
     name: Yi Camera
     host: !secret ip_yicamera
-    scan_interval: 600
+    scan_interval: 300
   - platform: mqtt
     name: Pir Yi
     state_topic: "yicam/motion"
     payload_on: "motion_start"
     payload_off: "motion_stop"
-  - platform: ping
-    name: Epson
-    host: !secret ip_epson
-    scan_interval: 1000
 
 # Input
 input_datetime:
@@ -288,22 +268,21 @@ input_boolean:
     name: Party Time
     initial: off
     icon: mdi:music-note
-
 # Plant
-plant:
-  grande:
-    sensors:
-      moisture: sensor.flora1_moisture
-      battery: sensor.flora1_battery
-      temperature: sensor.flora1_temperature
-      conductivity: sensor.flora1_conductivity
-      brightness: sensor.flora1_light_intensity
-    min_battery: 10
-  piccolo:
-    sensors:
-      moisture: sensor.flora2_moisture
-      battery: sensor.flora2_battery
-      temperature: sensor.flora2_temperature
-      conductivity: sensor.flora2_conductivity
-      brightness: sensor.flora2_light_intensity
-    min_battery: 10
+#plant:
+#  grande:
+#    sensors:
+#      moisture: sensor.flora1_moisture
+#      battery: sensor.flora1_battery
+#      temperature: sensor.flora1_temperature
+#      conductivity: sensor.flora1_conductivity
+#      brightness: sensor.flora1_light_intensity
+#    min_battery: 10
+#  piccolo:
+#    sensors:
+#      moisture: sensor.flora2_moisture
+#      battery: sensor.flora2_battery
+#      temperature: sensor.flora2_temperature
+#      conductivity: sensor.flora2_conductivity
+#      brightness: sensor.flora2_light_intensity
+#    min_battery: 10

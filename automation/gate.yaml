@@ -5,14 +5,14 @@
   initial_state: true
   trigger:
     - platform: state
-      entity_id: switch.main_gate
-      to: 'on'
+      entity_id: switch.shelly1_5551cc
+      to: "on"
       for:
         seconds: 1
   action:
     - service: homeassistant.turn_off
-      entity_id: switch.main_gate
-    - service: notify.mobile_app_s7_nico
+      entity_id: switch.shelly1_5551cc
+    - service: mobile_app_redmi_6a
       data:
         title: "Gate"
         message: "Cancello in azione!"
@@ -29,4 +29,4 @@
       tag_id: 42799d6f-c3bf-4bb5-9b4e-b6df30fb23aa
   action:
     - service: homeassistant.turn_on
-      entity_id: switch.main_gate   
+      entity_id: switch.shelly1_5551cc

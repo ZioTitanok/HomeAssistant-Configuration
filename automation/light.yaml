@@ -6,40 +6,40 @@
   trigger:
     - platform: sun
       event: sunset
-      offset: '-00:30:00'
+      offset: "-00:30:00"
   action:
     - service: homeassistant.turn_on
-      entity_id: switch.loft_studio_shelf
+      entity_id: switch.shellyswitch_559384_channel_2
 
 # Loft Studio Shelf Auto Off
 - alias: loft_studio_shelf_off
   initial_state: true
   trigger:
     - platform: time
-      at: '22:30:00'
+      at: "22:30:00"
   action:
     - service: homeassistant.turn_off
-      entity_id: switch.loft_studio_shelf
+      entity_id: switch.shellyswitch_559384_channel_2
 
 # Loft Studio Portable Auto On
 - alias: loft_studio_portable_on
   initial_state: true
   trigger:
     - platform: time
-      at: '08:00:00'
+      at: "08:00:00"
   action:
     - service: homeassistant.turn_on
-      entity_id: switch.loft_studio_portable
+      entity_id: switch.shelly1pm_84cca8a855b6
 
 # Loft Studio Portable Auto Off
 - alias: loft_studio_portable_off
   initial_state: true
   trigger:
     - platform: time
-      at: '23:55:00'
+      at: "23:55:00"
   action:
     - service: homeassistant.turn_off
-      entity_id: switch.loft_studio_portable
+      entity_id: switch.shelly1pm_84cca8a855b6
 
 # Loft Studio Auxiliary Auto On
 - alias: loft_studio_auxiliary_on
@@ -49,7 +49,7 @@
       value_template: "{{ states('sensor.time') == (states.input_datetime.loft_auxiliary_on.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
   action:
     - service: homeassistant.turn_on
-      entity_id: switch.loft_studio_auxiliary
+      entity_id: switch.shellyswitch_55c794_channel_2
 
 # Loft Studio Auxiliary Auto Off
 - alias: loft_studio_auxiliary_off
@@ -59,4 +59,4 @@
       value_template: "{{ states('sensor.time') == (states.input_datetime.loft_auxiliary_off.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
   action:
     - service: homeassistant.turn_off
-      entity_id: switch.loft_studio_auxiliary
+      entity_id: switch.shellyswitch_55c794_channel_2

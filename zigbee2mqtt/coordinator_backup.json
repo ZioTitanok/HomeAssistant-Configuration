@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "format": "zigpy/open-coordinator-backup",
+    "version": 1,
+    "source": "zigbee-herdsman@0.14.20",
+    "internal": {
+      "date": "2022-04-09T20:50:34.613Z",
+      "znpVersion": 0
+    }
+  },
+  "stack_specific": {
+    "zstack": {}
+  },
+  "coordinator_ieee": "00124b001936af1f",
+  "pan_id": "1a62",
+  "extended_pan_id": "dddddddddddddddd",
+  "nwk_update_id": 0,
+  "security_level": 5,
+  "channel": 11,
+  "channel_mask": [
+    11
+  ],
+  "network_key": {
+    "key": "01030507090b0d0f00020406080a0c0d",
+    "sequence_number": 0,
+    "frame_counter": 0
+  },
+  "devices": [
+    {
+      "nwk_address": "1773",
+      "ieee_address": "00158d0002ebcbee",
+      "is_child": true
+    },
+    {
+      "nwk_address": "ea18",
+      "ieee_address": "680ae2fffe3543f9",
+      "is_child": true
+    },
+    {
+      "nwk_address": "2f57",
+      "ieee_address": "00158d000414020a",
+      "is_child": true
+    },
+    {
+      "nwk_address": "bf2f",
+      "ieee_address": "00158d00032b7616",
+      "is_child": true
+    },
+    {
+      "nwk_address": "81a9",
+      "ieee_address": "00158d000309ba25",
+      "is_child": true
+    },
+    {
+      "nwk_address": "bafb",
+      "ieee_address": "00158d0004183f08",
+      "is_child": true
+    },
+    {
+      "nwk_address": "e6ea",
+      "ieee_address": "00158d0003cd2888",
+      "is_child": true
+    },
+    {
+      "nwk_address": "e2df",
+      "ieee_address": "00158d0004020aa4",
+      "is_child": true
+    },
+    {
+      "nwk_address": "6c6c",
+      "ieee_address": "00158d000346487a",
+      "is_child": true
+    },
+    {
+      "nwk_address": "f847",
+      "ieee_address": "000b57fffe48a1de",
+      "is_child": true
+    },
+    {
+      "nwk_address": "a435",
+      "ieee_address": "000b57fffe4baa6e",
+      "is_child": true
+    },
+    {
+      "nwk_address": "51aa",
+      "ieee_address": "00158d00040209a6",
+      "is_child": true
+    },
+    {
+      "nwk_address": "5c11",
+      "ieee_address": "00158d00041e2833",
+      "is_child": true
+    },
+    {
+      "nwk_address": "9b02",
+      "ieee_address": "00158d0005870496",
+      "is_child": true
+    }
+  ]
+}

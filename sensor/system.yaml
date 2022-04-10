@@ -10,11 +10,8 @@
     - type: last_boot
 
 # System Temperature
-- platform: command_line
-  name: pi_temperature
-  command: 'cat /sys/class/thermal/thermal_zone0/temp'
-  unit_of_measurement: '°C'
-  value_template: '{{ value | multiply(0.001) | round(1)}}'
-
-# System HA Version
-- platform: version
+- platform: mqtt
+  name: nuc_temperature
+  state_topic: "system_monitor/temperature"
+  unit_of_measurement: "°C"
+  value_template: "{{ value | multiply(0.001) | round(2)}}"

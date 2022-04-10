@@ -1,0 +1,106 @@
+{
+    "0x680ae2fffe3543f9": {
+        "update": {
+            "state": "available"
+        },
+        "update_available": true,
+        "battery": 60
+    },
+    "0x00158d000309ba25": {
+        "contact": true,
+        "voltage": 2995,
+        "battery": 100,
+        "temperature": 30
+    },
+    "0x00158d000346487a": {
+        "temperature": 18.34,
+        "humidity": 52.17,
+        "pressure": 1011.9,
+        "voltage": 3015,
+        "battery": 100
+    },
+    "0x00158d000414020a": {
+        "occupancy": false,
+        "illuminance": 16,
+        "illuminance_lux": 16,
+        "voltage": 2995,
+        "battery": 100,
+        "temperature": 23
+    },
+    "0x00158d0004183f08": {
+        "temperature": 19.37,
+        "humidity": 50.25,
+        "pressure": 1012,
+        "voltage": 2985,
+        "battery": 99
+    },
+    "0x00158d00032b7616": {
+        "contact": true,
+        "voltage": 3005,
+        "battery": 100,
+        "temperature": 28
+    },
+    "0x00158d00040209a6": {
+        "contact": true,
+        "voltage": 3005,
+        "battery": 100,
+        "temperature": 21
+    },
+    "0x00158d0004020aa4": {
+        "contact": true,
+        "voltage": 2995,
+        "battery": 100,
+        "temperature": 22
+    },
+    "0x00158d0003cd2888": {
+        "temperature": 17.38,
+        "humidity": 48.07,
+        "pressure": 1012.7,
+        "voltage": 2985,
+        "battery": 99
+    },
+    "0x00158d0002ebcbee": {
+        "occupancy": false,
+        "illuminance": 11,
+        "illuminance_lux": 11,
+        "voltage": 2995,
+        "battery": 100,
+        "temperature": 21
+    },
+    "0x00158d00041e2833": {
+        "temperature": 19.6,
+        "humidity": 21.67,
+        "pressure": 1014.6,
+        "voltage": 3025,
+        "battery": 100
+    },
+    "0x000b57fffe4baa6e": {
+        "state": "ON",
+        "brightness": 254,
+        "update": {
+            "state": "available"
+        },
+        "update_available": true
+    },
+    "0x000b57fffe48a1de": {
+        "state": "ON",
+        "brightness": 254,
+        "update": {
+            "state": "available"
+        },
+        "update_available": true
+    },
+    "0x00158d0005870496": {
+        "voltage": 2915,
+        "battery": 80,
+        "temperature": 29,
+        "angle": 86,
+        "angle_x": 1,
+        "angle_y": 1,
+        "angle_z": 88,
+        "angle_x_absolute": 89,
+        "angle_y_absolute": 89,
+        "vibration": false,
+        "strength": 121
+    }
+}

@@ -4,6 +4,7 @@
 .cloud
 .storage
 .vscode
+blueprints
 media
 tts
 
@@ -15,9 +16,10 @@ known_devices.yaml
 home-assistant_v2.db
 home-assistant.log
 home-assistant.log.1
+home-assistant.log.fault
 home-assistant_v2.db-shm
 home-assistant_v2.db-wal
-homeassistant-23c7d-2736d08c68e3.json
+hassos-2020f-a212bf5e55ff.json
 
 *.mp3
 *.jpg

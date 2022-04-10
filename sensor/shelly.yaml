@@ -1,111 +1,19 @@
 # Sensor: Shelly (MQTT)
 
-# Shelly1PM: Loft Air Cooler (Power/Temperature)
-- platform: mqtt
-  name: loft_aircooler_power
-  state_topic: "shellies/shelly1pm-609CA4/relay/0/power"
-  unit_of_measurement: 'W'
-- platform: mqtt
-  name: loft_aircooler_temperature
-  state_topic: "shellies/shelly1pm-609CA4/temperature"
-  unit_of_measurement: '°C'
-
-# Shelly2: Loft Den Main/Auxiliary (Power)
-- platform: mqtt
-  name: loft_den_power
-  state_topic: "shellies/shellyswitch-55C39A/relay/power"
-  unit_of_measurement: 'W'
-
-# Shelly2: Loft Studio Main/Auxiliary (Power)
-- platform: mqtt
-  name: loft_studio_main_auxiliary_power
-  state_topic: "shellies/shellyswitch-55C794/relay/power"
-  unit_of_measurement: 'W'
-
-# Shelly2: Loft Studio Discoball/Shelf (Momentary)
-- platform: mqtt
-  name: loft_studio_discoball_shelf_power
-  state_topic: "shellies/shellyswitch-559384/relay/power"
-  unit_of_measurement: 'W'
-
-# Shelly1PM: Loft Studio Portable (Momentary)
-- platform: mqtt
-  name: loft_studio_portable_power
-  state_topic: "shellies/shelly1pm-84CCA8A855B6/relay/0/power"
-  unit_of_measurement: 'W'
-- platform: mqtt
-  name: loft_studio_portable_temperature
-  state_topic: "shellies/shelly1pm-84CCA8A855B6/temperature"
-  unit_of_measurement: '°C'
-
-# Shelly2.5: Main Entrance & Kitchen (Power/Temperature)
-- platform: mqtt
-  name: main_entrance_power
-  state_topic: "shellies/shellyswitch25-740859/relay/0/power"
-  unit_of_measurement: 'W'
-- platform: mqtt
-  name: main_kitchen_power
-  state_topic: "shellies/shellyswitch25-740859/relay/1/power"
-  unit_of_measurement: 'W'
-- platform: mqtt
-  name: main_entrance_and_kitchen_temperature
-  state_topic: "shellies/shellyswitch25-740859/temperature"
-  unit_of_measurement: '°C'
-
-# Shelly2.5: Main Bedroom & Living (Power/Temperature)
-- platform: mqtt
-  name: main_bedroom_power
-  state_topic: "shellies/shellyswitch25-740826/relay/0/power"
-  unit_of_measurement: 'W'
-- platform: mqtt
-  name: main_living_main_power
-  state_topic: "shellies/shellyswitch25-740826/relay/1/power"
-  unit_of_measurement: 'W'
-- platform: mqtt
-  name: main_bedroom_and_living_main_temperature
-  state_topic: "shellies/shellyswitch25-740826/temperature"
-  unit_of_measurement: '°C'
-
-# Shelly1PM: Main Living Auxiliary (Momentary)
-- platform: mqtt
-  name: main_living_auxiliary_power
-  state_topic: "shellies/shelly1pm-E09806A9EFCF/relay/0/power"
-  unit_of_measurement: 'W'
-- platform: mqtt
-  name: main_living_auxiliary_temperature
-  state_topic: "shellies/shelly1pm-E09806A9EFCF/temperature"
-  unit_of_measurement: '°C'
-
-# ShellyEM: Electical MainFrame (Power/Voltage)
-- platform: mqtt
-  name: loft_and_main_power
-  state_topic: "shellies/shellyem-B9E2A0/emeter/0/power"
-  qos: 1
-  unit_of_measurement: 'W'
-- platform: mqtt
-  name: tavern_and_garage_power
-  state_topic: "shellies/shellyem-B9E2A0/emeter/1/power"
-  qos: 1
-  unit_of_measurement: 'W'
-- platform: mqtt
-  name: home_voltage
-  state_topic: "shellies/shellyem-B9E2A0/emeter/0/voltage"
-  unit_of_measurement: 'V'
-
 # ShellyEM: Electical MainFrame (Template/Integration)
 - platform: template
   sensors:
     home_power:
       unit_of_measurement: "W"
       value_template: >
-        {{ (states("sensor.loft_and_main_power")|float + states("sensor.tavern_and_garage_power")|float) | round(2) }}
+        {{ (states("sensor.shellyem_b9e2a0_channel_1_power")|float + states("sensor.shellyem_b9e2a0_channel_2_power")|float) | round(2) }}
 - platform: integration
-  source: sensor.loft_and_main_power
+  source: sensor.shellyem_b9e2a0_channel_1_power
   name: loft_and_main_consumption
   unit_prefix: k
   round: 2
 - platform: integration
-  source: sensor.tavern_and_garage_power
+  source: sensor.shellyem_b9e2a0_channel_2_power
   name: tavern_and_garage_consumption
   unit_prefix: k
   round: 2

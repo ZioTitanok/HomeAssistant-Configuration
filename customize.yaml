@@ -22,48 +22,47 @@ binary_sensor.pir_yi:
 
 # Sensor:
 sensor.recycle:
-  friendly_name: 'Domani Ricicla'
+  friendly_name: "Domani Ricicla"
 sensor.home_power:
-  friendly_name: 'Totale'
-sensor.loft_and_main_power:
-  friendly_name: 'Loft&Main'
-sensor.tavern_and_garage_power:
-  friendly_name: 'Tavern&Garage'
-sensor.home_voltage:
-  friendly_name: 'Voltaggio'
+  friendly_name: "Totale"
+sensor.shellyem_b9e2a0_channel_1_power:
+  friendly_name: "Loft&Main"
+sensor.shellyem_b9e2a0_channel_2_power:
+  friendly_name: "Tavern&Garage"
+sensor.shellyem_b9e2a0_channel_1_voltage:
+  friendly_name: "Loft&Main"
+sensor.shellyem_b9e2a0_channel_2_voltage:
+  friendly_name: "Tavern&Garage"
 
-# Switch: 
-switch.loft_aircooler:
-  friendly_name: 'Condizionatore Mansarda' 
-switch.loft_thermostat:
-  friendly_name: 'Termostato Mansarda'
-switch.loft_den_main:
-  friendly_name: 'Tana'
-switch.loft_den_auxiliary:
-  friendly_name: 'Cielo'
-switch.loft_studio_main:
-  friendly_name: 'Studio'
-switch.loft_studio_auxiliary:
-  friendly_name: 'Faretti'
-switch.loft_studio_shelf:
-  friendly_name: 'Scaffale'
-switch.loft_studio_discoball:
-  friendly_name: 'Discoball'
-switch.loft_studio_portable:
-  friendly_name: 'Albero'
-switch.main_entrance:
-  friendly_name: 'Ingresso'
-switch.main_bedroom:
-  friendly_name: 'Camera'
-switch.main_kitchen:
-  friendly_name: 'Cucina'
-switch.main_living_main:
-  friendly_name: 'Salotto'
-switch.main_living_auxiliary:
-  friendly_name: 'Aba'
-switch.main_gate:
+# Switch:
+switch.shelly1pm_609ca4:
+  friendly_name: "Condizionatore Mansarda"
+switch.shelly1_555fce:
+  friendly_name: "Termostato Mansarda"
+switch.shellyswitch_55c39a_channel_2:
+  friendly_name: "Tana"
+switch.shellyswitch_55c39a_channel_1:
+  friendly_name: "Cielo"
+switch.shellyswitch_55c794_channel_1:
+  friendly_name: "Studio"
+switch.shellyswitch_55c794_channel_2:
+  friendly_name: "Faretti"
+switch.shellyswitch_559384_channel_2:
+  friendly_name: "Scaffale"
+switch.shellyswitch_559384_channel_1:
+  friendly_name: "Discoball"
+switch.shelly1pm_84cca8a855b6:
+  friendly_name: "Albero"
+switch.shellyswitch25_740859_channel_1:
+  friendly_name: "Ingresso"
+switch.shellyswitch25_740826_channel_1:
+  friendly_name: "Camera"
+switch.shellyswitch25_740859_channel_2:
+  friendly_name: "Cucina"
+switch.shellyswitch25_740826_channel_2:
+  friendly_name: "Salotto"
+switch.shelly1pm_e09806a9efcf:
+  friendly_name: "Aba"
+switch.shelly1_5551cc:
   friendly_name: Cancello
   icon: mdi:gate
-
-
-

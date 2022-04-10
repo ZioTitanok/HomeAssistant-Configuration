@@ -1,0 +1,24 @@
+info  2022-04-08 11:43:49: Logging to console and directory: '/config/zigbee2mqtt/log/2022-04-08.11-43-48' filename: log.txt
+info  2022-04-08 11:43:49: Starting Zigbee2MQTT version 1.25.0 (commit #unknown)
+info  2022-04-08 11:43:49: Starting zigbee-herdsman (0.14.20)
+info  2022-04-08 11:43:49: zigbee-herdsman started (resumed)
+info  2022-04-08 11:43:49: Coordinator firmware version: '{"meta":{"maintrel":3,"majorrel":2,"minorrel":6,"product":0,"revision":20190608,"transportrev":2},"type":"zStack12"}'
+info  2022-04-08 11:43:49: Currently 0 devices are joined:
+info  2022-04-08 11:43:49: Zigbee: disabling joining new devices.
+info  2022-04-08 11:43:50: Connecting to MQTT server at mqtt://192.168.1.251
+info  2022-04-08 11:43:50: Connected to MQTT server
+info  2022-04-08 11:43:50: MQTT publish: topic 'zigbee2mqtt/bridge/state', payload 'online'
+info  2022-04-08 11:43:50: Started frontend on port 0.0.0.0:8099
+info  2022-04-08 11:43:50: MQTT publish: topic 'zigbee2mqtt/bridge/config', payload '{"commit":"unknown","coordinator":{"meta":{"maintrel":3,"majorrel":2,"minorrel":6,"product":0,"revision":20190608,"transportrev":2},"type":"zStack12"},"log_level":"info","network":{"channel":11,"extendedPanID":"0xdddddddddddddddd","panID":6754},"permit_join":false,"version":"1.25.0"}'
+info  2022-04-08 11:43:50: MQTT publish: topic 'zigbee2mqtt/bridge/state', payload 'online'
+info  2022-04-08 11:44:16: Device '0x680ae2fffe3543f9' joined
+info  2022-04-08 11:44:16: MQTT publish: topic 'zigbee2mqtt/bridge/event', payload '{"data":{"friendly_name":"0x680ae2fffe3543f9","ieee_address":"0x680ae2fffe3543f9"},"type":"device_joined"}'
+info  2022-04-08 11:44:16: MQTT publish: topic 'zigbee2mqtt/bridge/log', payload '{"message":{"friendly_name":"0x680ae2fffe3543f9"},"type":"device_connected"}'
+info  2022-04-08 11:44:16: Starting interview of '0x680ae2fffe3543f9'
+info  2022-04-08 11:44:16: MQTT publish: topic 'zigbee2mqtt/bridge/event', payload '{"data":{"friendly_name":"0x680ae2fffe3543f9","ieee_address":"0x680ae2fffe3543f9","status":"started"},"type":"device_interview"}'
+info  2022-04-08 11:44:16: MQTT publish: topic 'zigbee2mqtt/bridge/log', payload '{"message":"interview_started","meta":{"friendly_name":"0x680ae2fffe3543f9"},"type":"pairing"}'
+info  2022-04-08 11:44:23: MQTT publish: topic 'zigbee2mqtt/bridge/state', payload 'offline'
+info  2022-04-08 11:44:23: Disconnecting from MQTT server
+info  2022-04-08 11:44:23: Stopping zigbee-herdsman...
+info  2022-04-08 11:44:23: Stopped zigbee-herdsman
+info  2022-04-08 11:44:23: Stopped Zigbee2MQTT

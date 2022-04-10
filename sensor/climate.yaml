@@ -24,7 +24,7 @@
   station: TOS01005181
   type: idro
 
-# CFR TOS01005001 
+# CFR TOS01005001
 - platform: cfr
   name: cfr_fucecchio_idro
   station: TOS01005001
@@ -36,7 +36,7 @@
     cfr_esterno_deltatemperature:
       unit_of_measurement: "°C"
       icon_template: mdi:thermometer
-      value_template: > 
+      value_template: >
         {{ (states.sensor.cfr_montopoli_temperature.state|float - states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float)|round(2) }}
     cfr_esterno_deltahumidity:
       unit_of_measurement: "%"
