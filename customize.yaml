@@ -51,8 +51,8 @@ switch.shellyswitch_559384_channel_2:
   friendly_name: "Scaffale"
 switch.shellyswitch_559384_channel_1:
   friendly_name: "Discoball"
-switch.shelly1pm_84cca8a855b6:
-  friendly_name: "Albero"
+#switch.:
+#  friendly_name: "Albero"
 switch.shellyswitch25_740859_channel_1:
   friendly_name: "Ingresso"
 switch.shellyswitch25_740826_channel_1:
@@ -61,7 +61,7 @@ switch.shellyswitch25_740859_channel_2:
   friendly_name: "Cucina"
 switch.shellyswitch25_740826_channel_2:
   friendly_name: "Salotto"
-switch.shelly1pm_e09806a9efcf:
+switch.shelly1pm_84cca8a855b6:
   friendly_name: "Aba"
 switch.shelly1_5551cc:
   friendly_name: Cancello

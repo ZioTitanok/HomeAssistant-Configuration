@@ -11,7 +11,7 @@
       entity_id: binary_sensor.k4
       to: "off"
   action:
-    - service: notify.mobile_app_redmi_6a
+    - service: notify.mobile_app_s22
       data:
         title: "Computer K4"
         message: >
@@ -30,7 +30,7 @@
       entity_id: binary_sensor.k9
       to: "off"
   action:
-    - service: notify.mobile_app_redmi_6a
+    - service: notify.mobile_app_s22
       data:
         title: "Computer K9"
         message: >

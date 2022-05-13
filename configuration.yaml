@@ -9,6 +9,8 @@ homeassistant:
   unit_system: metric
   time_zone: Europe/Rome
   customize: !include customize.yaml
+  external_url: !secret home_eurl
+  internal_url: !secret home_iurl
 
 zone:
   - name: Home
@@ -34,7 +36,6 @@ ssdp:
 system_health:
 tag:
 timer:
-updater:
 usb:
 webhook:
 zeroconf:
@@ -43,8 +44,8 @@ zeroconf:
 http:
   use_x_forwarded_for: true
   trusted_proxies:
-    - 192.168.1.252
     - 127.0.0.1
+    - 192.168.1.252
 
 # Split Config 1
 recorder: !include recorder.yaml
@@ -135,7 +136,7 @@ google_assistant:
     switch.shellyswitch25_740826_channel_2:
       name: Salotto
       expose: true
-    switch.shelly1pm_e09806a9efcf:
+    switch.shelly1pm_84cca8a855b6:
       name: Aba
       expose: true
     switch.shellyswitch25_740826_channel_1:
@@ -147,9 +148,9 @@ google_assistant:
     switch.shellyswitch_55c794_channel_1:
       name: Studio
       expose: true
-    switch.shelly1pm_84cca8a855b6:
-      name: Albero
-      expose: true
+    #switch.:
+    #  name: Albero
+    #  expose: true
     switch.shellyswitch_55c39a_channel_2:
       name: Tana
       expose: true

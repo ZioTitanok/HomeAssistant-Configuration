@@ -12,7 +12,7 @@
   action:
     - service: homeassistant.turn_off
       entity_id: switch.shelly1_5551cc
-    - service: notify.mobile_app_redmi_6a
+    - service: notify.mobile_app_s22
       data:
         title: "Gate"
         message: "Cancello in azione!"
@@ -24,9 +24,9 @@
   initial_state: true
   trigger:
     - platform: tag
-      tag_id: 34236b65-3737-4d32-bc79-1b8fe4f479d7
+      tag_id: 72003416-c321-4f47-af6f-f5c66cb16400
     - platform: tag
-      tag_id: 42799d6f-c3bf-4bb5-9b4e-b6df30fb23aa
+      tag_id: 4ea4d581-5f87-4519-b040-298052a34d6d
   action:
     - service: homeassistant.turn_on
       entity_id: switch.shelly1_5551cc

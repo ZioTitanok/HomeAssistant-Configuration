@@ -6,11 +6,11 @@
   trigger:
     - platform: state
       entity_id: input_boolean.loft_discoball_activate
-      to: 'on'
+      to: "on"
   action:
     - service: homeassistant.turn_on
       entity_id: switch.shellyswitch_559384_channel_1
-    - service:  media_player.volume_set
+    - service: media_player.volume_set
       entity_id: media_player.loft
       data:
         volume_level: 0.2
@@ -32,11 +32,10 @@
   trigger:
     - platform: state
       entity_id: input_boolean.loft_discoball_activate
-      to: 'off'
+      to: "off"
   action:
     - service: homeassistant.turn_off
       entity_id: switch.shellyswitch_559384_channel_1
     - service: media_player.turn_off
       data:
         entity_id: media_player.loft
-        

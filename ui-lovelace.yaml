@@ -209,15 +209,15 @@ views:
                     name: false
                   - entity: switch.shellyswitch_559384_channel_1
                     toggle: true
-              - entity: switch.shelly1pm_84cca8a855b6
-                type: custom:multiple-entity-row
-                toggle: true
-                name: Albero
-                state_header: Albero
-                icon: mdi:string-lights
-                entities:
-                  - entity: sensor.shelly1pm_84cca8a855b6_power
-                    name: false
+              #- entity: switch.
+              #  type: custom:multiple-entity-row
+              #  toggle: true
+              #  name: Albero
+              #  state_header: Albero
+              #  icon: mdi:string-lights
+              #  entities:
+              #    - entity: sensor._power
+              #      name: false
               - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_6
                 type: custom:multiple-entity-row
                 toggle: true
@@ -427,12 +427,12 @@ views:
                 entities:
                   - entity: sensor.shellyswitch25_740826_channel_2_power
                     name: false
-              - entity: switch.shelly1pm_e09806a9efcf
+              - entity: switch.shelly1pm_84cca8a855b6
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:lamp
                 entities:
-                  - entity: sensor.shelly1pm_e09806a9efcf_power
+                  - entity: sensor.shelly1pm_84cca8a855b6_power
                     name: false
               - entity: switch.shellyswitch25_740859_channel_2
                 type: custom:multiple-entity-row
@@ -580,13 +580,13 @@ views:
             entities:
               - entity: sensor.shelly1pm_609ca4_device_temperature
                 name: Shelly (Aircooler)
-              - entity: sensor.shelly1pm_84cca8a855b6_device_temperature
-                name: Shelly (Albero)
+              #- entity: sensor._device_temperature
+              #  name: Shelly (Albero)
               - entity: sensor.shellyswitch25_740859_device_temperature
                 name: Shelly (Entrance&Kitchen)
               - entity: sensor.shellyswitch25_740826_device_temperature
                 name: Shelly (Bedroom&Living)
-              - entity: sensor.shelly1pm_e09806a9efcf_device_temperature
+              - entity: sensor.shelly1pm_84cca8a855b6_device_temperature
                 name: Shelly (Aba)
             show:
               labels: true
@@ -594,15 +594,28 @@ views:
       - type: vertical-stack
         cards:
           - type: custom:mini-graph-card
-            name: Vibration
+            name: Rete (7g)
             hours_to_show: 168
             line_width: 3
-            points_per_hour: 5
+            points_per_hour: 1
             entities:
-              - entity: sensor.0x00158d0005870496_strength
-                name: Strenght
+              - entity: sensor.speedtest_download
+                name: Download
+              - entity: sensor.speedtest_upload
+                name: Upload
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
             show:
               labels: true
+              labels_secondary: true
+          - type: entities
+            entities:
+              - entity: sensor.speedtest_ping
+                name: Ping
           - type: custom:mini-graph-card
             name: Livello Addolcitore (7g)
             hours_to_show: 168
@@ -620,6 +633,16 @@ views:
             show:
               labels: true
               labels_secondary: true
+          - type: custom:mini-graph-card
+            name: Vibration
+            hours_to_show: 168
+            line_width: 3
+            points_per_hour: 5
+            entities:
+              - entity: sensor.0x00158d0005870496_strength
+                name: Strenght
+            show:
+              labels: true
 
       - type: vertical-stack
         cards:
