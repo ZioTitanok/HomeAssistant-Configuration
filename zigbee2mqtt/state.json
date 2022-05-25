@@ -47,8 +47,8 @@
         "temperature": 31
     },
     "0x00158d0003cd2888": {
-        "temperature": 23.84,
-        "humidity": 68.67,
+        "temperature": 23.95,
+        "humidity": 67.61,
         "pressure": 1007.1,
         "voltage": 3005,
         "battery": 100
@@ -95,7 +95,7 @@
         "angle_x_absolute": 91,
         "angle_y_absolute": 89,
         "vibration": false,
-        "strength": 12
+        "strength": 8
     },
     "0x00158d00040209a6": {
         "voltage": 3015,
