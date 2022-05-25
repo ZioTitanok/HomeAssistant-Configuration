@@ -7,7 +7,8 @@ mqtt:
   reject_unauthorized: true
   version: 4
 serial:
-  port: /dev/ttyACM0
+  port: null
+  adapter: auto
 frontend:
   port: 8099
 devices:

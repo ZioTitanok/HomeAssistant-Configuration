@@ -7,7 +7,7 @@
 blueprints
 media
 tts
-
+zigbee2mqtt
 
 # File Ignored
 ip_bans.yaml

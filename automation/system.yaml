@@ -1,7 +1,7 @@
 # Automation: Service and System
 
 # Reboot Notification
-- alias: pi_reboot
+- alias: ha_reboot
   initial_state: true
   trigger:
     - platform: homeassistant
