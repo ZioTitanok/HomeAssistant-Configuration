@@ -256,12 +256,13 @@ views:
           - type: entities
             entities:
               - entity: input_select.loft_studio_lamps
-              - entity: binary_sensor.0x00158d0002ebcbee_occupancy
+              - entity: binary_sensor.0x00158d000460a15e_occupancy
                 type: custom:multiple-entity-row
-                name: PIR Scale
+                name: PIR
+                state_header: Studio
                 entities:
-                  - entity: sensor.0x00158d0002ebcbee_illuminance
-                    name: false
+                  - entity: binary_sensor.0x00158d0002ebcbee_occupancy
+                    name: Scale
               - entity: binary_sensor.0x00158d000309ba25_contact
                 type: custom:multiple-entity-row
                 name: Finestre
@@ -458,12 +459,13 @@ views:
                 entities:
                   - entity: binary_sensor.0x00158d0004020aa4_contact
                     name: Ingresso
+              - entity: binary_sensor.0x00158d00044ef61c_contact
+                type: custom:multiple-entity-row
+                name: Finestra
+                state_header: Cucina
               - entity: binary_sensor.0x00158d000414020a_occupancy
                 type: custom:multiple-entity-row
                 name: PIR Ingresso
-                entities:
-                  - entity: sensor.0x00158d000414020a_illuminance
-                    name: false
 
       - type: vertical-stack
         cards:
