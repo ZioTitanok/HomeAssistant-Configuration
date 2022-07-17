@@ -1,4 +1,4 @@
-# Sensor: Shelly (MQTT)
+# Sensor: Shelly
 
 # ShellyEM: Electical MainFrame (Template/Integration)
 - platform: template

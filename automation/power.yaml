@@ -38,3 +38,24 @@
       entity_id: media_player.main
       data:
         message: "Superata la soglia di 3.3 kilowatt per 90 secondi!"
+
+- alias: garage_power_check_300s
+  initial_state: true
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.shellyem_b9e2a0_channel_2_power
+      above: 450
+      for: "00:05:00"
+  action:
+    - service: notify.mobile_app_s22
+      data:
+        title: "Check Potenza"
+        message: "Probabile malfunzionamento pompa-pozzo: verifica!"
+        data:
+          tag: Power
+    - service: notify.mobile_app_j7_l
+      data:
+        title: "Check Potenza"
+        message: "Probabile malfunzionamento pompa-pozzo: verifica!"
+        data:
+          tag: Power

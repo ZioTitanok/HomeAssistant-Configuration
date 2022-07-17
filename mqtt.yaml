@@ -1,0 +1,19 @@
+# MQTT Integrations
+
+sensor:
+  # System Temperature
+  - name: nuc_temperature
+    state_topic: "system_monitor/temperature"
+    unit_of_measurement: "°C"
+    value_template: "{{ value | multiply(0.001) | round(2)}}"
+
+  # WemosA: Water Softener
+  - name: main_softener
+    state_topic: "tele/watersoftener/SENSOR"
+    unit_of_measurement: "cm"
+    value_template: "{{ value_json.SR04.Distance }}"
+
+  # Zigbee2Mqtt
+  - name: pi_zigbee2mqtt
+    state_topic: "zigbee2mqtt/bridge/state"
+    icon: mdi:router-wireless
