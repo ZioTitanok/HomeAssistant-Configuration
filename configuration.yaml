@@ -19,6 +19,7 @@ zone:
     radius: 75
 
 # Basic Functionality
+bluetooth:
 #cloud:
 config:
 counter:
@@ -32,7 +33,7 @@ mobile_app:
 my:
 person:
 ssdp:
-#stream:
+stream:
 system_health:
 tag:
 timer:
@@ -201,11 +202,6 @@ binary_sensor:
     name: Yi Camera
     host: !secret ip_yicamera
     scan_interval: 300
-  - platform: mqtt
-    name: Pir Yi
-    state_topic: "yicam/motion"
-    payload_on: "motion_start"
-    payload_off: "motion_stop"
 
 # Input
 input_datetime:
@@ -271,21 +267,20 @@ input_boolean:
     name: Party Time
     initial: off
     icon: mdi:music-note
+
 # Plant
-#plant:
-#  grande:
-#    sensors:
-#      moisture: sensor.flora1_moisture
-#      battery: sensor.flora1_battery
-#      temperature: sensor.flora1_temperature
-#      conductivity: sensor.flora1_conductivity
-#      brightness: sensor.flora1_light_intensity
-#    min_battery: 10
-#  piccolo:
-#    sensors:
-#      moisture: sensor.flora2_moisture
-#      battery: sensor.flora2_battery
-#      temperature: sensor.flora2_temperature
-#      conductivity: sensor.flora2_conductivity
-#      brightness: sensor.flora2_light_intensity
-#    min_battery: 10
+plant:
+  #  big:
+  #    sensors:
+  #      moisture: sensor.flora1_moisture
+  #      temperature: sensor.flora1_temperature
+  #      conductivity: sensor.flora1_conductivity
+  #      brightness: sensor.flora1_light_intensity
+  #    min_battery: 10
+  small:
+    sensors:
+      moisture: sensor.flower_care_1_moisture
+      temperature: sensor.flower_care_1_temperature
+      conductivity: sensor.flower_care_1_conductivity
+      brightness: sensor.flower_care_1_illuminance
+    min_battery: 10

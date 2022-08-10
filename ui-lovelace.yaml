@@ -358,12 +358,12 @@ views:
               labels: true
               labels_secondary: true
 
-      #          - type: plant-status
-      #            name: Grande
-      #            entity: plant.grande
-      #          - type: plant-status
-      #            name: Piccolo
-      #            entity: plant.piccolo
+          #          - type: plant-status
+          #            name: Grande
+          #            entity: plant.grande
+          - type: plant-status
+            name: Small
+            entity: plant.small
 
       - type: vertical-stack
         cards:

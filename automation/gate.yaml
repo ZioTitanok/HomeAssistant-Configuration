@@ -19,14 +19,28 @@
         data:
           tag: Gate
 
-# Gate Tag NFC
-- alias: main_gate_nfc
+# Gate Tag NFC Clio
+- alias: main_gate_nfc_clio
   initial_state: true
   trigger:
     - platform: tag
       tag_id: 72003416-c321-4f47-af6f-f5c66cb16400
+  action:
+    - service: homeassistant.turn_on
+      entity_id: switch.shelly1_5551cc
+
+# Gate Tag NFC Ypsilon
+- alias: main_gate_nfc_ypsilon
+  initial_state: true
+  trigger:
     - platform: tag
       tag_id: 4ea4d581-5f87-4519-b040-298052a34d6d
   action:
     - service: homeassistant.turn_on
       entity_id: switch.shelly1_5551cc
+    - service: notify.mobile_app_j7_g
+      data:
+        title: "Gate"
+        message: "Cancello in azione!"
+        data:
+          tag: Gate

@@ -1,43 +1,28 @@
 # Automation: House Main Power Control
 
 # Check Over Power
-- alias: home_power_check_5s
-  initial_state: true
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.home_power
-      above: 3000
-      for: "00:00:15"
-  action:
-    - service: notify.mobile_app_s22
-      data:
-        title: "Check Potenza"
-        message: "E' stata superata la soglia dei 3kW per 15s!"
-        data:
-          tag: Power
-
 - alias: home_power_check_100s
   initial_state: true
   trigger:
     - platform: numeric_state
       entity_id: sensor.home_power
       above: 3300
-      for: "00:01:30"
+      for: "00:02:00"
   action:
     - service: notify.mobile_app_s22
       data:
         title: "Check Potenza"
-        message: "E' stata superata la soglia dei 3.3kW per 90s!"
+        message: "E' stata superata la soglia dei 3.3kW per 120s!"
         data:
           tag: Power
     - service: tts.google_say
       entity_id: media_player.loft
       data:
-        message: "Superata la soglia di 3.3 kilowatt per 90 secondi!"
+        message: "Superata la soglia di 3.3 kilowatt per 120 secondi!"
     - service: tts.google_say
       entity_id: media_player.main
       data:
-        message: "Superata la soglia di 3.3 kilowatt per 90 secondi!"
+        message: "Superata la soglia di 3.3 kilowatt per 120 secondi!"
 
 - alias: garage_power_check_300s
   initial_state: true
