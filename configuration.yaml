@@ -270,17 +270,15 @@ input_boolean:
 
 # Plant
 plant:
-  #  big:
-  #    sensors:
-  #      moisture: sensor.flora1_moisture
-  #      temperature: sensor.flora1_temperature
-  #      conductivity: sensor.flora1_conductivity
-  #      brightness: sensor.flora1_light_intensity
-  #    min_battery: 10
+  big:
+    sensors:
+      moisture: sensor.flower_care_b_moisture
+      temperature: sensor.flower_care_b_temperature
+      conductivity: sensor.flower_care_b_conductivity
+      brightness: sensor.flower_care_b_illuminance
   small:
     sensors:
-      moisture: sensor.flower_care_1_moisture
-      temperature: sensor.flower_care_1_temperature
-      conductivity: sensor.flower_care_1_conductivity
-      brightness: sensor.flower_care_1_illuminance
-    min_battery: 10
+      moisture: sensor.flower_care_a_moisture
+      temperature: sensor.flower_care_a_temperature
+      conductivity: sensor.flower_care_a_conductivity
+      brightness: sensor.flower_care_a_illuminance
