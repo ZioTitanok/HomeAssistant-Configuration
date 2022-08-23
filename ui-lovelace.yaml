@@ -273,6 +273,8 @@ views:
           - type: entities
             show_header_toggle: false
             entities:
+              - entity: automation.loft_motion
+                name: Notifica Movimento
               - entity: automation.loft_studio_shelf_off
                 type: custom:multiple-entity-row
                 name: Scaffale
