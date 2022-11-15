@@ -2,11 +2,11 @@
 
 # Climate Loft
 # Season: heater; target_temp; ac_mode
-# Winter: switch.loft_thermostat; 19.5; false
+# Winter: switch.shelly1_555fce; 19.5; false
 # Summer: switch.mitsubishi; 26.5; true
 - platform: generic_thermostat
   name: loft
-  heater: switch.loft_thermostat
+  heater: switch.shelly1_555fce
   target_sensor: sensor.loft_relevant_temperature
   min_temp: 16
   max_temp: 35
