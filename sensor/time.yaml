@@ -3,16 +3,9 @@
 # Time
 - platform: time_date
   display_options:
-    - 'time'
-    - 'date'
-    - 'time_utc'
-
-    # Seasonal
-- platform: season
-  type: astronomical
-
-# Moon
-- platform: moon
+    - "time"
+    - "date"
+    - "time_utc"
 
 # Recycle
 - platform: template
@@ -20,5 +13,4 @@
     recycle:
       icon_template: mdi:trash-can-outline
       value_template: >
-        {{ ['Organico','Multimateriale','Carta','-','Organico','-','Indifferenziato'][now().weekday()] }}       
-    
+        {{ ['Organico','Multimateriale','Carta','-','Organico','-','Indifferenziato'][now().weekday()] }}

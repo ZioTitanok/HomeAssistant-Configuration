@@ -6,14 +6,14 @@
 # Summer: switch.mitsubishi; 26.5; true
 - platform: generic_thermostat
   name: loft
-  heater: switch.mitsubishi
+  heater: switch.loft_thermostat
   target_sensor: sensor.loft_relevant_temperature
   min_temp: 16
   max_temp: 35
-  target_temp: 26.5
+  target_temp: 17.5
   cold_tolerance: 0.2
   hot_tolerance: 0.1
-  ac_mode: true
+  ac_mode: false
   precision: 0.1
 
 # Climate Main

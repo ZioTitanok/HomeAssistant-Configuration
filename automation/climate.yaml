@@ -29,7 +29,7 @@
 
 # Climate Loft Set-Po,int
 # Season: temperature (day); temperature (night);
-# Winter: 19.5; 18
+# Winter: 19.5; 18 [17.5; 16.5]
 # Summer: 26; 26
 - alias: loft_climate_setpoint_day
   initial_state: true
@@ -40,11 +40,11 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.loft
-        temperature: 26.5
+        temperature: 17.5
     - service: notify.mobile_app_s22
       data:
         title: "Climate Loft"
-        message: "Temperatura giorno (26.5°C) in vigore!"
+        message: "Temperatura giorno (17.5°C) in vigore!"
         data:
           tag: Termostato_Loft
 
@@ -57,11 +57,11 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.loft
-        temperature: 26.5
+        temperature: 16.5
     - service: notify.mobile_app_s22
       data:
         title: "Climate Loft"
-        message: "Temperatura notte (26.5°C) entrata in vigore!"
+        message: "Temperatura notte (16.5°C) entrata in vigore!"
         data:
           tag: Termostato_Loft
 

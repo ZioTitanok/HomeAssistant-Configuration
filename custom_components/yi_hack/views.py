@@ -8,7 +8,7 @@ import logging
 from typing import Any
 
 import aiohttp
-from aiohttp import hdrs, web
+from aiohttp import hdrs, web, BasicAuth
 from aiohttp.web_exceptions import HTTPBadGateway, HTTPUnauthorized
 from multidict import CIMultiDict
 
@@ -100,6 +100,10 @@ class VideoProxyView(HomeAssistantView):
         data = await request.read()
         source_header = _init_header(request)
 
+        auth = None
+        if user or password:
+            auth = BasicAuth(user, password)
+
         async with self._websession.request(
             request.method,
             url,
@@ -107,6 +111,7 @@ class VideoProxyView(HomeAssistantView):
             params=request.query,
             allow_redirects=False,
             data=data,
+            auth=auth,
         ) as result:
             headers = _response_header(result)
 
