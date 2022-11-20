@@ -18,6 +18,22 @@
       data:
         message: "Riavvio di sistema completato con successo."
 
+# Ip Change Notification
+- alias: ip_change
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.external_ip
+  condition:
+    - condition: template
+      value_template: '"{{ trigger.to_state.state != ''None'' }}"'
+  action:
+    - service: notify.mobile_app_s22
+      data:
+        title: "Rete"
+        message: "Il nuovo indirizzo IP è {{ states.sensor.external_ip.state }}"
+  mode: single
+
 # Day/Night Graph Cicle
 - alias: home_night
   initial_state: true

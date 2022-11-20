@@ -122,14 +122,29 @@ weather:
 
 # Google Assistant
 google_assistant:
-  project_id: hassos-2020f
-  service_account: !include hassos-2020f-a212bf5e55ff.json
+  project_id: jarvis-59028
+  service_account: !include jarvis-59028-6b0d0b5a50ba.json
   report_state: true
   expose_by_default: false
   exposed_domains:
     - switch
     - climate
   entity_config:
+    climate.loft:
+      name: Termostato Mansarda
+      expose: true
+    climate.main:
+      name: Termostato Padronale
+      expose: true
+    input_boolean.radio_activate:
+      name: Radio
+      expose: true
+    input_boolean.loft_discoball_activate:
+      name: Party
+      expose: true
+    light.shellyvintage_6ee515:
+      name: Poltrona
+      expose: True
     switch.shellyswitch25_740859_channel_1:
       name: Ingresso
       expose: true
@@ -168,12 +183,6 @@ google_assistant:
       expose: true
     switch.shelly1_5551cc:
       name: Cancello
-      expose: true
-    input_boolean.radio_activate:
-      name: Radio
-      expose: true
-    input_boolean.loft_discoball_activate:
-      name: Party
       expose: true
 
       # TTS

@@ -28,7 +28,7 @@
   initial_state: true
   trigger:
     - platform: numeric_state
-      entity_id: sensor.shellyem_b9e2a0_channel_2_power
+      entity_id: sensor.shellyem_244cab431c8c_channel_2_power
       above: 450
       for: "00:05:00"
   action:

@@ -5,6 +5,7 @@
 .storage
 .vscode
 blueprints
+image
 media
 tts
 zigbee2mqtt
@@ -19,7 +20,7 @@ home-assistant.log.1
 home-assistant.log.fault
 home-assistant_v2.db-shm
 home-assistant_v2.db-wal
-hassos-2020f-a212bf5e55ff.json
+jarvis-59028-6b0d0b5a50ba.json
 
 *.mp3
 *.jpg
