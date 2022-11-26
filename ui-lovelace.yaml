@@ -218,15 +218,15 @@ views:
                     name: false
                   - entity: switch.shellyswitch_559384_channel_1
                     toggle: true
-              #- entity: switch.
-              #  type: custom:multiple-entity-row
-              #  toggle: true
-              #  name: Albero
-              #  state_header: Albero
-              #  icon: mdi:string-lights
-              #  entities:
-              #    - entity: sensor._power
-              #      name: false
+              - entity: switch.shelly1pm_e89f6d86855c
+                type: custom:multiple-entity-row
+                toggle: true
+                name: Albero
+                state_header: Albero
+                icon: mdi:string-lights
+                entities:
+                  - entity: sensor.shelly1pm_e89f6d86855c_power
+                    name: false
               - entity: switch.smart_switch_1908075327132739087848e1e950cec7_outlet_6
                 type: custom:multiple-entity-row
                 toggle: true
@@ -531,6 +531,16 @@ views:
             entities:
               - switch.shelly1_5551cc
 
+      - type: entities
+        state_color: true
+        entities:
+          - entity: sensor.hp_officejet_5740_series
+            name: Stato Stampante HP
+          - entity: sensor.hp_officejet_5740_series_black_ink
+            name: Cartuccia Nero
+          - entity: sensor.hp_officejet_5740_series_tri_color_ink
+            name: Cartuccia Colori
+
       - type: picture-glance
         title: Yi Camera
         camera_image: camera.yi_hack_m_20fe4c_cam
@@ -576,36 +586,11 @@ views:
               - entity: sensor.home_assistant_operating_system_version
                 name: Versione
           - type: entities
-            state_color: true
             entities:
-              - entity: sensor.pi_zigbee2mqtt
-                name: Zigbee2Mqtt
-
-              - entity: binary_sensor.k4
-              - entity: binary_sensor.k9
-              - entity: binary_sensor.yi_hack_m_20fe4c_status
-                name: Yi Camera
-              - entity: binary_sensor.rm_mini
-          - type: custom:mini-graph-card
-            name: Temperatura Shelly (24h)
-            line_width: 3
-            points_per_hour: 5
-            entities:
-              - entity: sensor.shelly1pm_609ca4_device_temperature
-                name: Shelly (Aircooler)
-              #- entity: sensor._device_temperature
-              #  name: Shelly (Albero)
-              - entity: sensor.shellyswitch25_740859_device_temperature
-                name: Shelly (Entrance&Kitchen)
-              - entity: sensor.shellyswitch25_740826_device_temperature
-                name: Shelly (Bedroom&Living)
-              - entity: sensor.shelly1pm_84cca8a855b6_device_temperature
-                name: Shelly (Aba)
-            show:
-              labels: true
-
-      - type: vertical-stack
-        cards:
+              - entity: sensor.external_ip
+                icon: mdi:lan
+              - entity: sensor.speedtest_ping
+                name: Ping
           - type: custom:mini-graph-card
             name: Rete (7g)
             hours_to_show: 168
@@ -626,9 +611,36 @@ views:
               labels: true
               labels_secondary: true
           - type: entities
+            state_color: true
             entities:
-              - entity: sensor.speedtest_ping
-                name: Ping
+              - entity: sensor.pi_zigbee2mqtt
+                name: Zigbee2Mqtt
+              - entity: binary_sensor.k4
+              - entity: binary_sensor.k9
+              - entity: binary_sensor.yi_hack_m_20fe4c_status
+                name: Yi Camera
+              - entity: binary_sensor.rm_mini
+
+      - type: vertical-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperatura Shelly (24h)
+            line_width: 3
+            points_per_hour: 5
+            entities:
+              - entity: sensor.shelly1pm_609ca4_device_temperature
+                name: Shelly (Aircooler)
+              - entity: sensor.shelly1pm_e89f6d86855c_device_temperature
+                name: Shelly (Albero)
+              - entity: sensor.shellyswitch25_740859_device_temperature
+                name: Shelly (Entrance&Kitchen)
+              - entity: sensor.shellyswitch25_740826_device_temperature
+                name: Shelly (Bedroom&Living)
+              - entity: sensor.shelly1pm_84cca8a855b6_device_temperature
+                name: Shelly (Aba)
+            show:
+              labels: true
+
           - type: custom:mini-graph-card
             name: Livello Addolcitore (7g)
             hours_to_show: 168

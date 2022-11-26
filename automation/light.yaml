@@ -22,24 +22,30 @@
       entity_id: switch.shellyswitch_559384_channel_2
 
 # Loft Studio Portable Auto On
-#- alias: loft_studio_portable_on
-#  initial_state: true
-#  trigger:
-#    - platform: time
-#      at: "08:00:00"
-#  action:
-#    - service: homeassistant.turn_on
-#      entity_id: switch.shelly1pm_84cca8a855b6
+- alias: loft_studio_portable_on
+  initial_state: true
+  trigger:
+    #    - platform: time
+    #      at: "08:00:00"
+    - platform: state
+      entity_id: binary_sensor.k9
+      to: "on"
+  action:
+    - service: homeassistant.turn_on
+      entity_id: switch.shelly1pm_84cca8a855b6
 
 # Loft Studio Portable Auto Off
-#- alias: loft_studio_portable_off
-#  initial_state: true
-#  trigger:
-#    - platform: time
-#      at: "23:55:00"
-#  action:
-#    - service: homeassistant.turn_off
-#      entity_id: switch.shelly1pm_84cca8a855b6
+- alias: loft_studio_portable_off
+  initial_state: true
+  trigger:
+    #    - platform: time
+    #      at: "23:55:00"
+    - platform: state
+      entity_id: binary_sensor.k9
+      to: "off"
+  action:
+    - service: homeassistant.turn_off
+      entity_id: switch.shelly1pm_84cca8a855b6
 
 # Loft Studio Auxiliary Auto On
 - alias: loft_studio_auxiliary_on
