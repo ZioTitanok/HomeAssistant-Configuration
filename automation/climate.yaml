@@ -40,11 +40,11 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.loft
-        temperature: 17.5
+        temperature: 17.0
     - service: notify.mobile_app_s22
       data:
         title: "Climate Loft"
-        message: "Temperatura giorno (17.5°C) in vigore!"
+        message: "Temperatura giorno (17.0°C) in vigore!"
         data:
           tag: Termostato_Loft
 

@@ -127,8 +127,9 @@ google_assistant:
   report_state: true
   expose_by_default: false
   exposed_domains:
-    - switch
+    - light
     - climate
+    - switch
   entity_config:
     climate.loft:
       name: Termostato Mansarda
@@ -166,9 +167,9 @@ google_assistant:
     switch.shellyswitch_55c794_channel_1:
       name: Studio
       expose: true
-    #switch.:
-    #  name: Albero
-    #  expose: true
+    switch.shelly1pm_e89f6d86855c:
+      name: Albero
+      expose: true
     switch.shellyswitch_55c39a_channel_2:
       name: Tana
       expose: true
@@ -185,7 +186,7 @@ google_assistant:
       name: Cancello
       expose: true
 
-      # TTS
+# TTS
 tts:
   - platform: google_translate
     service_name: google_say

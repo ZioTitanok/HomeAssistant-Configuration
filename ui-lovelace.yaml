@@ -587,6 +587,9 @@ views:
                 name: Versione
           - type: entities
             entities:
+              - entity: sensor.mariadb_database_size
+          - type: entities
+            entities:
               - entity: sensor.external_ip
                 icon: mdi:lan
               - entity: sensor.speedtest_ping

@@ -13,8 +13,6 @@ binary_sensor.k10:
   icon: mdi:laptop
 binary_sensor.dell:
   icon: mdi:laptop
-binary_sensor.epson:
-  icon: mdi:printer
 binary_sensor.yi_camera:
   icon: mdi:webcam
 binary_sensor.pir_yi:
@@ -55,8 +53,8 @@ switch.shellyswitch_559384_channel_2:
   friendly_name: "Scaffale"
 switch.shellyswitch_559384_channel_1:
   friendly_name: "Discoball"
-#switch.:
-#  friendly_name: "Albero"
+switch.shelly1pm_e89f6d86855c:
+  friendly_name: "Albero"
 switch.shellyswitch25_740859_channel_1:
   friendly_name: "Ingresso"
 switch.shellyswitch25_740826_channel_1:

@@ -1,5 +1,5 @@
 # Recorder
-
+db_url: !secret mariadb_url
 exclude:
   domains:
     - automation

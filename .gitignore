@@ -14,12 +14,9 @@ zigbee2mqtt
 ip_bans.yaml
 secrets.yaml
 known_devices.yaml
-home-assistant_v2.db
 home-assistant.log
 home-assistant.log.1
 home-assistant.log.fault
-home-assistant_v2.db-shm
-home-assistant_v2.db-wal
 jarvis-59028-6b0d0b5a50ba.json
 
 *.mp3

@@ -24,9 +24,9 @@
   trigger:
     - platform: state
       entity_id: sensor.external_ip
-  condition:
-    - condition: template
-      value_template: '"{{ trigger.to_state.state != ''None'' }}"'
+  #  condition:
+  #    - condition: template
+  #      value_template: '"{{ trigger.to_state.state != ''None'' }}"'
   action:
     - service: notify.mobile_app_s22
       data:

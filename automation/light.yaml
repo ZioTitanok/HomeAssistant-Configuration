@@ -32,7 +32,7 @@
       to: "on"
   action:
     - service: homeassistant.turn_on
-      entity_id: switch.shelly1pm_84cca8a855b6
+      entity_id: switch.shelly1pm_e89f6d86855c
 
 # Loft Studio Portable Auto Off
 - alias: loft_studio_portable_off
@@ -45,7 +45,7 @@
       to: "off"
   action:
     - service: homeassistant.turn_off
-      entity_id: switch.shelly1pm_84cca8a855b6
+      entity_id: switch.shelly1pm_e89f6d86855c
 
 # Loft Studio Auxiliary Auto On
 - alias: loft_studio_auxiliary_on
