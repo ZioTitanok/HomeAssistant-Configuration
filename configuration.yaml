@@ -7,6 +7,7 @@ homeassistant:
   longitude: !secret home_longitude
   elevation: !secret home_elevation
   unit_system: metric
+  country: IT
   time_zone: Europe/Rome
   customize: !include customize.yaml
   external_url: !secret home_eurl

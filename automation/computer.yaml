@@ -11,7 +11,7 @@
       entity_id: binary_sensor.k4
       to: "off"
   action:
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Computer K4"
         message: >
@@ -30,7 +30,7 @@
       entity_id: binary_sensor.k9
       to: "off"
   action:
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Computer K9"
         message: >
@@ -45,7 +45,7 @@
 #      entity_id: binary_sensor.dell
 #      to: 'on'
 #  action:
-#    - service: notify.mobile_app_samsung_j7_g
+#    - service: notify.mobile_app_samsung_s22minus
 #      data:
 #        title: "Computer Dell Online"
 #        message: "HomeAssistant ti augura buon lavoro!"

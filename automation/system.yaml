@@ -7,7 +7,7 @@
     - platform: homeassistant
       event: start
   action:
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Homeassistant"
         message: "Sistema riavviato con successo."
@@ -28,7 +28,7 @@
   #    - condition: template
   #      value_template: '"{{ trigger.to_state.state != ''None'' }}"'
   action:
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Rete"
         message: "Il nuovo indirizzo IP è {{ states.sensor.external_ip.state }}"

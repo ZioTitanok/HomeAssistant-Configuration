@@ -7,7 +7,7 @@
       entity_id: binary_sensor.0x00158d000460a15e_occupancy
       to: "on"
   action:
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Rilevato Movimento"
         message: "E' stato rilevato un movimento in mansarda!"

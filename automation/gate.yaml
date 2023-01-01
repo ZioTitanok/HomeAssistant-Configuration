@@ -12,7 +12,7 @@
   action:
     - service: homeassistant.turn_off
       entity_id: switch.shelly1_5551cc
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Gate"
         message: "Cancello in azione!"
@@ -38,7 +38,7 @@
   action:
     - service: homeassistant.turn_on
       entity_id: switch.shelly1_5551cc
-    - service: notify.mobile_app_j7_g
+    - service: notify.mobile_app_s22minus
       data:
         title: "Gate"
         message: "Cancello in azione!"

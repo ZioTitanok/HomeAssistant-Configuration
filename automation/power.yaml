@@ -9,7 +9,7 @@
       above: 3300
       for: "00:02:00"
   action:
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Check Potenza"
         message: "E' stata superata la soglia dei 3.3kW per 120s!"
@@ -32,7 +32,7 @@
       above: 450
       for: "00:05:00"
   action:
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Check Potenza"
         message: "Probabile malfunzionamento pompa-pozzo: verifica!"

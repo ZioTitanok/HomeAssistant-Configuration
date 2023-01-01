@@ -7,7 +7,7 @@
     - platform: template
       value_template: "{{ states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float + 2 > states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}"
   action:
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Confronto Temperatura"
         message: "Fuori ci sono 2°C in più che in mansarda!"
@@ -20,14 +20,14 @@
     - platform: template
       value_template: "{{ states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float + 2 < states.sensor['0x00158d000346487a_temperature'].attributes.temperature|float }}"
   action:
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Confronto Temperatura"
         message: "Fuori ci sono 2°C in meno che in mansarda!"
         data:
           tag: temperatura
 
-# Climate Loft Set-Po,int
+# Climate Loft Set-Point
 # Season: temperature (day); temperature (night);
 # Winter: 19.5; 18 [17.5; 16.5]
 # Summer: 26; 26
@@ -41,7 +41,7 @@
       data:
         entity_id: climate.loft
         temperature: 17.0
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Climate Loft"
         message: "Temperatura giorno (17.0°C) in vigore!"
@@ -58,7 +58,7 @@
       data:
         entity_id: climate.loft
         temperature: 16.5
-    - service: notify.mobile_app_s22
+    - service: notify.mobile_app_s22plus
       data:
         title: "Climate Loft"
         message: "Temperatura notte (16.5°C) entrata in vigore!"
@@ -99,6 +99,23 @@
       entity_id: switch.mitsubishi
 
 # Climate Main Set-Point
+- alias: main_climate_setpoint_day
+  initial_state: true
+  trigger:
+    - platform: time
+      at: "07:00:00"
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.main
+        temperature: 17.0
+    - service: notify.mobile_app_j7_l
+      data:
+        title: "Climate Main"
+        message: "Temperatura giorno (17.0°C) in vigore!"
+        data:
+          tag: Termostato_Main
+
 - alias: main_climate_setpoint_night
   initial_state: true
   trigger:
@@ -108,10 +125,10 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.main
-        temperature: 17
-    - service: notify.mobile_app_s22
+        temperature: 16
+    - service: notify.mobile_app_j7_l
       data:
-        title: "Piattaforma Climate"
-        message: "Temperatura notte (17°C) entrata in vigore!"
+        title: "Climate Main"
+        message: "Temperatura notte (16°C) entrata in vigore!"
         data:
           tag: Termostato_Main
