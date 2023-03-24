@@ -18,14 +18,17 @@ views:
                   - entity: sensor.time
                     name: false
           - type: custom:weather-card
-            entity: weather.dark_sky
+            entity: weather.openweathermap
             current: true
             details: true
             forecast: true
+            hourly_forecast: true
+            number_of_forecasts: 5
+          - type: iframe
+            url: !secret windy_url
+            aspect_ratio: 60%
           - type: entities
             entities:
-              - entity: sun.sun
-                name: Sole
               - entity: sensor.moon
                 name: Luna
 
@@ -117,9 +120,6 @@ views:
 
       - type: vertical-stack
         cards:
-          - type: iframe
-            url: !secret windy_url
-            aspect_ratio: 60%
           - type: custom:mini-graph-card
             name: Potenza (24h)
             hours_to_show: 24

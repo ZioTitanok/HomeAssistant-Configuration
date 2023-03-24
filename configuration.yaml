@@ -113,11 +113,6 @@ ffmpeg:
 # Weather
 sun:
 
-weather:
-  - platform: darksky
-    api_key: !secret darksky_api
-    mode: daily
-
 # Google Assistant
 google_assistant:
   project_id: jarvis-59028
