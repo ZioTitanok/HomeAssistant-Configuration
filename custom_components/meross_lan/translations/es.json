@@ -13,10 +13,6 @@
             "invalid_auth": "Error de autenticación"
         },
         "step": {
-            "user": {
-                "description": "Configurar un dispositivo meross",
-                "data": {}
-            },
             "hub": {
                 "title": "Concentrador Meross LAN MQTT",
                 "description": "Configurar las opciones globales de Meross LAN",
@@ -28,8 +24,15 @@
                 "description": "Configurar un dispositivo meross\nTipo: {device_type}\nUUID: {device_id}",
                 "data": {
                     "host": "Dirección IP del dispositivo",
-                    "keymode": "Modo de selección de clave",
                     "key": "Clave de dispositivo"
+                }
+            },
+            "keyerror": {
+                "title": "Error de clave de dispositivo",
+                "description": "La clave proporcionada es incorrecta. Elija una opción",
+                "menu_options": {
+                    "cloudkey": "Recuperar de la nube de Meross",
+                    "device": "Rever"
                 }
             },
             "cloudkey": {
@@ -53,7 +56,8 @@
             "invalid_nullkey": "Error clave: seleccione 'Hack mode' para permitir la clave vacía",
             "already_configured_device": "Este dispositivo ya esta configurado",
             "cannot_connect": "No es posible conectarse",
-            "invalid_auth": "Error de autenticación"
+            "invalid_auth": "Error de autenticación",
+            "device_id_mismatch": "Discrepancia de UUID: el dispositivo no es el mismo"
         },
         "step": {
             "hub": {
@@ -68,7 +72,6 @@
                 "description": "Tipo: {device_type}\nUUID: {device_id}\nDirección IP: {host}",
                 "data": {
                     "host": "Dirección IP del dispositivo",
-                    "keymode": "Modo de selección de clave",
                     "key": "Clave de dispositivo",
                     "protocol": "Protocolo de conexión",
                     "polling_period": "Intervalo de consulta",
@@ -77,6 +80,14 @@
                     "trace_timeout": "Debug tracing duration (sec)",
                     "all": "Appliance.System.All",
                     "ability": "Appliance.System.Ability"
+                }
+            },
+            "keyerror": {
+                "title": "Error de clave de dispositivo",
+                "description": "La clave proporcionada es incorrecta. Elija una opción",
+                "menu_options": {
+                    "cloudkey": "Recuperar de la nube de Meross",
+                    "device": "Rever"
                 }
             },
             "cloudkey": {

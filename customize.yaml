@@ -3,20 +3,14 @@
 # Binary Sensor
 binary_sensor.rm_mini:
   icon: mdi:remote
-binary_sensor.meross:
-  icon: mdi:power-socket
 binary_sensor.k4:
   icon: mdi:desktop-classic
 binary_sensor.k9:
   icon: mdi:laptop
-binary_sensor.k10:
-  icon: mdi:laptop
-binary_sensor.dell:
-  icon: mdi:laptop
+binary_sensor.nas:
+  icon: mdi:harddisk
 binary_sensor.yi_camera:
   icon: mdi:webcam
-binary_sensor.pir_yi:
-  icon: mdi:run
 
 # Light:
 light.shellyvintage_6ee515:

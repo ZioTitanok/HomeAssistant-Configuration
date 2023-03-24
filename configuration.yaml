@@ -27,7 +27,6 @@ counter:
 dhcp:
 energy:
 frontend:
-image:
 map:
 media_source:
 mobile_app:
@@ -105,8 +104,6 @@ lovelace:
     - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js
       type: module
     - url: /hacsfiles/simple-thermostat/simple-thermostat.js
-      type: module
-    - url: /hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js
       type: module
 
 # Driver & Camera
@@ -203,6 +200,10 @@ binary_sensor:
   - platform: ping
     name: K4
     host: !secret ip_k4
+    scan_interval: 300
+  - platform: ping
+    name: Nas
+    host: !secret ip_nas
     scan_interval: 300
   # Devices
   - platform: ping

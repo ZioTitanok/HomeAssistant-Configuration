@@ -8,8 +8,6 @@ exclude:
     - input_select
     - script
   entities:
-    - light.0x000b57fffe4baa6e_light
-    - light.0x000b57fffe48a1de_light
     - sensor.date
     - sensor.time
     - sensor.time_utc
@@ -27,10 +25,12 @@ include:
     - sensor
     - switch
   entities:
-    - automation.main_gate_nfc
+    - automation.main_gate_management
+    - automation.main_gate_nfc_clio
+    - automation.main_gate_nfc_ypsilon
     - climate.loft
     - climate.main
-    - input_boolean.discoball_activate
+    - input_boolean.loft_discoball_activate
     - input_boolean.radio_activate
     - input_datetime.loft_auxiliary_on
     - input_datetime.loft_auxiliary_off
@@ -38,6 +38,3 @@ include:
     - input_number.radio_volume
     - vacuum.roomba
     - sun.sun
-  entity_globs:
-    - binary_sensor.*_occupancy
-    - binary_sensor.*_contact

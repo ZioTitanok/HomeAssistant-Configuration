@@ -22,11 +22,10 @@
 - alias: ip_change
   initial_state: true
   trigger:
+    - platform: homeassistant
+      event: start
     - platform: state
       entity_id: sensor.external_ip
-  #  condition:
-  #    - condition: template
-  #      value_template: '"{{ trigger.to_state.state != ''None'' }}"'
   action:
     - service: notify.mobile_app_s22plus
       data:

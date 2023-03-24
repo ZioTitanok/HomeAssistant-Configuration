@@ -37,12 +37,12 @@
       unit_of_measurement: "°C"
       icon_template: mdi:thermometer
       value_template: >
-        {{ (states.sensor.cfr_montopoli_temperature.state|float - states.sensor['0x00158d00041e2833_temperature'].attributes.temperature|float)|round(2) }}
+        {{ (states.sensor.cfr_montopoli_temperature.state|float - states.sensor.loft_external_climate_temperature.state|float)|round(2) }}
     cfr_esterno_deltahumidity:
       unit_of_measurement: "%"
       icon_template: mid:water-percent
       value_template: >
-        {{ (states.sensor.cfr_montopoli_humidity.state|float - states.sensor['0x00158d00041e2833_humidity'].attributes.humidity|float)|round(2) }}
+        {{ (states.sensor.cfr_montopoli_humidity.state|float - states.sensor.loft_external_climate_humidity.state|float)|round(2) }}
 
 # Loft Relevant Temperature
 - platform: template
@@ -50,8 +50,8 @@
     loft_relevant_temperature:
       unit_of_measurement: "°C"
       value_template: >
-        {% if 8 <= strptime(states('sensor.time'), "%H:%M").hour < 23 %} {{states.sensor['0x00158d000346487a_temperature'].attributes.temperature}}
-        {% else %} {{states.sensor['0x00158d0004183f08_temperature'].attributes.temperature}}
+        {% if 8 <= strptime(states('sensor.time'), "%H:%M").hour < 23 %} {{states.sensor.loft_studio_climate_temperature.state}}
+        {% else %} {{states.sensor.loft_tana_climate_temperature.state}}
         {% endif %}
     loft_relevant_text:
       icon_template: mdi:map-clock

@@ -22,9 +22,10 @@ views:
             current: true
             details: true
             forecast: true
-          - type: custom:sun-card
           - type: entities
             entities:
+              - entity: sun.sun
+                name: Sole
               - entity: sensor.moon
                 name: Luna
 
@@ -36,15 +37,15 @@ views:
             line_width: 3
             points_per_hour: 1
             entities:
-              - entity: sensor.0x00158d00041e2833_temperature
+              - entity: sensor.loft_external_climate_temperature
                 name: Esterno
               - entity: sensor.cfr_montopoli_temperature
                 name: CFR
-              - entity: sensor.0x00158d000346487a_temperature
+              - entity: sensor.loft_studio_climate_temperature
                 name: Studio
-              - entity: sensor.0x00158d0004183f08_temperature
+              - entity: sensor.loft_tana_climate_temperature
                 name: Tana
-              - entity: sensor.0x00158d0003cd2888_temperature
+              - entity: sensor.main_entrance_climate_temperature
                 name: Ingresso
               - entity: input_number.night
                 color: gray
@@ -62,15 +63,15 @@ views:
             line_width: 3
             points_per_hour: 1
             entities:
-              - entity: sensor.0x00158d00041e2833_humidity
+              - entity: sensor.loft_external_climate_humidity
                 name: Esterno
               - entity: sensor.cfr_montopoli_humidity
                 name: CFR
-              - entity: sensor.0x00158d000346487a_humidity
+              - entity: sensor.loft_studio_climate_humidity
                 name: Studio
-              - entity: sensor.0x00158d0004183f08_humidity
+              - entity: sensor.loft_tana_climate_humidity
                 name: Tana
-              - entity: sensor.0x00158d0003cd2888_humidity
+              - entity: sensor.main_entrance_climate_humidity
                 name: Ingresso
               - entity: input_number.night
                 color: gray
@@ -189,10 +190,10 @@ views:
               show_header_toggle: false
               entities:
                 - type: custom:slider-entity-row
-                  entity: light.0x000b57fffe48a1de
+                  entity: light.loft_studio_wallexternal_status
                   name: Esterno
                 - type: custom:slider-entity-row
-                  entity: light.0x000b57fffe4baa6e
+                  entity: light.loft_studio_wallinternal_status
                   name: Interno
 
           - type: entities
@@ -265,19 +266,19 @@ views:
           - type: entities
             entities:
               - entity: input_select.loft_studio_lamps
-              - entity: binary_sensor.0x00158d000460a15e_occupancy
+              - entity: binary_sensor.loft_studio_pir_status
                 type: custom:multiple-entity-row
                 name: PIR
                 state_header: Studio
                 entities:
-                  - entity: binary_sensor.0x00158d0002ebcbee_occupancy
+                  - entity: binary_sensor.loft_stairs_pir_status
                     name: Scale
-              - entity: binary_sensor.0x00158d000309ba25_contact
+              - entity: binary_sensor.loft_studio_velux_status
                 type: custom:multiple-entity-row
                 name: Finestre
                 state_header: Studio
                 entities:
-                  - entity: binary_sensor.0x00158d00032b7616_contact
+                  - entity: binary_sensor.loft_tana_velux_status
                     name: Tana
           - type: entities
             show_header_toggle: false
@@ -321,11 +322,11 @@ views:
             step_layout: row
             header: false
             sensors:
-              - entity: sensor.0x00158d000346487a_humidity
+              - entity: sensor.loft_studio_climate_humidity
                 name: Umidità (S)
-              - entity: sensor.0x00158d0004183f08_humidity
+              - entity: sensor.loft_tana_climate_humidity
                 name: Umidità (T)
-              - entity: sensor.0x00158d00041e2833_humidity
+              - entity: sensor.loft_external_climate_humidity
                 name: Umidità (E)
               - entity: sensor.loft_relevant_text
                 name: Comando
@@ -351,11 +352,11 @@ views:
             line_width: 3
             points_per_hour: 5
             entities:
-              - entity: sensor.0x00158d000346487a_temperature
+              - entity: sensor.loft_studio_climate_temperature
                 name: Studio
-              - entity: sensor.0x00158d0004183f08_temperature
+              - entity: sensor.loft_tana_climate_temperature
                 name: Tana
-              - entity: sensor.0x00158d00041e2833_temperature
+              - entity: sensor.loft_external_climate_temperature
                 name: Esterno
               - entity: sensor.cfr_montopoli_temperature
                 name: CFR
@@ -418,9 +419,9 @@ views:
             step_layout: row
             header: false
             sensors:
-              - entity: sensor.0x00158d0003cd2888_humidity
+              - entity: sensor.main_entrance_climate_humidity
                 name: Umidità (I)
-              - entity: sensor.0x00158d00041e2833_humidity
+              - entity: sensor.loft_external_climate_humidity
                 name: Umidità (E)
           - type: entities
             show_header_toggle: false
@@ -463,18 +464,18 @@ views:
           - type: entities
             show_header_toggle: false
             entities:
-              - entity: binary_sensor.0x00158d00040209a6_contact
+              - entity: binary_sensor.main_salotto_door_status
                 type: custom:multiple-entity-row
                 name: Porta
                 state_header: Sala
                 entities:
-                  - entity: binary_sensor.0x00158d0004020aa4_contact
+                  - entity: binary_sensor.main_entrance_door_status
                     name: Ingresso
-              - entity: binary_sensor.0x00158d00044ef61c_contact
+              - entity: binary_sensor.main_cucina_window_status
                 type: custom:multiple-entity-row
                 name: Finestra
                 state_header: Cucina
-              - entity: binary_sensor.0x00158d000414020a_occupancy
+              - entity: binary_sensor.main_entrance_pir_status
                 type: custom:multiple-entity-row
                 name: PIR Ingresso
 
@@ -485,9 +486,9 @@ views:
             line_width: 3
             points_per_hour: 5
             entities:
-              - entity: sensor.0x00158d0003cd2888_temperature
+              - entity: sensor.main_entrance_climate_temperature
                 name: Ingresso
-              - entity: sensor.0x00158d00041e2833_temperature
+              - entity: sensor.loft_external_climate_temperature
                 name: Esterno
               - entity: sensor.cfr_montopoli_temperature
                 name: CFR
@@ -588,6 +589,8 @@ views:
           - type: entities
             entities:
               - entity: sensor.mariadb_database_size
+              - entity: binary_sensor.loft_studio_quake_status
+                name: Sensore Vibrazione
           - type: entities
             entities:
               - entity: sensor.external_ip
@@ -616,10 +619,9 @@ views:
           - type: entities
             state_color: true
             entities:
-              - entity: sensor.pi_zigbee2mqtt
-                name: Zigbee2Mqtt
               - entity: binary_sensor.k4
               - entity: binary_sensor.k9
+              - entity: binary_sensor.nas
               - entity: binary_sensor.yi_hack_m_20fe4c_status
                 name: Yi Camera
               - entity: binary_sensor.rm_mini
@@ -661,16 +663,6 @@ views:
             show:
               labels: true
               labels_secondary: true
-          - type: custom:mini-graph-card
-            name: Vibration
-            hours_to_show: 168
-            line_width: 3
-            points_per_hour: 5
-            entities:
-              - entity: sensor.0x00158d0005870496_strength
-                name: Strenght
-            show:
-              labels: true
 
       - type: vertical-stack
         cards:

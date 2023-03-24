@@ -19,8 +19,3 @@ sensor:
     state_topic: "tele/watersoftener/SENSOR"
     unit_of_measurement: "cm"
     value_template: "{{ value_json.SR04.Distance }}"
-
-  # Zigbee2Mqtt
-  - name: pi_zigbee2mqtt
-    state_topic: "zigbee2mqtt/bridge/state"
-    icon: mdi:router-wireless

@@ -4,9 +4,11 @@
 - alias: loft_trafdi_toggle
   initial_state: true
   trigger:
-    - platform: state
-      entity_id: sensor.0x680ae2fffe3543f9_action
-      to: "toggle"
+    - device_id: ba8962c0419d032ddf614886117b58ef
+      domain: zha
+      platform: device
+      type: remote_button_short_press
+      subtype: turn_on
   action:
     - service: homeassistant.toggle
       data_template:
@@ -20,50 +22,56 @@
 - alias: loft_trafdi_dimup
   initial_state: true
   trigger:
-    - platform: state
-      entity_id: sensor.0x680ae2fffe3543f9_action
-      to: "brightness_up_click"
+    - device_id: ba8962c0419d032ddf614886117b58ef
+      domain: zha
+      platform: device
+      type: remote_button_short_press
+      subtype: dim_up
   condition:
     - condition: state
       entity_id: switch.shellyswitch_55c794_channel_1
       state: "on"
   action:
-    - data_template:
-        entity_id: light.0x000b57fffe48a1de
-        brightness: "{{ state_attr('light.0x000b57fffe48a1de', 'brightness') + 50 | int }}"
-      service: light.turn_on
-    - data_template:
-        entity_id: light.0x000b57fffe4baa6e
-        brightness: "{{ state_attr('light.0x000b57fffe4baa6e', 'brightness') + 50 | int }}"
-      service: light.turn_on
+    - device_id: 0ef8dda1e879f241e9ad03f16a40e6da
+      domain: light
+      entity_id: light.loft_studio_wallexternal_status
+      type: brightness_increase
+    - device_id: 74a079a4a2b46ee1fe86d8081a12db80
+      domain: light
+      entity_id: light.loft_studio_wallinternal_status
+      type: brightness_increase
 
 - alias: loft_trafdi_dimdown
   initial_state: true
   trigger:
-    - platform: state
-      entity_id: sensor.0x680ae2fffe3543f9_action
-      to: "brightness_down_click"
+    - device_id: ba8962c0419d032ddf614886117b58ef
+      domain: zha
+      platform: device
+      type: remote_button_short_press
+      subtype: dim_down
   condition:
     - condition: state
       entity_id: switch.shellyswitch_55c794_channel_1
       state: "on"
   action:
-    - data_template:
-        entity_id: light.0x000b57fffe48a1de
-        brightness: "{{ [state_attr('light.0x000b57fffe48a1de', 'brightness') - 50, 1] | max }}"
-      service: light.turn_on
-    - data_template:
-        entity_id: light.0x000b57fffe4baa6e
-        brightness: "{{ [state_attr('light.0x000b57fffe4baa6e', 'brightness') - 50, 1] | max }}"
-      service: light.turn_on
+    - device_id: 0ef8dda1e879f241e9ad03f16a40e6da
+      domain: light
+      entity_id: light.loft_studio_wallexternal_status
+      type: brightness_decrease
+    - device_id: 74a079a4a2b46ee1fe86d8081a12db80
+      domain: light
+      entity_id: light.loft_studio_wallinternal_status
+      type: brightness_decrease
 
 # Light Selection
 - alias: loft_trafdi_right
   initial_state: true
   trigger:
-    - platform: state
-      entity_id: sensor.0x680ae2fffe3543f9_action
-      to: "arrow_right_click"
+    - device_id: ba8962c0419d032ddf614886117b58ef
+      domain: zha
+      platform: device
+      type: remote_button_short_press
+      subtype: right
   action:
     - service: input_select.select_next
       entity_id: input_select.loft_studio_lamps
@@ -71,9 +79,11 @@
 - alias: loft_trafdi_left
   initial_state: true
   trigger:
-    - platform: state
-      entity_id: sensor.0x680ae2fffe3543f9_action
-      to: "arrow_left_click"
+    - device_id: ba8962c0419d032ddf614886117b58ef
+      domain: zha
+      platform: device
+      type: remote_button_short_press
+      subtype: left
   action:
     - service: input_select.select_previous
       entity_id: input_select.loft_studio_lamps

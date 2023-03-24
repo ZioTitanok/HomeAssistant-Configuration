@@ -20,7 +20,7 @@
 - platform: generic_thermostat
   name: main
   heater: switch.shelly1_3c71bf2c02ae
-  target_sensor: sensor.0x00158d0003cd2888_temperature
+  target_sensor: sensor.main_entrance_climate_temperature
   min_temp: 16
   max_temp: 35
   target_temp: 17
