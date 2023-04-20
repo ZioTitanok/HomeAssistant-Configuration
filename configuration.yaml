@@ -139,19 +139,19 @@ google_assistant:
     light.shellyvintage_6ee515:
       name: Poltrona
       expose: True
-    switch.shellyswitch25_740859_channel_1:
+    switch.shellyswitch25_c45bbe756bc1_channel_1:
       name: Ingresso
       expose: true
-    switch.shellyswitch25_740859_channel_2:
+    switch.shellyswitch25_c45bbe756bc1_channel_2:
       name: Cucina
       expose: true
-    switch.shellyswitch25_740826_channel_2:
+    switch.shellyswitch25_c45bbe763805_channel_2:
       name: Salotto
       expose: true
     switch.shelly1pm_84cca8a855b6:
       name: Aba
       expose: true
-    switch.shellyswitch25_740826_channel_1:
+    switch.shellyswitch25_c45bbe763805_channel_1:
       name: Camera
       expose: true
     switch.shellyswitch_55c794_channel_2:

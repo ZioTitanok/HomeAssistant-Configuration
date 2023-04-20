@@ -18,6 +18,10 @@ home-assistant.log
 home-assistant.log.1
 home-assistant.log.fault
 jarvis-59028-6b0d0b5a50ba.json
+.omv_cookies.json
+zigbee.db
+zigbee.db-shm
+zigbee.db-wal
 
 *.mp3
 *.jpg

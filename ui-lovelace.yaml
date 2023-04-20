@@ -140,6 +140,24 @@ views:
               labels: true
               labels_secondary: true
           - type: custom:mini-graph-card
+            name: Potenza (24h)
+            hours_to_show: 24
+            line_width: 3
+            points_per_hour: 5
+            icon: mdi:flash
+            entities:
+              - entity: sensor.shellyem_b9e2a0_channel_1_power
+              - entity: sensor.loft_power
+              - entity: input_number.night
+                color: gray
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            show:
+              labels: true
+              labels_secondary: true
+          - type: custom:mini-graph-card
             name: Voltaggio (24h)
             hours_to_show: 24
             line_width: 3
@@ -148,6 +166,7 @@ views:
             entities:
               - entity: sensor.shellyem_244cab431c8c_channel_1_voltage
               - entity: sensor.shellyem_244cab431c8c_channel_2_voltage
+              - entity: sensor.shellyem_b9e2a0_channel_1_voltage
               - entity: input_number.night
                 color: gray
                 show_line: false
@@ -426,19 +445,19 @@ views:
           - type: entities
             show_header_toggle: false
             entities:
-              - entity: switch.shellyswitch25_740859_channel_1
+              - entity: switch.shellyswitch25_c45bbe756bc1_channel_1
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:room-service
                 entities:
-                  - entity: sensor.shellyswitch25_740859_channel_1_power
+                  - entity: sensor.shellyswitch25_c45bbe756bc1_channel_1_power
                     name: false
-              - entity: switch.shellyswitch25_740826_channel_2
+              - entity: switch.shellyswitch25_c45bbe763805_channel_2
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:sofa
                 entities:
-                  - entity: sensor.shellyswitch25_740826_channel_2_power
+                  - entity: sensor.shellyswitch25_c45bbe763805_channel_2_power
                     name: false
               - entity: switch.shelly1pm_84cca8a855b6
                 type: custom:multiple-entity-row
@@ -447,19 +466,19 @@ views:
                 entities:
                   - entity: sensor.shelly1pm_84cca8a855b6_power
                     name: false
-              - entity: switch.shellyswitch25_740859_channel_2
+              - entity: switch.shellyswitch25_c45bbe756bc1_channel_2
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:fridge
                 entities:
-                  - entity: sensor.shellyswitch25_740859_channel_2_power
+                  - entity: sensor.shellyswitch25_c45bbe756bc1_channel_2_power
                     name: false
-              - entity: switch.shellyswitch25_740826_channel_1
+              - entity: switch.shellyswitch25_c45bbe763805_channel_1
                 type: custom:multiple-entity-row
                 toggle: true
                 icon: mdi:bed
                 entities:
-                  - entity: sensor.shellyswitch25_740826_channel_1_power
+                  - entity: sensor.shellyswitch25_c45bbe763805_channel_1_power
                     name: false
           - type: entities
             show_header_toggle: false
@@ -637,9 +656,9 @@ views:
                 name: Shelly (Aircooler)
               - entity: sensor.shelly1pm_e89f6d86855c_device_temperature
                 name: Shelly (Albero)
-              - entity: sensor.shellyswitch25_740859_device_temperature
+              - entity: sensor.shellyswitch25_c45bbe756bc1_device_temperature
                 name: Shelly (Entrance&Kitchen)
-              - entity: sensor.shellyswitch25_740826_device_temperature
+              - entity: sensor.shellyswitch25_c45bbe763805_device_temperature
                 name: Shelly (Bedroom&Living)
               - entity: sensor.shelly1pm_84cca8a855b6_device_temperature
                 name: Shelly (Aba)

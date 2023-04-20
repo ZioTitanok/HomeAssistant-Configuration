@@ -1,6 +1,16 @@
 # Sensor: Shelly
 
-# ShellyEM: Electical MainFrame (Template/Integration)
+# ShellyEM: Electrical House-Frame (Integration/Template)
+- platform: integration
+  source: sensor.shellyem_244cab431c8c_channel_2_power
+  name: tavern_and_garage_consumption
+  unit_prefix: k
+  round: 2
+- platform: integration
+  source: sensor.shellyem_244cab431c8c_channel_1_power
+  name: loft_and_main_consumption
+  unit_prefix: k
+  round: 2
 - platform: template
   sensors:
     home_power:
@@ -8,17 +18,27 @@
       value_template: >
         {{ (states("sensor.shellyem_244cab431c8c_channel_1_power")|float + states("sensor.shellyem_244cab431c8c_channel_2_power")|float) | round(2) }}
 - platform: integration
-  source: sensor.shellyem_244cab431c8c_channel_1_power
-  name: loft_and_main_consumption
-  unit_prefix: k
-  round: 2
-- platform: integration
-  source: sensor.shellyem_244cab431c8c_channel_2_power
-  name: tavern_and_garage_consumption
-  unit_prefix: k
-  round: 2
-- platform: integration
   source: sensor.home_power
   name: home_consumption
+  unit_prefix: k
+  round: 2
+
+# ShellyEM: Electrical Main-Frame (Integration/Template)
+- platform: integration
+  source: sensor.shellyem_b9e2a0_channel_1_power
+  name: main_consumption
+  unit_prefix: k
+  round: 2
+- platform: template
+  sensors:
+    loft_power:
+      unit_of_measurement: "W"
+      value_template: >
+        {% if (states("sensor.shellyem_244cab431c8c_channel_1_power")|float - states("sensor.shellyem_b9e2a0_channel_1_power")|float) | round(2) < 0 %} 0
+        {% else %} {{ (states("sensor.shellyem_244cab431c8c_channel_1_power")|float - states("sensor.shellyem_b9e2a0_channel_1_power")|float) | round(2) }}
+        {% endif %}
+- platform: integration
+  source: sensor.loft_power
+  name: loft_consumption
   unit_prefix: k
   round: 2

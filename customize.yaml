@@ -21,6 +21,10 @@ sensor.recycle:
   friendly_name: "Domani Ricicla"
 sensor.home_power:
   friendly_name: "Totale"
+sensor.loft_power:
+  friendly_name: "Loft"
+sensor.shellyem_b9e2a0_channel_1_power:
+  friendly_name: "Main"
 sensor.shellyem_244cab431c8c_channel_1_power:
   friendly_name: "Loft&Main"
 sensor.shellyem_244cab431c8c_channel_2_power:
@@ -29,6 +33,8 @@ sensor.shellyem_244cab431c8c_channel_1_voltage:
   friendly_name: "Loft&Main"
 sensor.shellyem_244cab431c8c_channel_2_voltage:
   friendly_name: "Tavern&Garage"
+sensor.shellyem_b9e2a0_channel_1_voltage:
+  friendly_name: "Main"
 
 # Switch:
 switch.shelly1pm_609ca4:
@@ -49,13 +55,13 @@ switch.shellyswitch_559384_channel_1:
   friendly_name: "Discoball"
 switch.shelly1pm_e89f6d86855c:
   friendly_name: "Albero"
-switch.shellyswitch25_740859_channel_1:
+switch.shellyswitch25_c45bbe756bc1_channel_1:
   friendly_name: "Ingresso"
-switch.shellyswitch25_740826_channel_1:
+switch.shellyswitch25_c45bbe763805_channel_1:
   friendly_name: "Camera"
-switch.shellyswitch25_740859_channel_2:
+switch.shellyswitch25_c45bbe756bc1_channel_2:
   friendly_name: "Cucina"
-switch.shellyswitch25_740826_channel_2:
+switch.shellyswitch25_c45bbe763805_channel_2:
   friendly_name: "Salotto"
 switch.shelly1pm_84cca8a855b6:
   friendly_name: "Aba"
