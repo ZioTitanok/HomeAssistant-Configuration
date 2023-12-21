@@ -1,25 +1,22 @@
 from __future__ import annotations
+
 import typing
 
+from homeassistant.components import humidifier
+
 try:
-    from homeassistant.components.humidifier import (
-        DOMAIN as PLATFORM_HUMIDIFIER,
-        HumidifierDeviceClass,
-        HumidifierEntity,
-    )
+    from homeassistant.components.humidifier import HumidifierDeviceClass
     from homeassistant.components.humidifier.const import (
-        HumidifierEntityFeature,
         MODE_ECO,
         MODE_NORMAL,
+        HumidifierEntityFeature,
     )
 
     DEVICE_CLASS_HUMIDIFIER = HumidifierDeviceClass.HUMIDIFIER
     SUPPORT_MODES = HumidifierEntityFeature.MODES
-except:
+except Exception:
     from homeassistant.components.humidifier import (
-        DOMAIN as PLATFORM_HUMIDIFIER,
         DEVICE_CLASS_HUMIDIFIER,
-        HumidifierEntity,
     )
     from homeassistant.components.humidifier.const import (
         SUPPORT_MODES,
@@ -29,19 +26,20 @@ except:
 
 from homeassistant.const import STATE_OFF, STATE_ON
 
-from .merossclient import const as mc  # mEROSS cONST
 from . import meross_entity as me
+from .merossclient import const as mc  # mEROSS cONST
 
 if typing.TYPE_CHECKING:
-    from homeassistant.core import HomeAssistant
     from homeassistant.config_entries import ConfigEntry
+    from homeassistant.core import HomeAssistant
+
     from .meross_device import MerossDevice
 
 
 async def async_setup_entry(
     hass: HomeAssistant, config_entry: ConfigEntry, async_add_devices
 ):
-    me.platform_setup_entry(hass, config_entry, async_add_devices, PLATFORM_HUMIDIFIER)
+    me.platform_setup_entry(hass, config_entry, async_add_devices, humidifier.DOMAIN)
 
 
 MODE_CONTINUOUS = MODE_NORMAL
@@ -58,18 +56,18 @@ SPRAY_MODE_TO_MODE_MAP = {
 }
 
 
-class MerossLanSpray(me.MerossEntity, HumidifierEntity):
+class MerossLanSpray(me.MerossEntity, humidifier.HumidifierEntity):
+    PLATFORM = humidifier.DOMAIN
 
-    PLATFORM = PLATFORM_HUMIDIFIER
-
+    manager: MerossDevice
     _attr_available_modes: list[str] = list(MODE_TO_SPRAY_MODE_MAP.keys())
     # _attr_max_humidity: int = DEFAULT_MAX_HUMIDITY
     # _attr_min_humidity: int = DEFAULT_MAX_HUMIDITY
 
     _spray_mode: int | None = None
 
-    def __init__(self, device: 'MerossDevice', channel: object):
-        super().__init__(device, channel, None, DEVICE_CLASS_HUMIDIFIER)
+    def __init__(self, manager: MerossDevice, channel: object):
+        super().__init__(manager, channel, None, DEVICE_CLASS_HUMIDIFIER)
 
     @property
     def supported_features(self):
@@ -98,7 +96,7 @@ class MerossLanSpray(me.MerossEntity, HumidifierEntity):
             if acknowledge:
                 self.update_mode(spray_mode)
 
-        await self.device.async_request(
+        await self.manager.async_request(
             mc.NS_APPLIANCE_CONTROL_SPRAY,
             mc.METHOD_SET,
             {mc.KEY_SPRAY: {mc.KEY_CHANNEL: self.channel, mc.KEY_MODE: spray_mode}},
@@ -112,8 +110,8 @@ class MerossLanSpray(me.MerossEntity, HumidifierEntity):
             if (self._attr_state != STATE_ON) or (self._spray_mode != spray_mode):
                 self._attr_state = STATE_ON
                 self._spray_mode = spray_mode
-                if self.hass and self.enabled:
-                    self.async_write_ha_state()
+                if self._hass_connected:
+                    self._async_write_ha_state()
 
     def _parse_spray(self, payload: dict):
         self.update_mode(payload.get(mc.KEY_MODE))

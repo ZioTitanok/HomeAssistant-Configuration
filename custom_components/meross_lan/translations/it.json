@@ -1,18 +1,66 @@
 {
+    "entity": {
+        "climate": {
+            "mts_climate": {
+                "state_attributes": {
+                    "preset_mode": {
+                        "state": {
+                            "off": "Spento",
+                            "custom": "Manuale",
+                            "comfort": "Comfort (caldo)",
+                            "sleep": "Notturno (fresco)",
+                            "away": "Fuori casa (eco)",
+                            "auto": "Auto"
+                        }
+                    }
+                }
+            }
+        },
+        "sensor": {
+            "smoke_alarm_status": {
+                "state": {
+                    "error_temperature": "Errore: Sensore temperatura",
+                    "error_smoke": "Errore: Sensore di fumo",
+                    "error_battery": "Errore: Batteria",
+                    "alarm_test": "Allarme: Test",
+                    "alarm_temperature_high": "Allarme: Alta temperatura",
+                    "alarm_smoke": "Allarme: Fumo",
+                    "ok": "Ok"
+                }
+            },
+            "mts200_overheat_warning": {
+                "state": {
+                    "ok": "Ok",
+                    "overheating": "Surriscaldamento",
+                    "disconnected": "Disconnesso"
+                }
+            }
+        }
+    },
     "config": {
-        "flow_title": "Meross {device_type}",
+        "flow_title": "{name}",
         "abort": {
+            "already_configured": "Voce già configurata",
             "no_devices_found": "Nessun dispositivo trovato",
             "single_instance_allowed": "Già configurato. E' possibile aggiungere solo una configurazione."
         },
         "error": {
-            "invalid_key": "Chiave errata: usa 'Cloud retrieve' per recuperare dall'account Meross",
-            "invalid_nullkey": "Chiave errata: usa 'Hack mode' per consentire un valore vuoto",
             "already_configured_device": "Il dispositivo è già configurato",
             "cannot_connect": "Impossibile connettersi",
-            "invalid_auth": "Errore di autenticazione"
+            "cloud_profile_mismatch": "Il profilo cloud non corrisponde",
+            "invalid_auth": "Errore di autenticazione",
+            "invalid_key": "Chiave errata: usa 'Cloud retrieve' per recuperare dall'account Meross",
+            "invalid_nullkey": "Chiave errata: usa 'Hack mode' per consentire un valore vuoto"
         },
         "step": {
+            "user": {
+                "title": "Scegli un'opzione",
+                "description": "",
+                "menu_options": {
+                    "profile": "Connetti un account Meross",
+                    "device": "Configura un dispositivo manualmente"
+                }
+            },
             "hub": {
                 "title": "Meross LAN MQTT Hub",
                 "description": "Configura le impostazioni globali di Meross LAN",
@@ -31,16 +79,20 @@
                 "title": "Errore chiave",
                 "description": "La chiave fornita non è valida. Scegli un opzione",
                 "menu_options": {
-                    "cloudkey": "Recupera dall'account Meross",
+                    "profile": "Recupera dall'account Meross",
                     "device": "Riprova"
                 }
             },
-            "cloudkey": {
-                "title": "Recupera chiave dispositivo",
-                "description": "Accedi al tuo account Meross per recuperare",
+            "profile": {
+                "title": "Profilo Meross cloud",
+                "description": "Registra e connetti un profilo Meross",
                 "data": {
-                    "username": "Meross login",
-                    "password": "Meross password"
+                    "email": "Meross login",
+                    "password": "Meross password",
+                    "save_password": "Salva password",
+                    "allow_mqtt_publish": "Consenti pubblicazione MQTT",
+                    "check_firmware_updates": "Verifica aggiornamenti firmware",
+                    "create_diagnostic_entities": "Crea entità disagnostiche"
                 }
             },
             "finalize": {
@@ -52,12 +104,13 @@
     },
     "options": {
         "error": {
-            "invalid_key": "Chiave errata: usa 'Cloud retrieve' per recuperare dall'account Meross",
-            "invalid_nullkey": "Chiave errata: usa 'Hack mode' per consentire un valore vuoto",
             "already_configured_device": "Il dispositivo è già configurato",
             "cannot_connect": "Impossibile connettersi",
+            "cloud_profile_mismatch": "Il profilo cloud non corrisponde",
+            "device_id_mismatch": "UUID non corrispondente: il dispositivo non è lo stesso",
             "invalid_auth": "Errore di autenticazione",
-            "device_id_mismatch": "UUID non corrispondente: il dispositivo non è lo stesso"
+            "invalid_key": "Chiave errata: usa 'Cloud retrieve' per recuperare dall'account Meross",
+            "invalid_nullkey": "Chiave errata: usa 'Hack mode' per consentire un valore vuoto"
         },
         "step": {
             "hub": {
@@ -86,16 +139,41 @@
                 "title": "Errore chiave",
                 "description": "La chiave fornita non è valida. Scegli un opzione",
                 "menu_options": {
-                    "cloudkey": "Recupera dall'account Meross",
+                    "profile": "Recupera dall'account Meross",
                     "device": "Riprova"
                 }
             },
-            "cloudkey": {
-                "title": "Recupera chiave dispositivo",
-                "description": "Accedi al tuo account Meross per recuperare",
+            "profile": {
+                "title": "Profilo Meross cloud",
+                "description": "Registra e connetti un profilo Meross",
                 "data": {
-                    "username": "Meross login",
-                    "password": "Meross password"
+                    "email": "Meross login",
+                    "password": "Meross password",
+                    "save_password": "Salva password",
+                    "allow_mqtt_publish": "Consenti pubblicazione MQTT",
+                    "check_firmware_updates": "Verifica aggiornamenti firmware",
+                    "create_diagnostic_entities": "Crea entità disagnostiche"
+                }
+            }
+        }
+    },
+    "issues": {
+        "cloud_token_expired": {
+            "title": "Credenziali cloud scadute per {email}",
+            "fix_flow": {
+                "step": {
+                    "profile": {
+                        "title": "Profilo Meross cloud",
+                        "description": "Registra e connetti un profilo Meross",
+                        "data": {
+                            "email": "Meross login",
+                            "password": "Meross password",
+                            "save_password": "Salva password",
+                            "allow_mqtt_publish": "Consenti pubblicazione MQTT",
+                            "check_firmware_updates": "Verifica aggiornamenti firmware",
+                            "create_diagnostic_entities": "Crea entità disagnostiche"
+                        }
+                    }
                 }
             }
         }

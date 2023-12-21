@@ -35,16 +35,16 @@
   initial_state: true
   trigger:
     - platform: time
-      at: "07:00:00"
+      at: "08:00:00"
   action:
     - service: climate.set_temperature
       data:
         entity_id: climate.loft
-        temperature: 17.0
+        temperature: 18.5
     - service: notify.mobile_app_s22plus
       data:
         title: "Climate Loft"
-        message: "Temperatura giorno (17.0°C) in vigore!"
+        message: "Temperatura giorno (18.5°C) in vigore!"
         data:
           tag: Termostato_Loft
 
@@ -52,16 +52,16 @@
   initial_state: true
   trigger:
     - platform: time
-      at: "23:30:00"
+      at: "23:00:00"
   action:
     - service: climate.set_temperature
       data:
         entity_id: climate.loft
-        temperature: 16.5
+        temperature: 17.5
     - service: notify.mobile_app_s22plus
       data:
         title: "Climate Loft"
-        message: "Temperatura notte (16.5°C) entrata in vigore!"
+        message: "Temperatura notte (17.5°C) entrata in vigore!"
         data:
           tag: Termostato_Loft
 
@@ -103,16 +103,16 @@
   initial_state: true
   trigger:
     - platform: time
-      at: "07:00:00"
+      at: "08:00:00"
   action:
     - service: climate.set_temperature
       data:
         entity_id: climate.main
-        temperature: 17.0
+        temperature: 17.5
     - service: notify.mobile_app_j7_l
       data:
         title: "Climate Main"
-        message: "Temperatura giorno (17.0°C) in vigore!"
+        message: "Temperatura giorno (17.5°C) in vigore!"
         data:
           tag: Termostato_Main
 
@@ -120,15 +120,15 @@
   initial_state: true
   trigger:
     - platform: time
-      at: "23:30:00"
+      at: "23:00:00"
   action:
     - service: climate.set_temperature
       data:
         entity_id: climate.main
-        temperature: 16
+        temperature: 16.5
     - service: notify.mobile_app_j7_l
       data:
         title: "Climate Main"
-        message: "Temperatura notte (16°C) entrata in vigore!"
+        message: "Temperatura notte (16.5°C) entrata in vigore!"
         data:
           tag: Termostato_Main

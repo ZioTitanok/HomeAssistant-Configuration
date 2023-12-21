@@ -8,7 +8,7 @@
       entity_id: switch.shelly1_5551cc
       to: "on"
       for:
-        seconds: 1
+        seconds: 2
   action:
     - service: homeassistant.turn_off
       entity_id: switch.shelly1_5551cc

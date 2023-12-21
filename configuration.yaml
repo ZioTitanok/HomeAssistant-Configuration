@@ -61,8 +61,14 @@ mqtt: !include mqtt.yaml
 sensor: !include_dir_merge_list sensor
 script: !include_dir_merge_named ./script
 switch: !include_dir_merge_list switch
-#group:
 #scene:
+
+# Garmin Connect
+group:
+  garmin:
+    name: Garmin
+    entities:
+      - switch.shelly1_5551cc
 
 # Utility Meter
 utility_meter:
@@ -136,7 +142,7 @@ google_assistant:
     input_boolean.loft_discoball_activate:
       name: Party
       expose: true
-    light.shellyvintage_6ee515:
+    light.shellyvintage_3494546ef990:
       name: Poltrona
       expose: True
     switch.shellyswitch25_c45bbe756bc1_channel_1:
@@ -184,31 +190,6 @@ tts:
   - platform: google_translate
     service_name: google_say
     language: it
-
-# Binary Sensor
-binary_sensor:
-  # Computer
-  - platform: ping
-    name: K9
-    host: !secret ip_k9
-    scan_interval: 300
-  - platform: ping
-    name: K4
-    host: !secret ip_k4
-    scan_interval: 300
-  - platform: ping
-    name: Nas
-    host: !secret ip_nas
-    scan_interval: 300
-  # Devices
-  - platform: ping
-    name: RM Mini
-    host: !secret ip_rmmini
-    scan_interval: 300
-  - platform: ping
-    name: Yi Camera
-    host: !secret ip_yicamera
-    scan_interval: 300
 
 # Input
 input_datetime:

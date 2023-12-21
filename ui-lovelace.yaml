@@ -218,14 +218,14 @@ views:
           - type: entities
             show_header_toggle: false
             entities:
-              - entity: light.shellyvintage_6ee515
+              - entity: light.shellyvintage_3494546ef990
                 type: custom:multiple-entity-row
                 toggle: true
                 name: Poltrona
                 state_header:
                 icon: mdi:sofa
                 entities:
-                  - entity: sensor.shellyvintage_6ee515_power
+                  - entity: sensor.shellyvintage_3494546ef990_power
                     name: false
               - entity: switch.shellyswitch_559384_channel_2
                 type: custom:multiple-entity-row
@@ -400,18 +400,6 @@ views:
         cards:
           - type: entities
             entities:
-              - vacuum.roomba
-          - type: entities
-            entities:
-              - entity: sensor.roomba_battery_level
-                name: Batteria Roomba
-              - entity: binary_sensor.roomba_bin_full
-                name: Serbatoio Roomba
-
-      - type: vertical-stack
-        cards:
-          - type: entities
-            entities:
               - input_select.radio_chromecast
               - input_number.radio_volume
               - input_select.radio_station
@@ -433,15 +421,6 @@ views:
             entities:
               - switch.shelly1_5551cc
               - sensor.recycle
-          - type: custom:simple-thermostat
-            entity: climate.main
-            step_layout: row
-            header: false
-            sensors:
-              - entity: sensor.main_entrance_climate_humidity
-                name: Umidità (I)
-              - entity: sensor.loft_external_climate_humidity
-                name: Umidità (E)
           - type: entities
             show_header_toggle: false
             entities:
@@ -497,9 +476,27 @@ views:
               - entity: binary_sensor.main_entrance_pir_status
                 type: custom:multiple-entity-row
                 name: PIR Ingresso
+          - type: entities
+            entities:
+              - vacuum.roomba
+          - type: entities
+            entities:
+              - entity: sensor.roomba_battery_level
+                name: Batteria Roomba
+              - entity: binary_sensor.roomba_bin_full
+                name: Serbatoio Roomba
 
       - type: vertical-stack
         cards:
+          - type: custom:simple-thermostat
+            entity: climate.main
+            step_layout: row
+            header: false
+            sensors:
+              - entity: sensor.main_entrance_climate_humidity
+                name: Umidità (I)
+              - entity: sensor.loft_external_climate_humidity
+                name: Umidità (E)
           - type: custom:mini-graph-card
             name: Temperatura (24h)
             line_width: 3
@@ -561,29 +558,6 @@ views:
           - entity: sensor.hp_officejet_5740_series_tri_color_ink
             name: Cartuccia Colori
 
-      - type: picture-glance
-        title: Yi Camera
-        camera_image: camera.yi_hack_m_20fe4c_cam
-        camera_view: live
-        entities:
-          - entity: binary_sensor.yi_hack_m_20fe4c_motion_detection
-          - entity: script.yi_left
-            icon: mdi:arrow-left-circle
-            tap_action:
-              action: toggle
-          - entity: script.yi_right
-            icon: mdi:arrow-right-circle
-            tap_action:
-              action: toggle
-          - entity: script.yi_up
-            icon: mdi:arrow-up-circle
-            tap_action:
-              action: toggle
-          - entity: script.yi_down
-            icon: mdi:arrow-down-circle
-            tap_action:
-              action: toggle
-
       - type: media-control
         entity: media_player.tavern
 
@@ -638,11 +612,8 @@ views:
           - type: entities
             state_color: true
             entities:
-              - entity: binary_sensor.k4
               - entity: binary_sensor.k9
               - entity: binary_sensor.nas
-              - entity: binary_sensor.yi_hack_m_20fe4c_status
-                name: Yi Camera
               - entity: binary_sensor.rm_mini
 
       - type: vertical-stack

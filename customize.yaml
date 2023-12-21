@@ -3,17 +3,13 @@
 # Binary Sensor
 binary_sensor.rm_mini:
   icon: mdi:remote
-binary_sensor.k4:
-  icon: mdi:desktop-classic
 binary_sensor.k9:
   icon: mdi:laptop
 binary_sensor.nas:
   icon: mdi:harddisk
-binary_sensor.yi_camera:
-  icon: mdi:webcam
 
 # Light:
-light.shellyvintage_6ee515:
+light.shellyvintage_3494546ef990:
   friendly_name: "Poltrona"
 
 # Sensor:
