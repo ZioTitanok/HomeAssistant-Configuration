@@ -28,7 +28,7 @@
     #    - platform: time
     #      at: "08:00:00"
     - platform: state
-      entity_id: binary_sensor.k9
+      entity_id: binary_sensor.k6
       to: "on"
   action:
     - service: homeassistant.turn_on
@@ -41,7 +41,7 @@
     #    - platform: time
     #      at: "23:55:00"
     - platform: state
-      entity_id: binary_sensor.k9
+      entity_id: binary_sensor.k6
       to: "off"
   action:
     - service: homeassistant.turn_off

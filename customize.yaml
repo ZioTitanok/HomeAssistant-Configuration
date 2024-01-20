@@ -3,7 +3,7 @@
 # Binary Sensor
 binary_sensor.rm_mini:
   icon: mdi:remote
-binary_sensor.k9:
+binary_sensor.k6:
   icon: mdi:laptop
 binary_sensor.nas:
   icon: mdi:harddisk

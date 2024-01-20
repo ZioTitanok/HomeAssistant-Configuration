@@ -80,6 +80,7 @@ class DeviceConfigType(DeviceConfigTypeMinimal, total=False):
     timestamp: float | None
 
 
+CONF_CLOUD_REGION: Final = "cloud_region"
 CONF_EMAIL: Final = mc.KEY_EMAIL
 CONF_PASSWORD: Final = hac.CONF_PASSWORD
 CONF_SAVE_PASSWORD: Final = "save_password"
@@ -106,6 +107,14 @@ CONF_NOTIFYRESPONSE = "notifyresponse"
 """key used in service 'request' call"""
 CONF_PROFILE_ID_LOCAL: Final = ""
 """label for MerossApi as a 'fake' cloud profile"""
+
+#
+# issues general consts
+#
+ISSUE_CLOUD_TOKEN_EXPIRED = "cloud_token_expired"
+"""raised when the token used to access the cloud api expires and need to be refreshed"""
+ISSUE_DEVICE_ID_MISMATCH = "device_identity_mismatch"
+"""raised when a device receives data from a different (uuid) appliance"""
 
 # general working/configuration parameters
 PARAM_INFINITE_EPOCH = 2147483647  # inifinite epoch (2038 bug?)

@@ -1,14 +1,5 @@
 # Sensor: System Monitor
 
-# System Usage
-- platform: systemmonitor
-  resources:
-    - type: disk_use_percent
-      arg: /
-    - type: memory_free
-    - type: processor_use
-    - type: last_boot
-
 # System IP
 - platform: rest
   resource: http://ip.jsontest.com

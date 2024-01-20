@@ -336,19 +336,10 @@ views:
 
       - type: vertical-stack
         cards:
-          - type: custom:simple-thermostat
+          - type: thermostat
             entity: climate.loft
-            step_layout: row
-            header: false
-            sensors:
-              - entity: sensor.loft_studio_climate_humidity
-                name: Umidità (S)
-              - entity: sensor.loft_tana_climate_humidity
-                name: Umidità (T)
-              - entity: sensor.loft_external_climate_humidity
-                name: Umidità (E)
-              - entity: sensor.loft_relevant_text
-                name: Comando
+            name: Mansarda
+            show_current_as_primary: true
 
           - type: entities
             entities:
@@ -359,6 +350,8 @@ views:
                 entities:
                   - entity: sensor.shelly1pm_609ca4_power
                     name: false
+              - entity: sensor.loft_relevant_text
+                name: Comando
 
           - type: entities
             entities:
@@ -488,15 +481,11 @@ views:
 
       - type: vertical-stack
         cards:
-          - type: custom:simple-thermostat
+          - type: thermostat
             entity: climate.main
-            step_layout: row
-            header: false
-            sensors:
-              - entity: sensor.main_entrance_climate_humidity
-                name: Umidità (I)
-              - entity: sensor.loft_external_climate_humidity
-                name: Umidità (E)
+            name: Padronale
+            show_current_as_primary: true
+
           - type: custom:mini-graph-card
             name: Temperatura (24h)
             line_width: 3
@@ -535,9 +524,6 @@ views:
       - type: media-control
         entity: media_player.main
 
-      - type: shopping-list
-        title: Spesa
-
   # Tavern
   - title: Taverna
     path: taverna
@@ -567,23 +553,6 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - type: glance
-            entities:
-              - entity: sensor.disk_use_percent
-                name: HDD
-              - entity: sensor.memory_free
-                name: RAM
-              - entity: sensor.processor_use
-                name: CPU
-              - entity: sensor.nuc_temperature
-                name: Temperature
-              - entity: sensor.home_assistant_operating_system_version
-                name: Versione
-          - type: entities
-            entities:
-              - entity: sensor.mariadb_database_size
-              - entity: binary_sensor.loft_studio_quake_status
-                name: Sensore Vibrazione
           - type: entities
             entities:
               - entity: sensor.external_ip
@@ -609,12 +578,51 @@ views:
             show:
               labels: true
               labels_secondary: true
+
+          - type: glance
+            entities:
+              - entity: sensor.disk_use_percent
+                name: HDD
+              - entity: sensor.memory_free
+                name: RAM
+              - entity: sensor.processor_use
+                name: CPU
+              - entity: sensor.nuc_temperature
+                name: Temperature
+              - entity: sensor.home_assistant_operating_system_version
+                name: Versione
+          - type: entities
+            entities:
+              - entity: sensor.mariadb_database_size
+              - entity: binary_sensor.loft_studio_quake_status
+                name: Sensore Vibrazione
+
+      - type: vertical-stack
+        cards:
           - type: entities
             state_color: true
             entities:
-              - entity: binary_sensor.k9
+              - entity: binary_sensor.k6
               - entity: binary_sensor.nas
+              - entity: binary_sensor.octoprint
               - entity: binary_sensor.rm_mini
+
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.octoprint
+                state: "on"
+            card:
+              type: vertical-stack
+              cards:
+                - type: entities
+                  state_color: true
+                  entities:
+                    - entity: binary_sensor.octoprint_printing
+                    - entity: sensor.octoprint_job_percentage
+                - type: picture-glance
+                  entities: []
+                  camera_view: live
+                  camera_image: camera.octoprint_camera
 
       - type: vertical-stack
         cards:
@@ -654,24 +662,24 @@ views:
               labels: true
               labels_secondary: true
 
-      - type: vertical-stack
-        cards:
-          - type: custom:mini-graph-card
-            name: Delta Temperatura CFR-Esterno (24h)
-            line_width: 3
-            points_per_hour: 5
-            entities:
-              - entity: sensor.cfr_esterno_deltatemperature
-                name: Temperatura
-            show:
-              labels: true
+          - type: horizontal-stack
+            cards:
+              - type: custom:mini-graph-card
+                name: Delta Umidità CFR-Esterno (24h)
+                line_width: 3
+                points_per_hour: 5
+                entities:
+                  - entity: sensor.cfr_esterno_deltahumidity
+                    name: Umidità
+                show:
+                  labels: true
 
-          - type: custom:mini-graph-card
-            name: Delta Umidità CFR-Esterno (24h)
-            line_width: 3
-            points_per_hour: 5
-            entities:
-              - entity: sensor.cfr_esterno_deltahumidity
-                name: Umidità
-            show:
-              labels: true
+              - type: custom:mini-graph-card
+                name: Delta Temperatura CFR-Esterno (24h)
+                line_width: 3
+                points_per_hour: 5
+                entities:
+                  - entity: sensor.cfr_esterno_deltatemperature
+                    name: Temperatura
+                show:
+                  labels: true

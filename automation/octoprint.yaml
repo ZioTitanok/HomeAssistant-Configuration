@@ -1,0 +1,17 @@
+# Automation: Octoprint
+
+# Ender3 Working
+- alias: ender3_working
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.octoprint_printing
+      to: "off"
+  action:
+    - service: notify.mobile_app_s22plus
+      data:
+        title: "Ender3"
+        message: >
+          Ender3 ha completato la stampa!
+        data:
+          tag: ender3

@@ -1,42 +1,23 @@
 # Automation: Home Network
 
-# K4 Online
-- alias: k4_online
+# K6 Online
+- alias: k6_online
   initial_state: true
   trigger:
     - platform: state
-      entity_id: binary_sensor.k4
+      entity_id: binary_sensor.k6
       to: "on"
     - platform: state
-      entity_id: binary_sensor.k4
+      entity_id: binary_sensor.k6
       to: "off"
   action:
     - service: notify.mobile_app_s22plus
       data:
-        title: "Computer K4"
+        title: "Computer K6"
         message: >
-          K4 è {{ trigger.to_state.state }}line!
+          K6 è {{ trigger.to_state.state }}line!
         data:
-          tag: k4
-
-# K9 Online
-- alias: k9_online
-  initial_state: true
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.k9
-      to: "on"
-    - platform: state
-      entity_id: binary_sensor.k9
-      to: "off"
-  action:
-    - service: notify.mobile_app_s22plus
-      data:
-        title: "Computer K9"
-        message: >
-          K9 è {{ trigger.to_state.state }}line!
-        data:
-          tag: k9
+          tag: k6
 # Dell Online
 #- alias: dell_online
 #  initial_state: on
