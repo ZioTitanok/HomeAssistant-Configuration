@@ -9,7 +9,6 @@ homeassistant:
   unit_system: metric
   country: IT
   time_zone: Europe/Rome
-  customize: !include customize.yaml
   external_url: !secret home_eurl
   internal_url: !secret home_iurl
 
@@ -27,7 +26,6 @@ counter:
 dhcp:
 energy:
 frontend:
-map:
 media_source:
 mobile_app:
 my:
@@ -59,7 +57,7 @@ automation: !include_dir_merge_list automation
 climate: !include climates.yaml
 mqtt: !include mqtt.yaml
 sensor: !include_dir_merge_list sensor
-script: !include_dir_merge_named ./script
+#script: !include_dir_merge_named ./script
 switch: !include_dir_merge_list switch
 #scene:
 
@@ -96,21 +94,6 @@ utility_meter:
     source: sensor.loft_and_main_consumption
     name: Consumo Loft&Main Mensile
     cycle: monthly
-
-# Interface
-lovelace:
-  mode: yaml
-  resources:
-    - url: /hacsfiles/weather-card/weather-card.js
-      type: module
-    - url: /hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js
-      type: module
-    - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
-      type: module
-    - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js
-      type: module
-    - url: /hacsfiles/simple-thermostat/simple-thermostat.js
-      type: module
 
 # Driver & Camera
 ffmpeg:
@@ -255,18 +238,3 @@ input_boolean:
     name: Party Time
     initial: off
     icon: mdi:music-note
-
-# Plant
-plant:
-  big:
-    sensors:
-      moisture: sensor.flower_care_b_moisture
-      temperature: sensor.flower_care_b_temperature
-      conductivity: sensor.flower_care_b_conductivity
-      brightness: sensor.flower_care_b_illuminance
-  small:
-    sensors:
-      moisture: sensor.flower_care_a_moisture
-      temperature: sensor.flower_care_a_temperature
-      conductivity: sensor.flower_care_a_conductivity
-      brightness: sensor.flower_care_a_illuminance

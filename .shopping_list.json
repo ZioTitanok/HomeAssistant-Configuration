@@ -1,12 +1,37 @@
 [
   {
-    "name": "Birra (Messina o ichnusa)",
-    "id": "2f4d7e6ba9804e639de0f5711bcc18cf",
+    "name": "Udon",
+    "id": "d6a8f559fe544a2dace8baab39778af5",
     "complete": false
   },
   {
-    "name": "Latte soia x2",
-    "id": "9d5e881e84494f76a0508ac868dcc8ab",
+    "name": "Avena",
+    "id": "b1742634a3454b01955cbd1c8b26ca05",
+    "complete": false
+  },
+  {
+    "name": "Latte di soia",
+    "id": "ae3b498fc0df497c88547e1026806848",
+    "complete": false
+  },
+  {
+    "name": "Birra",
+    "id": "102b4be8984841b79d7ae7e5eceb373c",
+    "complete": false
+  },
+  {
+    "name": "Pizze Surgelate",
+    "id": "e61032d741d9486ea3b208e6796b186e",
+    "complete": false
+  },
+  {
+    "name": "Salmone (almeno 2)",
+    "id": "ab00609159a54f35b7587ff6b9b3287e",
+    "complete": false
+  },
+  {
+    "name": "Svizzera",
+    "id": "6f2f710e43f44f79a54f19ef94e009d3",
     "complete": false
   }
 ]

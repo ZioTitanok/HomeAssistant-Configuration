@@ -21,7 +21,6 @@ include:
     - light
     - media_player
     - person
-    - plant
     - sensor
     - switch
   entities:

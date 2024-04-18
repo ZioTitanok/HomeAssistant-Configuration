@@ -1,12 +1,5 @@
 # MQTT Integrations
 
-binary_sensor:
-  # Yi Camera
-  - name: Pir Yi
-    state_topic: "yicam/motion"
-    payload_on: "motion_start"
-    payload_off: "motion_stop"
-
 sensor:
   # System Temperature
   - name: nuc_temperature

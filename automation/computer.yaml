@@ -18,6 +18,25 @@
           K6 è {{ trigger.to_state.state }}line!
         data:
           tag: k6
+
+# K7 Online
+- alias: k7_online
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.k7
+      to: "on"
+    - platform: state
+      entity_id: binary_sensor.k7
+      to: "off"
+  action:
+    - service: notify.mobile_app_s22plus
+      data:
+        title: "Computer K7"
+        message: >
+          K7 è {{ trigger.to_state.state }}line!
+        data:
+          tag: k7
 # Dell Online
 #- alias: dell_online
 #  initial_state: on
