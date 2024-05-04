@@ -57,7 +57,7 @@ automation: !include_dir_merge_list automation
 climate: !include climates.yaml
 mqtt: !include mqtt.yaml
 sensor: !include_dir_merge_list sensor
-#script: !include_dir_merge_named ./script
+script: !include_dir_merge_named ./script
 switch: !include_dir_merge_list switch
 #scene:
 
@@ -199,6 +199,13 @@ input_select:
     options:
       - Radio 105
       - Virgin Radio
+  c510w1_camera:
+    name: Preset
+    icon: mdi:camera-marker-outline
+    options:
+      - Parcheggio
+      - Taverna
+      - Padronale
   loft_studio_lamps:
     name: Bottone
     icon: mdi:lamps

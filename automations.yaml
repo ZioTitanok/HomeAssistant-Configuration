@@ -1,0 +1,21 @@
+- id: '1714837242019'
+  alias: Test
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_button.c510w1_up
+  condition: []
+  action:
+  - service: onvif.ptz
+    metadata: {}
+    data:
+      distance: 0.1
+      speed: 0.5
+      continuous_duration: 0.5
+      preset: '0'
+      move_mode: RelativeMove
+      tilt: UP
+    target:
+      device_id: e272b139af0a51fd2d86f2a1ce249c7d
+  mode: single
