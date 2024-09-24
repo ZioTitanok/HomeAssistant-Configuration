@@ -1,30 +1,29 @@
 """
     Helpers!
 """
-from __future__ import annotations
 
 import abc
 import asyncio
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import StrEnum
-from functools import partial
+import importlib
 import logging
 from time import gmtime, time
 import typing
+import zoneinfo
 
-from homeassistant.const import STATE_UNAVAILABLE, STATE_UNKNOWN
+from homeassistant import const as hac
 from homeassistant.core import callback
 from homeassistant.helpers import device_registry, entity_registry
-from homeassistant.util import dt as dt_util
 
 from .. import const as mlc
 
 if typing.TYPE_CHECKING:
     from datetime import tzinfo
-    from typing import Callable, Coroutine, Final
+    from typing import Callable, Coroutine
 
-    from homeassistant.core import HomeAssistant, State
+    from homeassistant.core import HomeAssistant
 
     from .. import MerossApi
 
@@ -59,99 +58,75 @@ def versiontuple(version: str):
     return tuple(map(int, (version.split("."))))
 
 
-def utcdatetime_from_epoch(epoch):
+def datetime_from_epoch(epoch, tz: "tzinfo | None"):
     """
-    converts an epoch (UTC seconds) in a non-naive datetime.
+    converts an epoch (UTC seconds) in a datetime.
     Faster than datetime.fromtimestamp with less checks
-    and no care for milliseconds
+    and no care for milliseconds.
+    If tz is None it'll return a naive datetime in UTC coordinates
     """
     y, m, d, hh, mm, ss, weekday, jday, dst = gmtime(epoch)
-    return datetime(y, m, d, hh, mm, min(ss, 59), 0, timezone.utc)
-
-
-def datetime_from_epoch(epoch, tz: tzinfo | None = None):
-    """
-    converts an epoch (UTC seconds) in a non-naive datetime.
-    Faster than datetime.fromtimestamp with less checks
-    and no care for milliseconds
-    """
-    y, m, d, hh, mm, ss, weekday, jday, dst = gmtime(epoch)
-    utcdt = datetime(y, m, d, hh, mm, min(ss, 59), 0, timezone.utc)
-    return (
-        utcdt
-        if tz is timezone.utc
-        else utcdt.astimezone(tz or dt_util.DEFAULT_TIME_ZONE)
-    )
-
-
-def schedule_async_callback(
-    hass: HomeAssistant, delay: float, target: Callable[..., Coroutine], *args
-) -> asyncio.TimerHandle:
-    @callback
-    def _callback(_target, *_args):
-        hass.async_create_task(_target(*_args))
-
-    return hass.loop.call_later(delay, _callback, target, *args)
-
-
-def schedule_callback(
-    hass: HomeAssistant, delay: float, target: Callable, *args
-) -> asyncio.TimerHandle:
-    return hass.loop.call_later(delay, target, *args)
-
-
-async def get_entity_last_states(
-    hass: HomeAssistant, number_of_states: int, entity_id: str
-) -> list[State] | None:
-    """
-    recover the last known good state from recorder in order to
-    restore transient state information when restarting HA
-    """
-    from homeassistant.components.recorder import history
-
-    if hasattr(history, "get_state"):  # removed in 2022.6.x
-        return history.get_state(hass, dt_util.utcnow(), entity_id)  # type: ignore
-
-    elif hasattr(history, "get_last_state_changes"):
-        """
-        get_instance too is relatively new: I hope it was in place when
-        get_last_state_changes was added
-        """
-        from homeassistant.components.recorder import get_instance
-
-        _last_state = await get_instance(hass).async_add_executor_job(
-            partial(
-                history.get_last_state_changes,
-                hass,
-                number_of_states,
-                entity_id,
-            )
-        )
-        return _last_state.get(entity_id)
-
+    utcdt = datetime(y, m, d, hh, mm, min(ss, 59), 0, UTC)
+    if tz is UTC:
+        return utcdt
+    elif tz is None:
+        return utcdt.replace(tzinfo=None)
     else:
-        raise Exception("Cannot find history.get_last_state_changes api")
+        return utcdt.astimezone(tz)
 
 
-async def get_entity_last_state(hass: HomeAssistant, entity_id: str) -> State | None:
-    if states := await get_entity_last_states(hass, 1, entity_id):
-        return states[0]
-    return None
+_import_module_lock = asyncio.Lock()
+_import_module_cache = {}
 
 
-async def get_entity_last_state_available(
-    hass: HomeAssistant, entity_id: str
-) -> State | None:
+async def async_import_module(name: str):
+
+    try:
+        return _import_module_cache[name]
+    except KeyError:
+        async with _import_module_lock:
+            # check (again) the module was not asyncronously loaded when waiting the lock
+            try:
+                return _import_module_cache[name]
+            except KeyError:
+                module = await Loggable.hass.async_add_executor_job(
+                    importlib.import_module,
+                    name,
+                    "custom_components.meross_lan",
+                )
+                _import_module_cache[name] = module
+                return module
+
+
+_zoneinfo_cache: dict[str, zoneinfo.ZoneInfo] = {}
+
+
+async def async_load_zoneinfo(key: str, loggable: "Loggable"):
     """
-    if the device/entity was disconnected before restarting and we need
-    the last good reading from the device, we need to skip the last
-    state since it is 'unavailable'
+    Creates a ZoneInfo instance from an executor.
+    HA core 2024.5 might complain if ZoneInfo needs to load files (no cache hit)
+    so we have to always demand this to an executor because the 'decision' to
+    load is embedded inside the ZoneInfo initialization.
+    A bit cumbersome though..
     """
-    if states := await get_entity_last_states(hass, 2, entity_id):
-        for state in reversed(states):
-            if state.state not in {STATE_UNKNOWN, STATE_UNAVAILABLE}:
-                return state
-    return None
+    try:
+        return _zoneinfo_cache[key]
+    except KeyError:
+        try:
+            _zoneinfo_cache[key] = tz = await Loggable.hass.async_add_executor_job(
+                zoneinfo.ZoneInfo,
+                key,
+            )
+            return tz
+        except Exception as exception:
+            loggable.log_exception(
+                loggable.WARNING,
+                exception,
+                "Unable to load timezone(%s) info - check your python environment",
+                key,
+                timeout=14400,
+            )
+            raise exception
 
 
 class ConfigEntryType(StrEnum):
@@ -174,17 +149,25 @@ class ConfigEntryType(StrEnum):
 
 
 class ConfigEntriesHelper:
+    """
+    Helpers and compatibility layer (among HA cores) for Hass ConfigEntries
+    """
+
+    # TODO: move to a static class model
+
     __slots__ = (
         "config_entries",
         "_entries",
         "_async_entry_for_domain_unique_id",
     )
 
-    def __init__(self, hass: HomeAssistant):
+    def __init__(self, hass: "HomeAssistant"):
         self.config_entries: typing.Final = hass.config_entries
         self._entries = None
         # added in HA core 2024.2
-        self._async_entry_for_domain_unique_id = getattr(self.config_entries, "async_entry_for_domain_unique_id", None)
+        self._async_entry_for_domain_unique_id = getattr(
+            self.config_entries, "async_entry_for_domain_unique_id", None
+        )
 
     def get_config_entry(self, unique_id: str):
         """Gets the configured entry if it exists."""
@@ -206,6 +189,22 @@ class ConfigEntriesHelper:
         ):
             return progress
         return None
+
+    def schedule_reload(self, entry_id: str):
+        """Pre HA core 2024.2 compatibility layer"""
+        _async_schedule_reload = getattr(
+            self.config_entries, "async_schedule_reload", None
+        )
+        if _async_schedule_reload:
+            _async_schedule_reload(entry_id)
+        else:
+            """Schedule a config entry to be reloaded."""
+            if entry := self.config_entries.async_get_entry(entry_id):
+                entry.async_cancel_retry_setup()
+                Loggable.hass.async_create_task(
+                    self.config_entries.async_reload(entry_id),
+                    f"config entry reload {entry.title} {entry.domain} {entry.entry_id}",
+                )
 
 
 def getLogger(name):
@@ -288,6 +287,8 @@ class Loggable(abc.ABC):
     intercept log messages.
     """
 
+    hac = hac
+
     VERBOSE = mlc.CONF_LOGGING_VERBOSE
     DEBUG = mlc.CONF_LOGGING_DEBUG
     INFO = mlc.CONF_LOGGING_INFO
@@ -295,9 +296,9 @@ class Loggable(abc.ABC):
     CRITICAL = mlc.CONF_LOGGING_CRITICAL
 
     # hass, api: set when initializing MerossApi
-    hass: typing.ClassVar[HomeAssistant] = None  # type: ignore
+    hass: typing.ClassVar["HomeAssistant"] = None  # type: ignore
     """Cached HomeAssistant instance (Boom!)"""
-    api: typing.ClassVar[MerossApi] = None  # type: ignore
+    api: typing.ClassVar["MerossApi"] = None  # type: ignore
     """Cached MerossApi instance (Boom!)"""
 
     @staticmethod
@@ -318,9 +319,9 @@ class Loggable(abc.ABC):
         self,
         id,
         *,
-        logger: Loggable | logging.Logger = LOGGER,
+        logger: "Loggable | logging.Logger" = LOGGER,
     ):
-        self.id: Final = id
+        self.id: typing.Final = id
         self.logger = logger
         self.configure_logger()
         self.log(self.DEBUG, "init")
@@ -349,12 +350,7 @@ class Loggable(abc.ABC):
         try:
             yield
         except Exception as exception:
-            self.log(
-                self.WARNING,
-                f"{exception.__class__.__name__}({str(exception)}) in {msg}",
-                *args,
-                **kwargs,
-            )
+            self.log_exception(self.WARNING, exception, msg, *args, **kwargs)
 
     def __del__(self):
         self.log(self.DEBUG, "destroy")

@@ -1,9 +1,15 @@
 # MQTT Integrations
 
 sensor:
-  # System Temperature
+  # Nuc Temperature
   - name: nuc_temperature
-    state_topic: "system_monitor/temperature"
+    state_topic: "nuc_monitor/temperature"
+    unit_of_measurement: "°C"
+    value_template: "{{ value | multiply(0.001) | round(2)}}"
+
+  # Nas Temperature
+  - name: nas_temperature
+    state_topic: "nas_monitor/temperature"
     unit_of_measurement: "°C"
     value_template: "{{ value | multiply(0.001) | round(2)}}"
 

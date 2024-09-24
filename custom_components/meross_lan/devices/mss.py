@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from datetime import datetime, timedelta
 from time import time
 import typing
@@ -8,57 +6,75 @@ from homeassistant.core import callback
 from homeassistant.helpers.event import async_track_point_in_time
 from homeassistant.util import dt as dt_util
 
-from .. import const as mlc
-from ..helpers import get_entity_last_state_available
+from .. import const as mlc, meross_entity as me
 from ..helpers.namespaces import (
-    EntityPollingStrategy,
+    EntityNamespaceHandler,
+    EntityNamespaceMixin,
     NamespaceHandler,
-    SmartPollingStrategy,
     VoidNamespaceHandler,
 )
-from ..merossclient import const as mc
+from ..merossclient import const as mc, namespaces as mn
 from ..sensor import MLEnumSensor, MLNumericSensor
 from ..switch import MLSwitch
 
 if typing.TYPE_CHECKING:
-    from typing import Final
-
     from ..meross_device import MerossDevice
 
 
-class EnergyEstimateSensor(MLNumericSensor):
+class ElectricitySensor(me.MEAlwaysAvailableMixin, MLNumericSensor):
     """
-    Implements an estimated energy measure from device power readings.
-    Estimate is a trapezoidal integral sum on power.
-    Based on observations this estimate is falling a bit behind
-    the consumption reported from the device at least when the
-    power is very low (likely due to power readings being a bit off).
+    This sensor acts as the main parser for 'Electricity' and 'ElectricityX' namespaces
+    taking care of power, current, voltage, etc, sensors for the same channel.
+    It also implements a trapezoidal estimator for energy consumption. Based on observations
+    this estimate is falling a bit behind the consumption reported from the device at least
+    when the power is very low (likely due to power readings being a bit off).
     """
 
+    manager: "MerossDevice"
+
+    SENSOR_DEFS: typing.ClassVar[
+        dict[str, tuple[MLNumericSensor.DeviceClass, int, int]]
+    ] = {
+        mc.KEY_CURRENT: (MLNumericSensor.DeviceClass.CURRENT, 1, 1000),
+        mc.KEY_POWER: (MLNumericSensor.DeviceClass.POWER, 1, 1000),
+        mc.KEY_VOLTAGE: (MLNumericSensor.DeviceClass.VOLTAGE, 1, 10),
+    }
+
     # HA core entity attributes:
-    _attr_available = True
     entity_registry_enabled_default = False
     native_value: int
 
     __slots__ = (
         "_estimate",
+        "_electricity_lastepoch",
         "_reset_unsub",
         "sensor_consumptionx",
     )
 
-    def __init__(self, manager: MerossDevice):
+    def __init__(self, manager: "MerossDevice", channel: object | None):
         self._estimate = 0.0
+        self._electricity_lastepoch = 0.0
         self._reset_unsub = None
         # depending on init order we might not have this ready now...
-        self.sensor_consumptionx: ConsumptionXSensor | None = manager.entities.get("energy")  # type: ignore
+        self.sensor_consumptionx: ConsumptionXSensor | None = manager.entities.get(mlc.CONSUMPTIONX_SENSOR_KEY)  # type: ignore
+        # here entitykey is the 'legacy' EnergyEstimateSensor one to mantain compatibility
         super().__init__(
             manager,
-            None,
-            mlc.ENERGY_ESTIMATE_ID,
+            channel,
+            mlc.ELECTRICITY_SENSOR_KEY,
             self.DeviceClass.ENERGY,
             device_value=0,
         )
         self._schedule_reset(dt_util.now())
+        for key, entity_def in self.SENSOR_DEFS.items():
+            MLNumericSensor(
+                manager,
+                channel,
+                key,
+                entity_def[0],
+                device_scale=entity_def[2],
+                suggested_display_precision=entity_def[1],
+            )
 
     async def async_shutdown(self):
         if self._reset_unsub:
@@ -82,7 +98,7 @@ class EnergyEstimateSensor(MLNumericSensor):
             return
 
         with self.exception_warning("restoring previous state"):
-            state = await get_entity_last_state_available(self.hass, self.entity_id)
+            state = await self.get_last_state_available()
             if state is None:
                 return
             if state.last_updated < dt_util.start_of_local_day():
@@ -94,27 +110,51 @@ class EnergyEstimateSensor(MLNumericSensor):
             self._estimate = float(state.state)
             self.native_value = int(self._estimate)
 
-    def set_available(self):
-        pass
+    # interface: self
+    def _handle_Appliance_Control_Electricity(self, header: dict, payload: dict):
+        self._parse_electricity(payload[mc.KEY_ELECTRICITY])
 
-    def set_unavailable(self):
-        # we need to preserve our sum so we don't reset
-        # it on disconnection. Also, it's nice to have it
-        # available since this entity has a computed value
-        # not directly related to actual connection state
-        pass
+    def _parse_electricity(self, payload: dict):
+        """{"channel": 0, "power": 11000, ...}"""
+        device = self.manager
+        entities = device.entities
+        if self.channel is None:
+            sensor_power: MLNumericSensor = entities[mc.KEY_POWER]  # type: ignore
+        else:
+            sensor_power: MLNumericSensor = entities[f"{self.channel}_{mc.KEY_POWER}"]  # type: ignore
+        last_power = sensor_power.native_value
 
-    def update_estimate(self, de: float):
-        if self.sensor_consumptionx:
-            # we're helping the ConsumptionXSensor to carry on
-            # energy accumulation/readings around midnight
-            self.sensor_consumptionx.energy_estimate += de
-        self._estimate += de
-        super().update_native_value(int(self._estimate))
+        for key in self.SENSOR_DEFS:
+            if self.channel is None:
+                sensor: MLNumericSensor = entities[key]  # type: ignore
+            else:
+                sensor: MLNumericSensor = entities[f"{self.channel}_{key}"]  # type: ignore
+            sensor.update_device_value(payload[key])
+
+        power = sensor_power.native_value
+        if not power:
+            # might be an indication of issue #367 where the problem lies in missing
+            # device timezone configuration
+            device.check_device_timezone()
+
+        # device.device_timestamp 'should be' current epoch of the message
+        if last_power is not None:
+            de = (
+                (last_power + power)  # type: ignore
+                * (device.device_timestamp - self._electricity_lastepoch)
+            ) / 7200
+            if self.sensor_consumptionx:
+                # we're helping the ConsumptionXSensor to carry on
+                # energy accumulation/readings around midnight
+                self.sensor_consumptionx.energy_estimate += de
+            self._estimate += de
+            self.update_native_value(int(self._estimate))
+
+        self._electricity_lastepoch = device.device_timestamp
 
     def reset_estimate(self):
         self._estimate -= self.native_value  # preserve fraction
-        super().update_native_value(0)
+        self.update_native_value(0)
 
     def _schedule_reset(self, _now: datetime):
         with self.exception_warning("_schedule_reset"):
@@ -143,63 +183,91 @@ class EnergyEstimateSensor(MLNumericSensor):
         self._schedule_reset(_now)
 
 
-class ElectricityNamespaceHandler(NamespaceHandler):
-
-    __slots__ = (
-        "_sensor_energy_estimate",
-        "_sensor_power",
-        "_sensor_current",
-        "_sensor_voltage",
-        "_electricity_lastepoch",
+def namespace_init_electricity(device: "MerossDevice"):
+    NamespaceHandler(
+        device,
+        mn.Appliance_Control_Electricity,
+        handler=ElectricitySensor(device, None)._handle_Appliance_Control_Electricity,
     )
 
-    def __init__(self, device: MerossDevice):
+
+class ElectricityXSensor(ElectricitySensor):
+
+    SENSOR_DEFS = ElectricitySensor.SENSOR_DEFS | {
+        mc.KEY_VOLTAGE: (MLNumericSensor.DeviceClass.VOLTAGE, 1, 1000),
+        mc.KEY_FACTOR: (MLNumericSensor.DeviceClass.POWER_FACTOR, 2, 1),
+        mc.KEY_MCONSUME: (MLNumericSensor.DeviceClass.ENERGY, 0, 1),
+    }
+
+    __slots__ = ()
+
+    def __init__(self, manager: "MerossDevice", channel: object):
+        super().__init__(manager, channel)
+        # patch the energy meter sensor state class...
+        manager.entities[f"{channel}_{mc.KEY_MCONSUME}"].state_class = MLNumericSensor.StateClass.TOTAL  # type: ignore
+        manager.register_parser(self, mn.Appliance_Control_ElectricityX)
+
+    def _parse_electricity(self, payload: dict):
+        ElectricitySensor._parse_electricity(self, payload)
+
+
+def namespace_init_electricityx(device: "MerossDevice"):
+    NamespaceHandler(
+        device,
+        mn.Appliance_Control_ElectricityX,
+    ).register_entity_class(ElectricityXSensor)
+
+
+class ConsumptionHSensor(MLNumericSensor):
+
+    manager: "MerossDevice"
+    ns = mn.Appliance_Control_ConsumptionH
+
+    _attr_suggested_display_precision = 0
+
+    __slots__ = ()
+
+    def __init__(self, manager: "MerossDevice", channel: object | None):
         super().__init__(
-            device,
-            mc.NS_APPLIANCE_CONTROL_ELECTRICITY,
-            handler=self._handle_Appliance_Control_Electricity,
+            manager,
+            channel,
+            mc.KEY_CONSUMPTIONH,
+            self.DeviceClass.ENERGY,
+            name="Consumption",
         )
-        self._sensor_energy_estimate = EnergyEstimateSensor(device)
-        self._sensor_power = MLNumericSensor.build_for_device(
-            device, MLNumericSensor.DeviceClass.POWER
-        )
-        self._sensor_current = MLNumericSensor.build_for_device(
-            device, MLNumericSensor.DeviceClass.CURRENT
-        )
-        self._sensor_voltage = MLNumericSensor.build_for_device(
-            device, MLNumericSensor.DeviceClass.VOLTAGE
-        )
-        self._electricity_lastepoch = 0.0
-        SmartPollingStrategy(device, mc.NS_APPLIANCE_CONTROL_ELECTRICITY)
+        manager.register_parser_entity(self)
 
-    def _handle_Appliance_Control_Electricity(self, header: dict, payload: dict):
-        device = self.device
-        electricity = payload[mc.KEY_ELECTRICITY]
-        power = float(electricity[mc.KEY_POWER]) / 1000
-        if (last_power := self._sensor_power.native_value) is not None:
-            # dt = self.lastupdate - self._electricity_lastepoch
-            # de = (((last_power + power) / 2) * dt) / 3600
-            de = (
-                (last_power + power)  # type: ignore
-                * (device.lastresponse - self._electricity_lastepoch)
-            ) / 7200
-            self._sensor_energy_estimate.update_estimate(de)
-
-        self._electricity_lastepoch = device.lastresponse
-        self._sensor_power.update_native_value(power)
-        self._sensor_current.update_native_value(electricity[mc.KEY_CURRENT] / 1000)  # type: ignore
-        self._sensor_voltage.update_native_value(electricity[mc.KEY_VOLTAGE] / 10)  # type: ignore
-        if not power:
-            # might be an indication of issue #367 where the problem lies in missing
-            # device timezone configuration
-            device.check_device_timezone()
+    def _parse_consumptionH(self, payload: dict):
+        """
+        {"channel": 1, "total": 958, "data": [{"timestamp": 1721548740, "value": 0}]}
+        """
+        self.update_device_value(payload[mc.KEY_TOTAL])
 
 
-class ConsumptionXSensor(MLNumericSensor):
-    ATTR_OFFSET: Final = "offset"
-    ATTR_RESET_TS: Final = "reset_ts"
+class ConsumptionHNamespaceHandler(NamespaceHandler):
+    """
+    This namespace carries hourly statistics (over last 24 ours?) of energy consumption
+    It appeared in a mts200 and an em06 (Refoss). We're actually not registering for parsing
+    though since it looks like just carrying energy consumption (just different sum period)
+    for which we also usually have ConsumptionX or ElectricityX (for em06).
+    Nevertheless, it looks tricky since for mts200, the query (payload GET) needs the channel
+    index while for em06 this isn't necessary (empty query replies full sensor set statistics).
+    Actual coding, according to what mts200 expects might work badly on em06 (since the query
+    code setup will use our knowledge of which channels are available and this is not enforced
+    on em06).
+    """
 
-    manager: MerossDevice
+    def __init__(self, device: "MerossDevice"):
+        super().__init__(device, mn.Appliance_Control_ConsumptionH)
+        self.register_entity_class(ConsumptionHSensor, initially_disabled=False)
+
+
+class ConsumptionXSensor(EntityNamespaceMixin, MLNumericSensor):
+    ATTR_OFFSET: typing.Final = "offset"
+    ATTR_RESET_TS: typing.Final = "reset_ts"
+
+    manager: "MerossDevice"
+    ns = mn.Appliance_Control_ConsumptionX
 
     __slots__ = (
         "offset",
@@ -212,7 +280,7 @@ class ConsumptionXSensor(MLNumericSensor):
         "_tomorrow_midnight_epoch",
     )
 
-    def __init__(self, manager: MerossDevice):
+    def __init__(self, manager: "MerossDevice"):
         self.offset: int = 0
         self.reset_ts: int = 0
         self.energy_estimate: float = 0.0
@@ -226,20 +294,14 @@ class ConsumptionXSensor(MLNumericSensor):
         self._today_midnight_epoch = 0  # 12:00 am today
         self._tomorrow_midnight_epoch = 0  # 12:00 am tomorrow
         # depending on init order we might not have this ready now...
-        sensor_energy_estimate: EnergyEstimateSensor | None = manager.entities.get(mlc.ENERGY_ESTIMATE_ID)  # type: ignore
+        sensor_energy_estimate: ElectricitySensor | None = manager.entities.get(mlc.ELECTRICITY_SENSOR_KEY)  # type: ignore
         if sensor_energy_estimate:
             sensor_energy_estimate.sensor_consumptionx = self
         self.extra_state_attributes = {}
         super().__init__(
-            manager, None, str(self.DeviceClass.ENERGY), self.DeviceClass.ENERGY
+            manager, None, mlc.CONSUMPTIONX_SENSOR_KEY, self.DeviceClass.ENERGY
         )
-        EntityPollingStrategy(
-            manager,
-            mc.NS_APPLIANCE_CONTROL_CONSUMPTIONX,
-            self,
-            item_count=30,  # the number of days in the payload: typically sits at 1 month
-            handler=self._handle_Appliance_Control_ConsumptionX,
-        )
+        EntityNamespaceHandler(self).polling_response_size_adj(30)
 
     # interface: MerossEntity
     def set_unavailable(self):
@@ -263,7 +325,7 @@ class ConsumptionXSensor(MLNumericSensor):
             return
 
         with self.exception_warning("restoring previous state"):
-            state = await get_entity_last_state_available(self.hass, self.entity_id)
+            state = await self.get_last_state_available()
             if state is None:
                 return
             # check if the restored sample is fresh enough i.e. it was
@@ -303,7 +365,7 @@ class ConsumptionXSensor(MLNumericSensor):
             self.flush_state()
             self.log(self.DEBUG, "no readings available for new day - resetting")
 
-    def _handle_Appliance_Control_ConsumptionX(self, header: dict, payload: dict):
+    def _handle(self, header: dict, payload: dict):
         device = self.manager
         # we'll look through the device array values to see
         # data timestamped (in device time) after last midnight
@@ -343,9 +405,11 @@ class ConsumptionXSensor(MLNumericSensor):
         # so our multiple requests are more reliable. If anything
         # goes wrong, the MerossDevice multiple payload managment
         # is smart enough to adapt to wrong estimates
-        device.polling_strategies[mc.NS_APPLIANCE_CONTROL_CONSUMPTIONX].adjust_size(
-            len(payload[mc.KEY_CONSUMPTIONX])
-        )
+        days = payload[mc.KEY_CONSUMPTIONX]
+        days_len = len(days)
+        device.namespace_handlers[
+            mn.Appliance_Control_ConsumptionX.name
+        ].polling_response_size_adj(days_len)
         # the days array contains a month worth of data
         # but we're only interested in the last few days (today
         # and maybe yesterday) so we discard a bunch of
@@ -354,20 +418,18 @@ class ConsumptionXSensor(MLNumericSensor):
         # and just for safety since they're unlikely to happen
         # in a normal running environment over few days
         days = [
-            day
-            for day in payload[mc.KEY_CONSUMPTIONX]
-            if day[mc.KEY_TIME] >= self._yesterday_midnight_epoch
+            day for day in days if day[mc.KEY_TIME] >= self._yesterday_midnight_epoch
         ]
-        if (days_len := len(days)) == 0:
-            self.reset_consumption()
-            return
-
-        elif days_len > 1:
+        days_len = len(days)
+        if days_len:
 
             def _get_timestamp(day):
                 return day[mc.KEY_TIME]
 
             days = sorted(days, key=_get_timestamp)
+        else:
+            self.reset_consumption()
+            return
 
         day_last: dict = days[-1]
         day_last_time: int = day_last[mc.KEY_TIME]
@@ -404,7 +466,7 @@ class ConsumptionXSensor(MLNumericSensor):
                 self._consumption_last_time <= day_yesterday_time
             ):
                 # In order to fix #264 and any further bug in consumption
-                # we'll check it against our EnergyEstimateSensor. Here we're
+                # we'll check it against our ElectricitySensor. Here we're
                 # across the device midnight reset so our energy_estimate
                 # is trying to measure the effective consumption since the last
                 # updated reading of yesterday. The check on _consumption_last_time is
@@ -441,46 +503,36 @@ class ConsumptionConfigNamespaceHandler(VoidNamespaceHandler):
     """Suppress processing Appliance.Control.ConsumptionConfig since
     it is already processed at the MQTTConnection message handling."""
 
-    def __init__(self, device: MerossDevice):
-        super().__init__(device, mc.NS_APPLIANCE_CONTROL_CONSUMPTIONCONFIG)
+    def __init__(self, device: "MerossDevice"):
+        super().__init__(device, mn.Appliance_Control_ConsumptionConfig)
 
 
-class OverTempEnableSwitch(MLSwitch):
+class OverTempEnableSwitch(EntityNamespaceMixin, me.MENoChannelMixin, MLSwitch):
+
+    ns = mn.Appliance_Config_OverTemp
+    key_value = mc.KEY_ENABLE
 
     # HA core entity attributes:
-    entity_category = MLSwitch.EntityCategory.CONFIG
+    entity_category = me.EntityCategory.CONFIG
 
     __slots__ = ("sensor_overtemp_type",)
 
-    def __init__(self, manager: MerossDevice):
+    def __init__(self, manager: "MerossDevice"):
         super().__init__(
-            manager, None, "config_overtemp_enable", self.DeviceClass.SWITCH
+            manager, None, "config_overtemp_enable", MLSwitch.DeviceClass.SWITCH
         )
         self.sensor_overtemp_type: MLEnumSensor = MLEnumSensor(
             manager, None, "config_overtemp_type"
         )
-        EntityPollingStrategy(
-            manager,
-            mc.NS_APPLIANCE_CONFIG_OVERTEMP,
-            self,
-            handler=self._handle_Appliance_Config_OverTemp,
-        )
+        EntityNamespaceHandler(self)
 
     # interface: MerossToggle
     async def async_shutdown(self):
         await super().async_shutdown()
         self.sensor_overtemp_type = None  # type: ignore
 
-    async def async_request_onoff(self, onoff: int):
-        if await self.manager.async_request_ack(
-            mc.NS_APPLIANCE_CONFIG_OVERTEMP,
-            mc.METHOD_SET,
-            {mc.KEY_OVERTEMP: {mc.KEY_ENABLE: onoff}},
-        ):
-            self.update_onoff(onoff)
-
     # interface: self
-    def _handle_Appliance_Config_OverTemp(self, header: dict, payload: dict):
+    def _handle(self, header: dict, payload: dict):
         """{"overTemp": {"enable": 1,"type": 1}}"""
         overtemp = payload[mc.KEY_OVERTEMP]
         if mc.KEY_ENABLE in overtemp:

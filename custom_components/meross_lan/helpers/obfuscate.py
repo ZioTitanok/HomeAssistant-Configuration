@@ -9,6 +9,8 @@
     we return the same (stable) obfuscation in order to correlate data in
     traces and logs. Some keys are not cached/mapped and just 'redacted'
 """
+
+import re
 import typing
 
 from .. import const as mlc
@@ -23,6 +25,10 @@ class ObfuscateRule:
 
     def obfuscate(self, value):
         return "<redacted>"
+
+    def clear(self):
+        """Resets any cached data"""
+        pass
 
 
 class ObfuscateMap(ObfuscateRule, dict):
@@ -48,6 +54,9 @@ class ObfuscateMap(ObfuscateRule, dict):
                 self[value] = "@" + str(count)
 
         return self[value]
+
+    def clear(self):
+        dict.clear(self)
 
 
 class ObfuscateUserIdMap(ObfuscateMap):
@@ -86,6 +95,46 @@ class ObfuscateServerMap(ObfuscateMap):
 
         return super().obfuscate(value)
 
+    def clear(self):
+        OBFUSCATE_PORT_MAP.clear()
+        return super().clear()
+
+
+class ObfuscateFrom(ObfuscateRule):
+    """
+    Obfuscate the "from" payload field which may carry the device "uuid"
+    or the "userid"
+    """
+
+    def obfuscate(self, value: str):
+        """
+        Renders the obfuscated uuid in place like:
+        "/appliance/###############################0/publish"
+        or, when matching an userid like:
+        "/app/########0-whatever/subscribe
+        """
+        # start by matching the eventual userid since the pattern is more specific
+        if m := mc.RE_PATTERN_TOPIC_USERID.match(value):
+            return "".join(
+                (m.group(1), OBFUSCATE_USERID_MAP.obfuscate(m.group(2)), m.group(3))
+            )
+
+        # this is a 'broad matcher' capturing whatever looks like an UUID (32 alfanumerics)
+        def _sub(match: re.Match):
+            return "".join(
+                (
+                    match.group(1),
+                    OBFUSCATE_DEVICE_ID_MAP.obfuscate(match.group(2)),
+                    match.group(3),
+                )
+            )
+
+        return mc.RE_PATTERN_UUID.sub(_sub, value)
+
+    def clear(self):
+        OBFUSCATE_USERID_MAP.clear()
+        OBFUSCATE_DEVICE_ID_MAP.clear()
+
 
 # common (shared) obfuscation mappings for related keys
 OBFUSCATE_NO_MAP = ObfuscateRule()
@@ -101,6 +150,7 @@ OBFUSCATE_KEYS: dict[str, ObfuscateRule] = {
     # could allow malicious attempts at the public Meross mqtt to
     # correctly address the device (with some easy hacks on signing)
     mc.KEY_UUID: OBFUSCATE_DEVICE_ID_MAP,
+    mc.KEY_FROM: ObfuscateFrom(),
     mc.KEY_MACADDRESS: ObfuscateMap({}),
     mc.KEY_WIFIMAC: ObfuscateMap({}),
     mc.KEY_SSID: ObfuscateMap({}),
@@ -156,11 +206,11 @@ def obfuscated_list(data: list):
     Simple objects are not obfuscated.
     """
     return [
-        obfuscated_dict(value)
-        if isinstance(value, dict)
-        else obfuscated_list(value)
-        if isinstance(value, list)
-        else value
+        (
+            obfuscated_dict(value)
+            if isinstance(value, dict)
+            else obfuscated_list(value) if isinstance(value, list) else value
+        )
         for value in data
     ]
 
@@ -168,13 +218,19 @@ def obfuscated_list(data: list):
 def obfuscated_dict(data: typing.Mapping[str, typing.Any]) -> dict[str, typing.Any]:
     """Dictionary obfuscation based on the set keys defined in OBFUSCATE_KEYS."""
     return {
-        key: obfuscated_dict(value)
-        if isinstance(value, dict)
-        else obfuscated_list(value)
-        if isinstance(value, list)
-        else OBFUSCATE_KEYS[key].obfuscate(value)
-        if key in OBFUSCATE_KEYS
-        else value
+        key: (
+            obfuscated_dict(value)
+            if isinstance(value, dict)
+            else (
+                obfuscated_list(value)
+                if isinstance(value, list)
+                else (
+                    OBFUSCATE_KEYS[key].obfuscate(value)
+                    if key in OBFUSCATE_KEYS
+                    else value
+                )
+            )
+        )
         for key, value in data.items()
     }
 
@@ -184,7 +240,9 @@ def obfuscated_any(value):
     return (
         obfuscated_dict(value)
         if isinstance(value, dict)
-        else obfuscated_list(value)
-        if isinstance(value, list)
-        else OBFUSCATE_NO_MAP.obfuscate(value)
+        else (
+            obfuscated_list(value)
+            if isinstance(value, list)
+            else OBFUSCATE_NO_MAP.obfuscate(value)
+        )
     )

@@ -10,7 +10,9 @@ TOPIC_DISCOVERY = "/appliance/+/publish"
 TOPIC_REQUEST = "/appliance/{}/subscribe"
 TOPIC_RESPONSE = "/appliance/{}/publish"
 
+RE_PATTERN_UUID = re.compile(r"(^|[^a-fA-F0-9])([a-fA-F0-9]{32})($|[^a-fA-F0-9])")
 RE_PATTERN_TOPIC_UUID = re.compile(r"/.+/(.*)/.+")
+RE_PATTERN_TOPIC_USERID = re.compile(r"(/app/)(\d+)(.*/subscribe)")
 """re pattern to search/extract the uuid from an MQTT topic or the "from" field in message header"""
 
 METHOD_PUSH = "PUSH"
@@ -24,135 +26,6 @@ METHOD_ACK_MAP = {
     METHOD_GET: METHOD_GETACK,
     METHOD_SET: METHOD_SETACK,
 }
-
-NS_APPLIANCE_SYSTEM_ALL = "Appliance.System.All"
-NS_APPLIANCE_SYSTEM_ABILITY = "Appliance.System.Ability"
-NS_APPLIANCE_SYSTEM_HARDWARE = "Appliance.System.Hardware"
-NS_APPLIANCE_SYSTEM_FIRMWARE = "Appliance.System.Firmware"
-NS_APPLIANCE_SYSTEM_CLOCK = "Appliance.System.Clock"
-NS_APPLIANCE_SYSTEM_REPORT = "Appliance.System.Report"
-NS_APPLIANCE_SYSTEM_ONLINE = "Appliance.System.Online"
-NS_APPLIANCE_SYSTEM_DEBUG = "Appliance.System.Debug"
-NS_APPLIANCE_SYSTEM_TIME = "Appliance.System.Time"
-NS_APPLIANCE_SYSTEM_DNDMODE = "Appliance.System.DNDMode"
-NS_APPLIANCE_SYSTEM_RUNTIME = "Appliance.System.Runtime"
-NS_APPLIANCE_SYSTEM_POSITION = "Appliance.System.Position"
-NS_APPLIANCE_CONFIG_KEY = "Appliance.Config.Key"
-NS_APPLIANCE_CONFIG_WIFI = "Appliance.Config.Wifi"
-NS_APPLIANCE_CONFIG_WIFIX = "Appliance.Config.WifiX"
-NS_APPLIANCE_CONFIG_WIFILIST = "Appliance.Config.WifiList"
-NS_APPLIANCE_CONFIG_TRACE = "Appliance.Config.Trace"
-NS_APPLIANCE_CONFIG_INFO = "Appliance.Config.Info"
-NS_APPLIANCE_CONFIG_OVERTEMP = "Appliance.Config.OverTemp"
-NS_APPLIANCE_DIGEST_TRIGGERX = "Appliance.Digest.TriggerX"
-NS_APPLIANCE_DIGEST_TIMERX = "Appliance.Digest.TimerX"
-NS_APPLIANCE_CONTROL_MULTIPLE = "Appliance.Control.Multiple"
-NS_APPLIANCE_CONTROL_BIND = "Appliance.Control.Bind"
-NS_APPLIANCE_CONTROL_UNBIND = "Appliance.Control.Unbind"
-NS_APPLIANCE_CONTROL_UPGRADE = "Appliance.Control.Upgrade"
-NS_APPLIANCE_CONTROL_TOGGLE = "Appliance.Control.Toggle"
-NS_APPLIANCE_CONTROL_TOGGLEX = "Appliance.Control.ToggleX"
-NS_APPLIANCE_CONTROL_TRIGGER = "Appliance.Control.Trigger"
-NS_APPLIANCE_CONTROL_TRIGGERX = "Appliance.Control.TriggerX"
-NS_APPLIANCE_CONTROL_TIMERX = "Appliance.Control.TimerX"
-NS_APPLIANCE_CONTROL_CONSUMPTIONCONFIG = "Appliance.Control.ConsumptionConfig"
-NS_APPLIANCE_CONTROL_CONSUMPTIONX = "Appliance.Control.ConsumptionX"
-NS_APPLIANCE_CONTROL_CONSUMPTIONH = "Appliance.Control.ConsumptionH"
-NS_APPLIANCE_CONTROL_ELECTRICITY = "Appliance.Control.Electricity"
-NS_APPLIANCE_CONTROL_OVERTEMP = "Appliance.Control.OverTemp"
-NS_APPLIANCE_CONTROL_TEMPUNIT = "Appliance.Control.TempUnit"
-# Light Abilities
-NS_APPLIANCE_CONTROL_LIGHT = "Appliance.Control.Light"
-NS_APPLIANCE_CONTROL_LIGHT_EFFECT = "Appliance.Control.Light.Effect"
-# Humidifier abilities
-NS_APPLIANCE_CONTROL_SPRAY = "Appliance.Control.Spray"
-# Unknown abilities
-NS_APPLIANCE_CONTROL_PHYSICALLOCK = "Appliance.Control.PhysicalLock"
-# MAP100 (air purifier) abilties
-NS_APPLIANCE_CONTROL_FAN = "Appliance.Control.Fan"
-NS_APPLIANCE_CONTROL_FILTERMAINTENANCE = "Appliance.Control.FilterMaintenance"
-
-# Garage door opener
-NS_APPLIANCE_GARAGEDOOR_STATE = "Appliance.GarageDoor.State"
-NS_APPLIANCE_GARAGEDOOR_CONFIG = "Appliance.GarageDoor.Config"
-NS_APPLIANCE_GARAGEDOOR_MULTIPLECONFIG = "Appliance.GarageDoor.MultipleConfig"
-# Roller shutter
-NS_APPLIANCE_ROLLERSHUTTER_ADJUST = "Appliance.RollerShutter.Adjust"
-NS_APPLIANCE_ROLLERSHUTTER_CONFIG = "Appliance.RollerShutter.Config"
-NS_APPLIANCE_ROLLERSHUTTER_POSITION = "Appliance.RollerShutter.Position"
-NS_APPLIANCE_ROLLERSHUTTER_STATE = "Appliance.RollerShutter.State"
-# Hub
-NS_APPLIANCE_DIGEST_HUB = "Appliance.Digest.Hub"
-NS_APPLIANCE_HUB_SUBDEVICELIST = "Appliance.Hub.SubdeviceList"
-NS_APPLIANCE_HUB_REPORT = "Appliance.Hub.Report"
-NS_APPLIANCE_HUB_EXCEPTION = "Appliance.Hub.Exception"
-NS_APPLIANCE_HUB_BATTERY = "Appliance.Hub.Battery"
-NS_APPLIANCE_HUB_TOGGLEX = "Appliance.Hub.ToggleX"
-NS_APPLIANCE_HUB_ONLINE = "Appliance.Hub.Online"
-NS_APPLIANCE_HUB_PAIRSUBDEV = "Appliance.Hub.PairSubDev"
-NS_APPLIANCE_HUB_SENSITIVITY = "Appliance.Hub.Sensitivity"
-# miscellaneous
-NS_APPLIANCE_HUB_SUBDEVICE_MOTORADJUST = "Appliance.Hub.SubDevice.MotorAdjust"
-NS_APPLIANCE_HUB_SUBDEVICE_BEEP = "Appliance.Hub.SubDevice.Beep"
-NS_APPLIANCE_HUB_SUBDEVICE_VERSION = "Appliance.Hub.SubDevice.Version"
-# MS100 and other sensors
-NS_APPLIANCE_HUB_SENSOR_ALL = "Appliance.Hub.Sensor.All"
-NS_APPLIANCE_HUB_SENSOR_TEMPHUM = "Appliance.Hub.Sensor.TempHum"
-NS_APPLIANCE_HUB_SENSOR_ALERT = "Appliance.Hub.Sensor.Alert"
-NS_APPLIANCE_HUB_SENSOR_ADJUST = "Appliance.Hub.Sensor.Adjust"
-NS_APPLIANCE_HUB_SENSOR_LATEST = "Appliance.Hub.Sensor.Latest"
-NS_APPLIANCE_HUB_SENSOR_SMOKE = "Appliance.Hub.Sensor.Smoke"
-NS_APPLIANCE_HUB_SENSOR_WATERLEAK = "Appliance.Hub.Sensor.WaterLeak"
-NS_APPLIANCE_HUB_SENSOR_MOTION = "Appliance.Hub.Sensor.Motion"
-NS_APPLIANCE_HUB_SENSOR_DOORWINDOW = "Appliance.Hub.Sensor.DoorWindow"
-# MTS100
-NS_APPLIANCE_HUB_MTS100_ALL = "Appliance.Hub.Mts100.All"
-NS_APPLIANCE_HUB_MTS100_TEMPERATURE = "Appliance.Hub.Mts100.Temperature"
-NS_APPLIANCE_HUB_MTS100_MODE = "Appliance.Hub.Mts100.Mode"
-NS_APPLIANCE_HUB_MTS100_ADJUST = "Appliance.Hub.Mts100.Adjust"
-NS_APPLIANCE_HUB_MTS100_SCHEDULE = "Appliance.Hub.Mts100.Schedule"
-NS_APPLIANCE_HUB_MTS100_SCHEDULEB = "Appliance.Hub.Mts100.ScheduleB"
-NS_APPLIANCE_HUB_MTS100_TIMESYNC = "Appliance.Hub.Mts100.TimeSync"
-NS_APPLIANCE_HUB_MTS100_SUPERCTL = "Appliance.Hub.Mts100.SuperCtl"
-# Smart cherub HP110A
-NS_APPLIANCE_MCU_HP110_FIRMWARE = "Appliance.Mcu.Hp110.Firmware"
-NS_APPLIANCE_MCU_HP110_FAVORITE = "Appliance.Mcu.Hp110.Favorite"
-NS_APPLIANCE_MCU_HP110_PREVIEW = "Appliance.Mcu.Hp110.Preview"
-NS_APPLIANCE_MCU_HP110_LOCK = "Appliance.Mcu.Hp110.Lock"
-NS_APPLIANCE_CONTROL_MP3 = "Appliance.Control.Mp3"
-# MTS200 smart thermostat
-NS_APPLIANCE_CONTROL_THERMOSTAT_ALARM = "Appliance.Control.Thermostat.Alarm"
-NS_APPLIANCE_CONTROL_THERMOSTAT_ALARMCONFIG = "Appliance.Control.Thermostat.AlarmConfig"
-NS_APPLIANCE_CONTROL_THERMOSTAT_CALIBRATION = "Appliance.Control.Thermostat.Calibration"
-NS_APPLIANCE_CONTROL_THERMOSTAT_COMPRESSORDELAY = (
-    "Appliance.Control.Thermostat.CompressorDelay"
-)
-NS_APPLIANCE_CONTROL_THERMOSTAT_CTLRANGE = "Appliance.Control.Thermostat.CtlRange"
-NS_APPLIANCE_CONTROL_THERMOSTAT_DEADZONE = "Appliance.Control.Thermostat.DeadZone"
-NS_APPLIANCE_CONTROL_THERMOSTAT_FROST = "Appliance.Control.Thermostat.Frost"
-NS_APPLIANCE_CONTROL_THERMOSTAT_HOLDACTION = "Appliance.Control.Thermostat.HoldAction"
-NS_APPLIANCE_CONTROL_THERMOSTAT_MODE = "Appliance.Control.Thermostat.Mode"
-NS_APPLIANCE_CONTROL_THERMOSTAT_MODEB = "Appliance.Control.Thermostat.ModeB"
-NS_APPLIANCE_CONTROL_THERMOSTAT_OVERHEAT = "Appliance.Control.Thermostat.Overheat"
-NS_APPLIANCE_CONTROL_THERMOSTAT_SCHEDULE = "Appliance.Control.Thermostat.Schedule"
-NS_APPLIANCE_CONTROL_THERMOSTAT_SCHEDULEB = "Appliance.Control.Thermostat.ScheduleB"
-NS_APPLIANCE_CONTROL_THERMOSTAT_SENSOR = "Appliance.Control.Thermostat.Sensor"
-NS_APPLIANCE_CONTROL_THERMOSTAT_SUMMERMODE = "Appliance.Control.Thermostat.SummerMode"
-NS_APPLIANCE_CONTROL_THERMOSTAT_TIMER = "Appliance.Control.Thermostat.Timer"
-NS_APPLIANCE_CONTROL_THERMOSTAT_WINDOWOPENED = (
-    "Appliance.Control.Thermostat.WindowOpened"
-)
-# MOD100-MOD150 diffuser
-NS_APPLIANCE_CONTROL_DIFFUSER_SPRAY = "Appliance.Control.Diffuser.Spray"
-NS_APPLIANCE_CONTROL_DIFFUSER_LIGHT = "Appliance.Control.Diffuser.Light"
-NS_APPLIANCE_CONTROL_DIFFUSER_SENSOR = "Appliance.Control.Diffuser.Sensor"
-# screen brigtness (actually seen on MTS200)
-NS_APPLIANCE_CONTROL_SCREEN_BRIGHTNESS = "Appliance.Control.Screen.Brightness"
-# unknown: seen on mts960
-NS_APPLIANCE_CONTROL_SENSOR_HISTORY = "Appliance.Control.Sensor.History"
-
-NS_APPLIANCE_MCU_FIRMWARE = "Appliance.Mcu.Firmware"
-NS_APPLIANCE_MCU_UPGRADE = "Appliance.Mcu.Upgrade"
 
 # misc keys for json payloads
 KEY_HEADER = "header"
@@ -197,9 +70,17 @@ KEY_BIND = "bind"
 KEY_BINDTIME = "bindTime"
 KEY_REPORT = "report"
 KEY_ONLINE = "online"
+KEY_TRIGGER = "trigger"
 KEY_TRIGGERX = "triggerx"
 KEY_TIMER = "timer"
 KEY_TIMERX = "timerx"
+KEY_DOWN = "down"
+KEY_CYCLE = "cycle"
+KEY_DURATION = "duration"
+KEY_OFFDURATION = "offDuration"
+KEY_ONDURATION = "onDuration"
+KEY_END = "end"
+KEY_CYCLE = "cycle"
 KEY_CLOCK = "clock"
 KEY_TIME = "time"
 KEY_TIMEZONE = "timezone"
@@ -218,6 +99,7 @@ KEY_SIGNAL = "signal"
 KEY_LMTIME = "lmTime"
 KEY_LMTIME_ = "lmtime"
 KEY_CHANNEL = "channel"
+KEY_SECTION = "section"
 KEY_LOCK = "lock"
 KEY_TOGGLE = "toggle"
 KEY_TOGGLEX = "togglex"
@@ -225,12 +107,15 @@ KEY_ONOFF = "onoff"
 KEY_LIGHT = "light"
 KEY_EFFECT = "effect"
 KEY_EFFECTNAME = "effectName"
+KEY_MEMBER = "member"
 KEY_ID_ = "Id"
 KEY_CAPACITY = "capacity"
 KEY_RGB = "rgb"
 KEY_LUMINANCE = "luminance"
 KEY_TEMPERATURE = "temperature"
+KEY_TEMP = "temp"
 KEY_HUMIDITY = "humidity"
+KEY_HUMI = "humi"
 KEY_SPRAY = "spray"
 KEY_FAN = "fan"
 KEY_SPEED = "speed"
@@ -245,11 +130,13 @@ KEY_HUBID = "hubId"
 KEY_SUBDEVICE = "subdevice"
 KEY_SUBDEVICELIST = "subdeviceList"
 KEY_ID = "id"
+KEY_SUBID = "subId"
 KEY_LASTACTIVETIME = "lastActiveTime"
 KEY_SYNCEDTIME = "syncedTime"
 KEY_LATESTSAMPLETIME = "latestSampleTime"
 KEY_LATEST = "latest"
 KEY_TEMPHUM = "tempHum"
+KEY_TEMPHUMI = "tempHumi"
 KEY_LATESTTEMPERATURE = "latestTemperature"
 KEY_LATESTHUMIDITY = "latestHumidity"
 KEY_SMOKEALARM = "smokeAlarm"
@@ -265,8 +152,11 @@ KEY_ELECTRICITY = "electricity"
 KEY_POWER = "power"
 KEY_CURRENT = "current"
 KEY_VOLTAGE = "voltage"
+KEY_FACTOR = "factor"
+KEY_MCONSUME = "mConsume"
 KEY_CONSUMPTIONX = "consumptionx"
 KEY_CONSUMPTIONH = "consumptionH"
+KEY_TOTAL = "total"
 KEY_CONSUMPTIONCONFIG = "consumptionconfig"
 KEY_OVERTEMP = "overTemp"
 KEY_ENABLE = "enable"
@@ -309,6 +199,8 @@ KEY_ALARM = "alarm"
 KEY_ALARMCONFIG = "alarmConfig"
 KEY_CALIBRATION = "calibration"
 KEY_CTLRANGE = "ctlRange"
+KEY_CTLMAX = "ctlMax"
+KEY_CTLMIN = "ctlMin"
 KEY_DEADZONE = "deadZone"
 KEY_FROST = "frost"
 KEY_OVERHEAT = "overheat"
@@ -364,48 +256,6 @@ KEY_RESERVEDDOMAIN = "reservedDomain"
 KEY_SUBDEVICEID = "subDeviceId"
 KEY_SUBDEVICENAME = "subDeviceName"
 
-
-# 'well-know' static map for get_default_payload and get_namespacekey
-# Those functions use euristics but sometimes they need to be overriden by defining
-# the custom namespace structure here
-PAYLOAD_GET = {
-    NS_APPLIANCE_CONTROL_CONSUMPTIONX: {KEY_CONSUMPTIONX: []},
-    NS_APPLIANCE_CONTROL_ELECTRICITY: {KEY_ELECTRICITY: {}},
-    NS_APPLIANCE_CONTROL_FILTERMAINTENANCE: {KEY_FILTER: {}},
-    NS_APPLIANCE_CONTROL_LIGHT: {KEY_LIGHT: {}},
-    NS_APPLIANCE_CONTROL_LIGHT_EFFECT: {KEY_EFFECT: []},
-    NS_APPLIANCE_CONTROL_MP3: {KEY_MP3: {}},
-    NS_APPLIANCE_CONTROL_PHYSICALLOCK: {KEY_LOCK: {}},
-    NS_APPLIANCE_CONTROL_SPRAY: {KEY_SPRAY: {}},
-    NS_APPLIANCE_CONTROL_TEMPUNIT: {KEY_TEMPUNIT: [{KEY_CHANNEL: 0}]},
-    NS_APPLIANCE_CONTROL_TIMERX: {KEY_TIMERX: {}},
-    NS_APPLIANCE_CONTROL_TOGGLE: {KEY_TOGGLE: []},
-    NS_APPLIANCE_CONTROL_TOGGLEX: {KEY_TOGGLEX: []},
-    NS_APPLIANCE_CONTROL_TRIGGERX: {KEY_TRIGGERX: {}},
-    NS_APPLIANCE_CONTROL_DIFFUSER_SENSOR: {KEY_SENSOR: {}},
-    NS_APPLIANCE_CONTROL_SCREEN_BRIGHTNESS: {KEY_BRIGHTNESS: [{KEY_CHANNEL: 0}]},
-    NS_APPLIANCE_CONTROL_SENSOR_HISTORY: {KEY_HISTORY: [{KEY_CHANNEL: 0}]},
-    # Appliance.Control.Thermostat. namespace typically handled with euristics in get_default_payload
-    NS_APPLIANCE_CONTROL_THERMOSTAT_COMPRESSORDELAY: {KEY_DELAY: [{KEY_CHANNEL: 0}]},
-    NS_APPLIANCE_DIGEST_TRIGGERX: {KEY_DIGEST: []},
-    NS_APPLIANCE_DIGEST_TIMERX: {KEY_DIGEST: []},
-    NS_APPLIANCE_GARAGEDOOR_CONFIG: {KEY_CONFIG: {}},
-    NS_APPLIANCE_GARAGEDOOR_MULTIPLECONFIG: {KEY_CONFIG: [{KEY_CHANNEL: 0}]},
-    # Appliance.Hub. namespace typically handled with euristics in get_default_payload
-    NS_APPLIANCE_HUB_MTS100_SCHEDULEB: {KEY_SCHEDULE: []},
-    NS_APPLIANCE_HUB_SENSOR_SMOKE: {KEY_SMOKEALARM: []},
-    NS_APPLIANCE_HUB_SUBDEVICE_MOTORADJUST: {
-        KEY_ADJUST: []
-    },  # unconfirmed but 'motoradjust' is wrong for sure
-    NS_APPLIANCE_SYSTEM_DNDMODE: {KEY_DNDMODE: {}},
-}
-# these namespaces do not provide the GET/GETACK methods
-# hence querying works by issuing an empty PUSH. SET/SETACK might work though
-PUSH_ONLY_NAMESPACES = {
-    NS_APPLIANCE_CONTROL_FILTERMAINTENANCE,
-    NS_APPLIANCE_CONTROL_PHYSICALLOCK,  # SET works
-    NS_APPLIANCE_ROLLERSHUTTER_ADJUST,
-}
 # error codes as reported by Meross device protocol
 ERROR_INVALIDKEY = 5001
 
@@ -441,6 +291,7 @@ ROLLERSHUTTER_POSITION_CLOSED = 0
 MTS_TEMP_SCALE = 10  # native mts temperatures expressed in tenths of °C
 MTS960_TEMP_SCALE = 100  # native mts960 temperatures expressed in hundredths of °C
 
+
 # mts100 (and the likes..) valves mode
 MTS100_MODE_CUSTOM = 0
 MTS100_MODE_HEAT = 1
@@ -470,9 +321,8 @@ MTS200_MODE_TO_TARGETTEMP_MAP = {
     None: KEY_MANUALTEMP,
 }
 
-# looks like with 'summerMode' disabled (i.e. in winter) the MTS reports '1'
 MTS200_SUMMERMODE_HEAT = 1
-MTS200_SUMMERMODE_COOL = 0
+MTS200_SUMMERMODE_COOL = 2
 
 # MTS200 external sensor status (overheat protection)
 MTS200_OVERHEAT_WARNING_OK = 0
@@ -485,18 +335,25 @@ MTS200_OVERHEAT_WARNING_MAP = {
 }
 
 # inferring the mts960 modes from the manual
-MTS960_MODE_HEAT = 1
-MTS960_MODE_COOL = 2
-MTS960_MODE_CYCLE = 3
-MTS960_MODE_COUNTDOWN_ON = 4
-MTS960_MODE_COUNTDOWN_OFF = 5
-MTS960_MODE_SCHEDULE_HEAT = 6
-MTS960_MODE_SCHEDULE_COOL = 7
+MTS960_MODE_HEAT_COOL = 1
+MTS960_MODE_SCHEDULE = 2
+MTS960_MODE_TIMER = 3
 # mapping the "state" key value to the socket/plug action
 MTS960_STATE_UNKNOWN = 0
 MTS960_STATE_ON = 1
 MTS960_STATE_OFF = 2  # this appears when the plug is off (why not 0?)
-
+#
+MTS960_WORKING_HEAT = 1
+MTS960_WORKING_COOL = 2
+#
+# mapping the "ONOFF" key value to the socket/plug action
+MTS960_ONOFF_ON = 1
+MTS960_ONOFF_OFF = 2  # this appears when the plug is off (why not 0?)
+#
+# mapping the Timer Type
+MTS960_TIMER_TYPE_COUNTDOWN = 1
+MTS960_TIMER_TYPE_CYCLE = 2
+#
 # diffuser mode enums
 DIFFUSER_SPRAY_MODE_OFF = 2  # or 255 ? or 'any' ?
 DIFFUSER_SPRAY_MODE_ECO = 0
@@ -504,20 +361,20 @@ DIFFUSER_SPRAY_MODE_FULL = 1
 DIFFUSER_LIGHT_MODE_RAINBOW = 0  # color modes taken from 'homebridge-meross' plugin
 DIFFUSER_LIGHT_MODE_COLOR = 1
 DIFFUSER_LIGHT_MODE_TEMPERATURE = 2
-DIFFUSER_LIGHT_EFFECT_MAP = {
-    DIFFUSER_LIGHT_MODE_RAINBOW: "Rainbow",
-    DIFFUSER_LIGHT_MODE_COLOR: "Color",
-    DIFFUSER_LIGHT_MODE_TEMPERATURE: "Temperature",
-}
+DIFFUSER_LIGHT_MODE_LIST = [
+    "Rainbow",
+    "Color",
+    "Temperature",
+]
 
 # cherub machine
-HP110A_LIGHT_EFFECT_MAP = {
-    0: "Color",
-    1: "Scene 1",
-    2: "Scene 2",
-    3: "Scene 3",
-    4: "Scene 4",
-}
+HP110A_LIGHT_EFFECT_LIST = [
+    "Color",
+    "Scene 1",
+    "Scene 2",
+    "Scene 3",
+    "Scene 4",
+]
 HP110A_MP3_SONG_MIN = 1
 HP110A_MP3_SONG_MAX = 11
 HP110A_MP3_SONG_MAP = {
@@ -567,6 +424,10 @@ TYPE_MSL100 = "msl100"  # smart bulb
 TYPE_NAME_MAP[TYPE_MSL100] = "Smart Bulb"
 TYPE_MSL120 = "msl120"  # smart bulb with color/temp
 TYPE_NAME_MAP[TYPE_MSL120] = "Smart RGB Bulb"
+TYPE_MSL320_PRO = "msl320cp"  # smart led strip pro
+TYPE_NAME_MAP[TYPE_MSL320_PRO] = "Smart RGB Pro Led Strip"
+TYPE_MSL320 = "msl320"  # smart led strip
+TYPE_NAME_MAP[TYPE_MSL320] = "Smart RGB Led Strip"
 TYPE_NAME_MAP["msl"] = "Smart Light"
 
 TYPE_MSS310 = "mss310"  # smart plug with energy meter
@@ -599,6 +460,9 @@ TYPE_NAME_MAP[TYPE_GS559] = "Smart Smoke Alarm"
 
 TYPE_MS100 = "ms100"  # Smart temp/humidity sensor over Hub
 TYPE_NAME_MAP[TYPE_MS100] = "Smart Temp/Humidity Sensor"
+
+TYPE_MS130 = "ms130"  # Smart temp/humidity sensor (with display) over Hub
+TYPE_NAME_MAP[TYPE_MS130] = "Smart Temp/Humidity Sensor"
 
 TYPE_MS200 = "ms200"
 TYPE_NAME_MAP[TYPE_MS200] = "Smart Door/Window Sensor"

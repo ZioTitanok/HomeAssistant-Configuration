@@ -10,7 +10,14 @@
                             "comfort": "Comfort (heat)",
                             "sleep": "Sleep (cool)",
                             "away": "Away (economy)",
-                            "auto": "Auto"
+                            "auto": "Auto",
+                            "heating": "Heating",
+                            "cooling": "Cooling",
+                            "schedule_heating": "Schedule Heating",
+                            "schedule_cooling": "Schedule Cooling",
+                            "timer_cycle": "Cycle Timer",
+                            "timer_countdown_on": "Countdown On",
+                            "timer_countdown_off": "Countdown Off"
                         }
                     }
                 }
@@ -246,7 +253,7 @@
             }
         },
         "device_identity_mismatch": {
-            "title": "Received mismatched identity for device '{device_name}'",
+            "title": "Received mismatched identity for device {device_name}",
             "fix_flow": {
                 "step": {
                     "device": {

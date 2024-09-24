@@ -33,6 +33,9 @@ async def async_get_config_entry_diagnostics(
                     "conf_protocol": device.conf_protocol,
                     "pref_protocol": device.pref_protocol,
                     "curr_protocol": device.curr_protocol,
+                    "polling_period": device.polling_period,
+                    "device_response_size_min": device.device_response_size_min,
+                    "device_response_size_max": device.device_response_size_max,
                     "MQTT": {
                         "cloud_profile": isinstance(
                             device._profile, MerossCloudProfile
@@ -47,13 +50,29 @@ async def async_get_config_entry_diagnostics(
                         "http": bool(device._http),
                         "http_active": bool(device._http_active),
                     },
-                    "polling_period": device.polling_period,
-                    "polling_strategies": {
-                        strategy.namespace: strategy.lastrequest
-                        for strategy in device.polling_strategies.values()
+                    "namespace_handlers": {
+                        handler.ns.name: {
+                            "lastrequest": handler.lastrequest,
+                            "lastresponse": handler.lastresponse,
+                            "polling_epoch_next": handler.polling_epoch_next,
+                            "polling_strategy": (
+                                handler.polling_strategy.__name__
+                                if handler.polling_strategy
+                                else None
+                            ),
+                        }
+                        for handler in device.namespace_handlers.values()
                     },
-                    "device_response_size_min": device.device_response_size_min,
-                    "device_response_size_max": device.device_response_size_max,
+                    "namespace_pushes": (
+                        obfuscated_dict(device.namespace_pushes)
+                        if obfuscate
+                        else device.namespace_pushes
+                    ),
+                    "device_info": (
+                        obfuscated_dict(device.device_info)
+                        if obfuscate and device.device_info
+                        else device.device_info
+                    ),
                 }
                 data["trace"] = await device.async_get_diagnostics_trace()
             return data

@@ -19,3 +19,47 @@
     target:
       device_id: e272b139af0a51fd2d86f2a1ce249c7d
   mode: single
+- id: '1722709495272'
+  alias: CondizionatoreOverPowering
+  description: ''
+  trigger:
+  - type: problem
+    platform: device
+    device_id: 90c4138c0ae6c1ed38bc6acb59ba8492
+    entity_id: ecb0a15ba0f6d08ff1d690f982e8bd99
+    domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: 90c4138c0ae6c1ed38bc6acb59ba8492
+    entity_id: 6391e5c42f553d8bc392ba341258178e
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.mobile_app_s22plus
+    metadata: {}
+    data:
+      message: Problema al condizionatore.
+      title: Condizionatore
+  mode: single
+- id: '1722709587185'
+  alias: CondizionatoreOverHeating
+  description: ''
+  trigger:
+  - type: problem
+    platform: device
+    device_id: 90c4138c0ae6c1ed38bc6acb59ba8492
+    entity_id: ecb0a15ba0f6d08ff1d690f982e8bd99
+    domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: 90c4138c0ae6c1ed38bc6acb59ba8492
+    entity_id: 6391e5c42f553d8bc392ba341258178e
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.mobile_app_s22plus
+    metadata: {}
+    data:
+      title: 'Condizionatore '
+      message: Problemi!
+  mode: single

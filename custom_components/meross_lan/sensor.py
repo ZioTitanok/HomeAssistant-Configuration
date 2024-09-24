@@ -1,36 +1,33 @@
-from __future__ import annotations
-
 import typing
 
 from homeassistant.components import sensor
-from homeassistant.const import (
-    UnitOfElectricCurrent,
-    UnitOfElectricPotential,
-    UnitOfEnergy,
-    UnitOfPower,
-    UnitOfTemperature,
-)
 
 from . import const as mlc, meross_entity as me
 from .helpers.namespaces import (
-    EntityPollingStrategy,
+    EntityNamespaceHandler,
+    EntityNamespaceMixin,
     NamespaceHandler,
-    SmartPollingStrategy,
 )
-from .merossclient import const as mc
+from .merossclient import const as mc, json_dumps, namespaces as mn
 
 if typing.TYPE_CHECKING:
-    from typing import Final
-
     from homeassistant.config_entries import ConfigEntry
     from homeassistant.core import HomeAssistant
 
     from .helpers.manager import EntityManager
     from .meross_device import MerossDevice
 
+    # optional arguments for MLEnumSensor init
+    class MLEnumSensorArgs(me.MerossEntityArgs):
+        native_value: typing.NotRequired[sensor.StateType]
+
+    # optional arguments for MLNumericSensor init
+    class MLNumericSensorArgs(me.MerossNumericEntityArgs):
+        pass
+
 
 async def async_setup_entry(
-    hass: HomeAssistant, config_entry: ConfigEntry, async_add_devices
+    hass: "HomeAssistant", config_entry: "ConfigEntry", async_add_devices
 ):
     me.platform_setup_entry(hass, config_entry, async_add_devices, sensor.DOMAIN)
 
@@ -42,21 +39,22 @@ class MLEnumSensor(me.MerossEntity, sensor.SensorEntity):
     PLATFORM = sensor.DOMAIN
 
     # HA core entity attributes:
-    native_value: sensor.StateType | None
+    native_value: "sensor.StateType"
     native_unit_of_measurement: None = None
 
     __slots__ = ("native_value",)
 
     def __init__(
         self,
-        manager: EntityManager,
+        manager: "EntityManager",
         channel: object | None,
         entitykey: str | None,
-        *,
-        native_value: sensor.StateType = None,
+        **kwargs: "typing.Unpack[MLEnumSensorArgs]",
     ):
-        self.native_value = native_value
-        super().__init__(manager, channel, entitykey, sensor.SensorDeviceClass.ENUM)
+        self.native_value = kwargs.pop("native_value", None)
+        super().__init__(
+            manager, channel, entitykey, sensor.SensorDeviceClass.ENUM, **kwargs
+        )
 
     def set_unavailable(self):
         self.native_value = None
@@ -75,14 +73,14 @@ class MLNumericSensor(me.MerossNumericEntity, sensor.SensorEntity):
     StateClass = sensor.SensorStateClass
 
     DEVICECLASS_TO_UNIT_MAP = {
-        DeviceClass.POWER: UnitOfPower.WATT,
-        DeviceClass.CURRENT: UnitOfElectricCurrent.AMPERE,
-        DeviceClass.VOLTAGE: UnitOfElectricPotential.VOLT,
-        DeviceClass.ENERGY: UnitOfEnergy.WATT_HOUR,
-        DeviceClass.TEMPERATURE: UnitOfTemperature.CELSIUS,
-        DeviceClass.HUMIDITY: me.MerossNumericEntity.UNIT_PERCENTAGE,
-        DeviceClass.BATTERY: me.MerossNumericEntity.UNIT_PERCENTAGE,
-        DeviceClass.POWER_FACTOR: me.MerossNumericEntity.UNIT_PERCENTAGE,
+        DeviceClass.POWER: me.MerossEntity.hac.UnitOfPower.WATT,
+        DeviceClass.CURRENT: me.MerossEntity.hac.UnitOfElectricCurrent.AMPERE,
+        DeviceClass.VOLTAGE: me.MerossEntity.hac.UnitOfElectricPotential.VOLT,
+        DeviceClass.ENERGY: me.MerossEntity.hac.UnitOfEnergy.WATT_HOUR,
+        DeviceClass.TEMPERATURE: me.MerossEntity.hac.UnitOfTemperature.CELSIUS,
+        DeviceClass.HUMIDITY: me.MerossEntity.hac.PERCENTAGE,
+        DeviceClass.BATTERY: me.MerossEntity.hac.PERCENTAGE,
+        DeviceClass.ILLUMINANCE: me.MerossEntity.hac.LIGHT_LUX,
     }
 
     # we basically default Sensor.state_class to SensorStateClass.MEASUREMENT
@@ -99,13 +97,11 @@ class MLNumericSensor(me.MerossNumericEntity, sensor.SensorEntity):
 
     def __init__(
         self,
-        manager: EntityManager,
+        manager: "EntityManager",
         channel: object | None,
         entitykey: str | None,
         device_class: DeviceClass | None = None,
-        *,
-        device_value: int | None = None,
-        native_unit_of_measurement: str | None = None,
+        **kwargs: "typing.Unpack[MLNumericSensorArgs]",
     ):
         assert device_class is not sensor.SensorDeviceClass.ENUM
         self.state_class = self.DEVICECLASS_TO_STATECLASS_MAP.get(
@@ -116,15 +112,22 @@ class MLNumericSensor(me.MerossNumericEntity, sensor.SensorEntity):
             channel,
             entitykey,
             device_class,
-            device_value=device_value,
-            native_unit_of_measurement=native_unit_of_measurement,
+            **kwargs,
         )
 
     @staticmethod
     def build_for_device(
-        device: MerossDevice, device_class: MLNumericSensor.DeviceClass
+        device: "MerossDevice",
+        device_class: "MLNumericSensor.DeviceClass",
+        **kwargs: "typing.Unpack[MLNumericSensorArgs]",
     ):
-        return MLNumericSensor(device, None, str(device_class), device_class)
+        return MLNumericSensor(
+            device,
+            None,
+            str(device_class),
+            device_class,
+            **kwargs,
+        )
 
 
 class MLHumiditySensor(MLNumericSensor):
@@ -132,13 +135,23 @@ class MLHumiditySensor(MLNumericSensor):
     This, beside providing a shortcut initializer, will benefit sensor entity testing checks.
     """
 
+    # HA core entity attributes:
+    _attr_suggested_display_precision = 0
+
     def __init__(
         self,
-        manager: me.EntityManager,
+        manager: "EntityManager",
         channel: object | None,
         entitykey: str | None = "humidity",
+        **kwargs: "typing.Unpack[MLNumericSensorArgs]",
     ):
-        super().__init__(manager, channel, entitykey, sensor.SensorDeviceClass.HUMIDITY)
+        super().__init__(
+            manager,
+            channel,
+            entitykey,
+            sensor.SensorDeviceClass.HUMIDITY,
+            **kwargs,
+        )
 
 
 class MLTemperatureSensor(MLNumericSensor):
@@ -146,26 +159,42 @@ class MLTemperatureSensor(MLNumericSensor):
     This, beside providing a shortcut initializer, will benefit sensor entity testing checks.
     """
 
+    # HA core entity attributes:
+    _attr_suggested_display_precision = 1
+
     def __init__(
         self,
-        manager: me.EntityManager,
+        manager: "EntityManager",
         channel: object | None,
         entitykey: str | None = "temperature",
+        **kwargs: "typing.Unpack[MLNumericSensorArgs]",
     ):
         super().__init__(
-            manager, channel, entitykey, sensor.SensorDeviceClass.TEMPERATURE
+            manager,
+            channel,
+            entitykey,
+            sensor.SensorDeviceClass.TEMPERATURE,
+            **kwargs,
         )
 
 
 class MLDiagnosticSensor(MLEnumSensor):
 
-    is_diagnostic: Final = True
+    is_diagnostic: typing.Final = True
 
     # HA core entity attributes:
     entity_category = MLNumericSensor.EntityCategory.DIAGNOSTIC
 
+    def _parse(self, payload: dict):
+        """
+        This implementation aims at diagnostic sensors installed in 'well-known'
+        namespace handlers to manage 'unexpected' channels when they eventually
+        pop-up and we (still) have no clue why these channels are pushed (See #428)
+        """
+        self.update_native_value(json_dumps(payload))
 
-class ProtocolSensor(MLEnumSensor):
+
+class ProtocolSensor(me.MEAlwaysAvailableMixin, MLEnumSensor):
     STATE_DISCONNECTED = "disconnected"
     STATE_ACTIVE = "active"
     STATE_INACTIVE = "inactive"
@@ -173,10 +202,9 @@ class ProtocolSensor(MLEnumSensor):
     ATTR_MQTT = mlc.CONF_PROTOCOL_MQTT
     ATTR_MQTT_BROKER = "mqtt_broker"
 
-    manager: MerossDevice
+    manager: "MerossDevice"
 
     # HA core entity attributes:
-    _attr_available = True
     entity_category = me.EntityCategory.DIAGNOSTIC
     entity_registry_enabled_default = False
     native_value: str
@@ -192,7 +220,7 @@ class ProtocolSensor(MLEnumSensor):
 
     def __init__(
         self,
-        manager: MerossDevice,
+        manager: "MerossDevice",
     ):
         self.extra_state_attributes = {}
         super().__init__(
@@ -263,56 +291,53 @@ class ProtocolSensor(MLEnumSensor):
             self.flush_state()
 
 
-class MLSignalStrengthSensor(MLNumericSensor):
+class MLSignalStrengthSensor(EntityNamespaceMixin, MLNumericSensor):
+
+    ns = mn.Appliance_System_Runtime
 
     # HA core entity attributes:
     entity_category = me.EntityCategory.DIAGNOSTIC
     icon = "mdi:wifi"
 
-    def __init__(self, manager: MerossDevice):
+    def __init__(self, manager: "MerossDevice"):
         super().__init__(
             manager,
             None,
             mlc.SIGNALSTRENGTH_ID,
-            MLNumericSensor.DeviceClass.POWER_FACTOR,
+            None,
+            native_unit_of_measurement=me.MerossEntity.hac.PERCENTAGE,
         )
-        EntityPollingStrategy(
-            manager,
-            mc.NS_APPLIANCE_SYSTEM_RUNTIME,
-            self,
-            handler=self._handle_Appliance_System_Runtime,
-        )
+        EntityNamespaceHandler(self)
 
-    def _handle_Appliance_System_Runtime(self, header: dict, payload: dict):
+    def _handle(self, header: dict, payload: dict):
         self.update_native_value(payload[mc.KEY_RUNTIME][mc.KEY_SIGNAL])
 
 
 class MLFilterMaintenanceSensor(MLNumericSensor):
 
-    namespace = mc.NS_APPLIANCE_CONTROL_FILTERMAINTENANCE
-    key_namespace = mc.KEY_FILTER
+    ns = mn.Appliance_Control_FilterMaintenance
     key_value = mc.KEY_LIFE
 
     # HA core entity attributes:
     entity_category = me.EntityCategory.DIAGNOSTIC
 
-    def __init__(self, manager: MerossDevice, channel):
+    def __init__(self, manager: "MerossDevice", channel):
         super().__init__(
             manager,
             channel,
             mc.KEY_FILTER,
             None,
-            native_unit_of_measurement=MLNumericSensor.UNIT_PERCENTAGE,
+            native_unit_of_measurement=me.MerossEntity.hac.PERCENTAGE,
         )
-        manager.register_parser(self.namespace, self)
+        manager.register_parser_entity(self)
 
 
 class FilterMaintenanceNamespaceHandler(NamespaceHandler):
 
-    def __init__(self, device: MerossDevice):
-        super().__init__(
+    def __init__(self, device: "MerossDevice"):
+        NamespaceHandler.__init__(
+            self,
             device,
-            mc.NS_APPLIANCE_CONTROL_FILTERMAINTENANCE,
-            entity_class=MLFilterMaintenanceSensor,
+            mn.Appliance_Control_FilterMaintenance,
         )
-        SmartPollingStrategy(device, mc.NS_APPLIANCE_CONTROL_FILTERMAINTENANCE)
+        MLFilterMaintenanceSensor(device, 0)

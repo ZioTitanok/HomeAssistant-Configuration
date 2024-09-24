@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import typing
 
 from homeassistant.components import media_player
@@ -11,9 +9,7 @@ from homeassistant.components.media_player.const import (
 
 from . import meross_entity as me
 from .helpers import clamp
-from .helpers.namespaces import PollingStrategy
-from .light import MLLight
-from .merossclient import const as mc  # mEROSS cONST
+from .merossclient import const as mc, namespaces as mn
 
 if typing.TYPE_CHECKING:
     from homeassistant.config_entries import ConfigEntry
@@ -23,7 +19,7 @@ if typing.TYPE_CHECKING:
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, config_entry: ConfigEntry, async_add_devices
+    hass: "HomeAssistant", config_entry: "ConfigEntry", async_add_devices
 ):
     me.platform_setup_entry(hass, config_entry, async_add_devices, media_player.DOMAIN)
 
@@ -31,7 +27,9 @@ async def async_setup_entry(
 class MLMp3Player(me.MerossEntity, media_player.MediaPlayerEntity):
     PLATFORM = media_player.DOMAIN
 
-    manager: MerossDevice
+    manager: "MerossDevice"
+
+    ns = mn.Appliance_Control_Mp3
 
     # HA core entity attributes:
     is_volume_muted: bool | None
@@ -60,7 +58,7 @@ class MLMp3Player(me.MerossEntity, media_player.MediaPlayerEntity):
         "_mp3",
     )
 
-    def __init__(self, manager: MerossDevice):
+    def __init__(self, manager: "MerossDevice"):
         self._mp3 = {}
         self.is_volume_muted = None
         self.media_title = None
@@ -70,12 +68,7 @@ class MLMp3Player(me.MerossEntity, media_player.MediaPlayerEntity):
         super().__init__(
             manager, 0, mc.KEY_MP3, media_player.MediaPlayerDeviceClass.SPEAKER
         )
-        manager.register_parser(mc.NS_APPLIANCE_CONTROL_MP3, self)
-        PollingStrategy(manager, mc.NS_APPLIANCE_CONTROL_MP3)
-        # cherub light entity should be there...
-        light: MLLight = manager.entities.get(0)  # type: ignore
-        if light:
-            light.update_effect_map(mc.HP110A_LIGHT_EFFECT_MAP)
+        manager.register_parser_entity(self)
 
     # interface: MerossEntity
     def set_unavailable(self):
@@ -92,7 +85,12 @@ class MLMp3Player(me.MerossEntity, media_player.MediaPlayerEntity):
         await self.async_request_mp3(mc.KEY_MUTE, 1 if mute else 0)
 
     async def async_set_volume_level(self, volume):
-        await self.async_request_mp3(mc.KEY_VOLUME, clamp(round(volume * mc.HP110A_MP3_VOLUME_MAX), 0, mc.HP110A_MP3_VOLUME_MAX))
+        await self.async_request_mp3(
+            mc.KEY_VOLUME,
+            clamp(
+                round(volume * mc.HP110A_MP3_VOLUME_MAX), 0, mc.HP110A_MP3_VOLUME_MAX
+            ),
+        )
 
     async def async_media_play(self):
         await self.async_request_mp3(mc.KEY_MUTE, 0)
@@ -124,9 +122,9 @@ class MLMp3Player(me.MerossEntity, media_player.MediaPlayerEntity):
     async def async_request_mp3(self, key: str, value: int):
         payload = {mc.KEY_CHANNEL: self.channel, key: value}
         if await self.manager.async_request_ack(
-            mc.NS_APPLIANCE_CONTROL_MP3,
+            self.ns.name,
             mc.METHOD_SET,
-            {mc.KEY_MP3: payload},
+            {self.ns.key: payload},
         ):
             self._parse_mp3(payload)
 
@@ -143,6 +141,7 @@ class MLMp3Player(me.MerossEntity, media_player.MediaPlayerEntity):
                 self.media_track = song = payload[mc.KEY_SONG]
                 self.media_title = mc.HP110A_MP3_SONG_MAP.get(song)
             if mc.KEY_VOLUME in payload:
-                self.volume_level = clamp(payload[mc.KEY_VOLUME] / mc.HP110A_MP3_VOLUME_MAX, 0.0, 1.0)
+                self.volume_level = clamp(
+                    payload[mc.KEY_VOLUME] / mc.HP110A_MP3_VOLUME_MAX, 0.0, 1.0
+                )
             self.flush_state()
-
