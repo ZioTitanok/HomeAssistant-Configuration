@@ -3,11 +3,11 @@
 # Camera Preset
 - alias: c510w1_preset
   initial_state: true
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: input_select.c510w1_camera
-  action:
-    - service: onvif.ptz
+  actions:
+    - action: onvif.ptz
       target:
         device_id: e272b139af0a51fd2d86f2a1ce249c7d
       data:

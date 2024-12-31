@@ -3,12 +3,12 @@
 # Ender3 Working
 - alias: ender3_working
   initial_state: true
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: binary_sensor.octoprint_printing
       to: "off"
-  action:
-    - service: notify.mobile_app_s22plus
+  actions:
+    - action: notify.mobile_app_s22plus
       data:
         title: "Ender3"
         message: >

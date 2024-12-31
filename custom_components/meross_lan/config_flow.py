@@ -6,6 +6,7 @@ from enum import StrEnum
 import json
 import logging
 from time import time
+from types import MappingProxyType
 import typing
 
 from homeassistant import config_entries as ce, const as hac
@@ -15,7 +16,12 @@ from homeassistant.helpers.selector import selector
 import voluptuous as vol
 
 from . import MerossApi, const as mlc
-from .helpers import ConfigEntriesHelper, ConfigEntryType, reverse_lookup
+from .helpers import (
+    ConfigEntriesHelper,
+    ConfigEntryType,
+    get_default_no_verify_ssl_context,
+    reverse_lookup,
+)
 from .helpers.manager import CloudApiClient
 from .merossclient import (
     HostAddress,
@@ -95,13 +101,13 @@ class MerossFlowHandlerMixin(
     profile_config: mlc.ProfileConfigType
     device_descriptor: MerossDeviceDescriptor
 
-    device_placeholders = {
+    device_placeholders: dict[str, str] = {
         "device_type": "",
         "device_id": "",
         "host": "",
     }
 
-    profile_placeholders = {
+    profile_placeholders: dict[str, str] = {
         "email": "",
         "placeholder": "",
     }
@@ -155,7 +161,7 @@ class MerossFlowHandlerMixin(
         step_id: str,
         *,
         config_schema: dict = {},
-        description_placeholders: typing.Mapping[str, str | None] | None = None,
+        description_placeholders: typing.Mapping[str, str] | None = None,
     ):
         """modularize errors managment: use together with show_form_errorcontext and get_schema_with_errors"""
         return super().async_show_form(
@@ -320,7 +326,10 @@ class MerossFlowHandlerMixin(
                             # this patch is the best I can think of
                             ce.ConfigEntry(
                                 version=self.VERSION,
-                                minor_version=self.MINOR_VERSION,  # type: ignore
+                                minor_version=self.MINOR_VERSION,  # required since 2024.1
+                                discovery_keys=MappingProxyType(
+                                    {}
+                                ),  # required since 2024.10
                                 domain=mlc.DOMAIN,
                                 title=profile_config[mc.KEY_EMAIL],
                                 data=profile_config,
@@ -579,17 +588,6 @@ class ConfigFlow(MerossFlowHandlerMixin, ce.ConfigFlow, domain=mlc.DOMAIN):
             step_id="user",
             menu_options=["profile", "device"],
         )
-
-    async def async_step_unignore(self, user_input):
-        """Rediscover a config entry by it's unique_id."""
-        match ConfigEntryType.get_type_and_id(user_input["unique_id"]):
-            case (ConfigEntryType.DEVICE, mac_address_fmt):
-                if mac_address_fmt in ConfigFlow.DHCP_DISCOVERIES:
-                    return await self.async_step_dhcp(
-                        ConfigFlow.DHCP_DISCOVERIES.pop(mac_address_fmt)
-                    )
-
-        return self.async_abort()
 
     async def async_step_hub(self, user_input=None):
         """configure the MQTT discovery device key"""
@@ -902,6 +900,8 @@ class OptionsFlow(MerossFlowHandlerMixin, ce.OptionsFlow):
         config_entry: ce.ConfigEntry,
         repair_issue_id: str | None = None,
     ):
+        # WARNING: HA core 2024.12 introduced new properties for config_entry/config_entry_id
+        # Right now we're overwriting the implementation hoping for the good...
         self.config_entry: typing.Final = config_entry
         self.config_entry_id: typing.Final = config_entry.entry_id
         self.config = dict(self.config_entry.data)  # type: ignore
@@ -1249,7 +1249,11 @@ class OptionsFlow(MerossFlowHandlerMixin, ce.OptionsFlow):
                 key = key or api.key or ""
                 userid = "" if userid is None else str(userid)
                 mqttclient = MerossMQTTDeviceClient(
-                    device.id, key=key, userid=userid, loop=hass.loop
+                    device.id,
+                    key=key,
+                    userid=userid,
+                    loop=hass.loop,
+                    sslcontext=get_default_no_verify_ssl_context(),
                 )
                 if api.isEnabledFor(api.VERBOSE):
                     mqttclient.enable_logger(api)  # type: ignore (Loggable is duck-compatible with Logger)
@@ -1341,17 +1345,18 @@ class OptionsFlow(MerossFlowHandlerMixin, ce.OptionsFlow):
 
                 await device.async_unbind()
                 action = user_input[KEY_ACTION]
-                hass = self.hass
                 if action == KEY_ACTION_DISABLE:
-                    hass.async_create_task(
-                        hass.config_entries.async_set_disabled_by(
+                    MerossApi.api.async_create_task(
+                        self.hass.config_entries.async_set_disabled_by(
                             self.config_entry_id,
                             ce.ConfigEntryDisabler.USER,
-                        )
+                        ),
+                        f".OptionsFlow.async_set_disabled_by",
                     )
                 elif action == KEY_ACTION_DELETE:
-                    hass.async_create_task(
-                        hass.config_entries.async_remove(self.config_entry_id)
+                    MerossApi.api.async_create_task(
+                        self.hass.config_entries.async_remove(self.config_entry_id),
+                        f".OptionsFlow.async_remove",
                     )
                 return self.async_create_entry(data=None)  # type: ignore
 

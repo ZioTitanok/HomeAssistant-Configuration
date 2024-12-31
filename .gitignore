@@ -8,20 +8,32 @@ blueprints
 image
 media
 tts
-zigbee2mqtt
 
 # File Ignored
 ip_bans.yaml
 secrets.yaml
+frigate.yaml
 known_devices.yaml
 home-assistant.log
 home-assistant.log.1
 home-assistant.log.fault
 jarvis-59028-6b0d0b5a50ba.json
-.omv_cookies.json
+
+frigate.yaml
+
+.exports
+.jwt_secret
+.vacuum
+.timeline
+.shopping_list.json
+backup.db
+frigate.db
+frigate.db-shm
+frigate.db-wal
 zigbee.db
 zigbee.db-shm
 zigbee.db-wal
+
 
 *.mp3
 *.jpg

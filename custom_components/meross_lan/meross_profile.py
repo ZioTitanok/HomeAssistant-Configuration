@@ -24,7 +24,13 @@ from .const import (
     DeviceConfigType,
 )
 from .devices.hub import HubMixin
-from .helpers import ConfigEntriesHelper, Loggable, datetime_from_epoch, versiontuple
+from .helpers import (
+    ConfigEntriesHelper,
+    Loggable,
+    datetime_from_epoch,
+    get_default_ssl_context,
+    versiontuple,
+)
 from .helpers.manager import ApiProfile, CloudApiClient
 from .merossclient import (
     MEROSSDEBUG,
@@ -337,7 +343,9 @@ class MQTTConnection(Loggable):
         device_id: str,
         request: "MerossMessage",
     ):
-        return self.hass.async_create_task(self.async_mqtt_publish(device_id, request))
+        return self.profile.async_create_task(
+            self.async_mqtt_publish(device_id, request), f".mqtt_publish({device_id})"
+        )
 
     @typing.final
     async def async_mqtt_publish(
@@ -536,7 +544,10 @@ class MQTTConnection(Loggable):
                 if key is not None:
                     return
 
-            await self.async_try_discovery(device_id)
+            self.profile.async_create_task(
+                self.async_try_discovery(device_id),
+                f".async_try_discovery({device_id})",
+            )
 
     async def async_identify_device(self, device_id: str, key: str) -> DeviceConfigType:
         """
@@ -760,6 +771,7 @@ class MerossMQTTConnection(MQTTConnection, MerossMQTTAppClient):
             profile.userid,
             app_id=profile.app_id,
             loop=self.hass.loop,
+            sslcontext=get_default_ssl_context(),
         )
         MQTTConnection.__init__(self, profile, broker, self.topic_command)
         if profile.isEnabledFor(profile.VERBOSE):

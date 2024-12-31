@@ -3,16 +3,16 @@
 # Pulse Auto-Off
 - alias: main_gate_management
   initial_state: true
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: switch.shelly1_5551cc
       to: "on"
       for:
         seconds: 2
-  action:
-    - service: homeassistant.turn_off
+  actions:
+    - action: switch.turn_off
       entity_id: switch.shelly1_5551cc
-    - service: notify.mobile_app_s22plus
+    - action: notify.mobile_app_s22plus
       data:
         title: "Gate"
         message: "Cancello in azione!"
@@ -22,25 +22,9 @@
 # Gate Tag NFC Clio
 - alias: main_gate_nfc_clio
   initial_state: true
-  trigger:
-    - platform: tag
+  triggers:
+    - trigger: tag
       tag_id: 72003416-c321-4f47-af6f-f5c66cb16400
-  action:
-    - service: homeassistant.turn_on
+  actions:
+    - action: switch.turn_on
       entity_id: switch.shelly1_5551cc
-
-# Gate Tag NFC Ypsilon
-- alias: main_gate_nfc_ypsilon
-  initial_state: true
-  trigger:
-    - platform: tag
-      tag_id: 4ea4d581-5f87-4519-b040-298052a34d6d
-  action:
-    - service: homeassistant.turn_on
-      entity_id: switch.shelly1_5551cc
-    - service: notify.mobile_app_s22minus
-      data:
-        title: "Gate"
-        message: "Cancello in azione!"
-        data:
-          tag: Gate

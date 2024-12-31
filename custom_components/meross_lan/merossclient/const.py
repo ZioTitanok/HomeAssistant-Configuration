@@ -122,6 +122,18 @@ KEY_SPEED = "speed"
 KEY_MAXSPEED = "maxSpeed"
 KEY_FILTER = "filter"
 KEY_LIFE = "life"
+KEY_PRESENCE = "presence"
+KEY_DISTANCE = "distance"
+KEY_TIMES = "times"
+KEY_WORKMODE = "workMode"
+KEY_TESTMODE = "testMode"
+KEY_NOBODYTIME = "noBodyTime"
+KEY_SENSITIVITY = "sensitivity"
+KEY_LEVEL = "level"
+KEY_MTHX = "mthx"
+KEY_MTH1 = "mth1"
+KEY_MTH2 = "mth2"
+KEY_MTH3 = "mth3"
 KEY_HUB = "hub"
 KEY_EXCEPTION = "exception"
 KEY_BATTERY = "battery"
@@ -153,6 +165,7 @@ KEY_POWER = "power"
 KEY_CURRENT = "current"
 KEY_VOLTAGE = "voltage"
 KEY_FACTOR = "factor"
+KEY_CONSUME = "consume"
 KEY_MCONSUME = "mConsume"
 KEY_CONSUMPTIONX = "consumptionx"
 KEY_CONSUMPTIONH = "consumptionH"
@@ -432,23 +445,20 @@ TYPE_NAME_MAP["msl"] = "Smart Light"
 
 TYPE_MSS310 = "mss310"  # smart plug with energy meter
 TYPE_NAME_MAP[TYPE_MSS310] = "Smart Plug"
-TYPE_MSS560 = "mss560"
-TYPE_NAME_MAP[TYPE_MSS560] = "Smart Dimmer Switch"
-TYPE_MSS570 = "mss570"
-TYPE_NAME_MAP[TYPE_MSS570] = TYPE_NAME_MAP[TYPE_MSS560]
+TYPE_NAME_MAP["mss560"] = "Smart Dimmer Switch"
+TYPE_NAME_MAP["mss570"] = TYPE_NAME_MAP["mss560"]
 TYPE_NAME_MAP["mss"] = "Smart Switch"
+TYPE_NAME_MAP["mop320"] = "Smart Outdoor Plug"
 
 TYPE_MTS100 = "mts100"  # Smart thermostat over hub
 TYPE_MTS100V3 = "mts100v3"  # Smart thermostat over hub
 TYPE_MTS150 = "mts150"  # Smart thermostat over hub
+TYPE_MTS150P = "mts150p"  # Smart thermostat over hub
 TYPE_NAME_MAP["mts1"] = "Smart Thermostat Valve"
 TYPE_MTS200 = "mts200"  # Smart thermostat over wifi
 TYPE_MTS960 = "mts960"  # Smart thermostat over wifi
 TYPE_NAME_MAP[TYPE_MTS960] = "Smart Socket Thermostat"
 TYPE_NAME_MAP["mts"] = "Smart Thermostat"
-#
-# Hub subdevices
-#
 # do not register class 'ms' since it is rather
 # unusual naming and could issue collissions with mss or msl
 # just set the known type
@@ -470,10 +480,17 @@ TYPE_NAME_MAP[TYPE_MS200] = "Smart Door/Window Sensor"
 TYPE_MS400 = "ms400"
 TYPE_NAME_MAP[TYPE_MS400] = "Smart Water Leak Sensor"
 
+TYPE_MS600 = "ms600"
+TYPE_NAME_MAP[TYPE_MS600] = "Smart Presence Sensor"
+
+# REFOSS device types
+TYPE_EM06 = "em06"
+TYPE_NAME_MAP[TYPE_EM06] = "Smart Energy Monitor"
+
 #
 # HUB helpers symbols
 #
-MTS100_ALL_TYPESET = {TYPE_MTS150, TYPE_MTS100V3, TYPE_MTS100}
+MTS100_ALL_TYPESET = {TYPE_MTS150, TYPE_MTS150P, TYPE_MTS100V3, TYPE_MTS100}
 """subdevices types listed in NS_APPLIANCE_HUB_MTS100_ALL"""
 
 

@@ -2,12 +2,12 @@
 
 - alias: loft_motion
   initial_state: true
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: binary_sensor.loft_studio_pir_status
       to: "on"
-  action:
-    - service: notify.mobile_app_s22plus
+  actions:
+    - action: notify.mobile_app_s22plus
       data:
         title: "Rilevato Movimento"
         message: "E' stato rilevato un movimento in mansarda!"

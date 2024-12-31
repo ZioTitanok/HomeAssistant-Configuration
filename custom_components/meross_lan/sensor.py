@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import typing
 
 from homeassistant.components import sensor
@@ -23,7 +24,7 @@ if typing.TYPE_CHECKING:
 
     # optional arguments for MLNumericSensor init
     class MLNumericSensorArgs(me.MerossNumericEntityArgs):
-        pass
+        state_class: typing.NotRequired[sensor.SensorStateClass]
 
 
 async def async_setup_entry(
@@ -104,9 +105,12 @@ class MLNumericSensor(me.MerossNumericEntity, sensor.SensorEntity):
         **kwargs: "typing.Unpack[MLNumericSensorArgs]",
     ):
         assert device_class is not sensor.SensorDeviceClass.ENUM
-        self.state_class = self.DEVICECLASS_TO_STATECLASS_MAP.get(
+        self.state_class = kwargs.pop(
+            "state_class", None
+        ) or self.DEVICECLASS_TO_STATECLASS_MAP.get(
             device_class, MLNumericSensor.StateClass.MEASUREMENT
         )
+
         super().__init__(
             manager,
             channel,
@@ -130,11 +134,22 @@ class MLNumericSensor(me.MerossNumericEntity, sensor.SensorEntity):
         )
 
 
+@dataclass(frozen=True, slots=True)
+class MLNumericSensorDef:
+    """Descriptor class used when populating maps used to dynamically instantiate (sensor)
+    entities based on their appearance in a payload key."""
+
+    type: "type[MLNumericSensor]"
+    args: "MLNumericSensorArgs"
+
+
 class MLHumiditySensor(MLNumericSensor):
-    """Specialization for widely used device class type.
-    This, beside providing a shortcut initializer, will benefit sensor entity testing checks.
+    """Specialization for Humidity sensor.
+    - device_scale defaults to 10 which is actually the only scale seen so far.
+    - suggested_display_precision defaults to 0
     """
 
+    _attr_device_scale = 10
     # HA core entity attributes:
     _attr_suggested_display_precision = 0
 
@@ -142,9 +157,10 @@ class MLHumiditySensor(MLNumericSensor):
         self,
         manager: "EntityManager",
         channel: object | None,
-        entitykey: str | None = "humidity",
+        entitykey: str = "humidity",
         **kwargs: "typing.Unpack[MLNumericSensorArgs]",
     ):
+        kwargs.setdefault("name", entitykey.capitalize())
         super().__init__(
             manager,
             channel,
@@ -155,8 +171,9 @@ class MLHumiditySensor(MLNumericSensor):
 
 
 class MLTemperatureSensor(MLNumericSensor):
-    """Specialization for widely used device class type.
-    This, beside providing a shortcut initializer, will benefit sensor entity testing checks.
+    """Specialization for Temperature sensor.
+    - device_scale defaults to 1 (from base class definition) and is likely to be overriden.
+    - suggested_display_precision defaults to 1
     """
 
     # HA core entity attributes:
@@ -166,14 +183,39 @@ class MLTemperatureSensor(MLNumericSensor):
         self,
         manager: "EntityManager",
         channel: object | None,
-        entitykey: str | None = "temperature",
+        entitykey: str = "temperature",
         **kwargs: "typing.Unpack[MLNumericSensorArgs]",
     ):
+        kwargs.setdefault("name", entitykey.capitalize())
         super().__init__(
             manager,
             channel,
             entitykey,
             sensor.SensorDeviceClass.TEMPERATURE,
+            **kwargs,
+        )
+
+
+class MLLightSensor(MLNumericSensor):
+    """Specialization for sensor reporting light illuminance (lux)."""
+
+    _attr_device_scale = 1
+    # HA core entity attributes:
+    _attr_suggested_display_precision = 0
+
+    def __init__(
+        self,
+        manager: "EntityManager",
+        channel: object | None,
+        entitykey: str = "light",
+        **kwargs: "typing.Unpack[MLNumericSensorArgs]",
+    ):
+        kwargs.setdefault("name", entitykey.capitalize())
+        super().__init__(
+            manager,
+            channel,
+            entitykey,
+            sensor.SensorDeviceClass.ILLUMINANCE,
             **kwargs,
         )
 
@@ -341,3 +383,65 @@ class FilterMaintenanceNamespaceHandler(NamespaceHandler):
             mn.Appliance_Control_FilterMaintenance,
         )
         MLFilterMaintenanceSensor(device, 0)
+
+
+class ConsumptionHSensor(MLNumericSensor):
+
+    manager: "MerossDevice"
+    ns = mn.Appliance_Control_ConsumptionH
+
+    _attr_suggested_display_precision = 0
+
+    __slots__ = ()
+
+    def __init__(self, manager: "MerossDevice", channel: object | None):
+        super().__init__(
+            manager,
+            channel,
+            mc.KEY_CONSUMPTIONH,
+            self.DeviceClass.ENERGY,
+            name="Consumption",
+        )
+        manager.register_parser_entity(self)
+
+    def _parse_consumptionH(self, payload: dict):
+        """
+        {"channel": 1, "total": 958, "data": [{"timestamp": 1721548740, "value": 0}]}
+        """
+        self.update_device_value(payload[mc.KEY_TOTAL])
+
+
+class ConsumptionHNamespaceHandler(NamespaceHandler):
+    """
+    This namespace carries hourly statistics (over last 24 ours?) of energy consumption
+    Appearing in: mts200 - em06 (Refoss) - mop320
+    This ns looks tricky since for mts200, the query (payload GET) needs the channel
+    index while for em06 this isn't necessary (empty query replies full sensor set statistics).
+    Actual coding, according to what mts200 expects might work badly on em06 (since the query
+    code setup will use our knowledge of which channels are available and this is not enforced
+    on em06).
+    Also, we need to come up with a reasonable euristic on which channels are available
+    mts200: 1 (channel 0)
+    mop320: 3 (channel 0 - 1 - 2) even tho it only has 2 metering channels (0 looks toggling both)
+    em06: 6 channels (but the query works without setting any)
+    """
+
+    def __init__(self, device: "MerossDevice"):
+        NamespaceHandler.__init__(
+            self,
+            device,
+            mn.Appliance_Control_ConsumptionH,
+        )
+        # Current approach is to build a sensor for any appearing channel index
+        # in digest. This in turns will not directly build the EM06 sensors
+        # but they should come when polling.
+        self.register_entity_class(
+            ConsumptionHSensor, initially_disabled=False, build_from_digest=True
+        )
+
+    def _polling_request_init(self, request_payload_type: mn.RequestPayloadType):
+        # TODO: move this device type 'patching' to some 'smart' Namespace grammar
+        if self.device.descriptor.type.startswith(mc.TYPE_EM06):
+            super()._polling_request_init(mn.RequestPayloadType.DICT)
+        else:
+            super()._polling_request_init(request_payload_type)

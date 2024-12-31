@@ -3,17 +3,17 @@
 # Reboot Notification
 - alias: ha_reboot
   initial_state: true
-  trigger:
-    - platform: homeassistant
+  triggers:
+    - trigger: homeassistant
       event: start
-  action:
-    - service: notify.mobile_app_s22plus
+  actions:
+    - action: notify.mobile_app_s22plus
       data:
         title: "Homeassistant"
         message: "Sistema riavviato con successo."
         data:
           tag: Sistema
-    - service: tts.google_say
+    - action: tts.google_say
       entity_id: media_player.loft
       data:
         message: "Riavvio di sistema completato con successo."
@@ -21,37 +21,37 @@
 # Ip Change Notification
 - alias: ip_change
   initial_state: true
-  trigger:
-    - platform: homeassistant
+  triggers:
+    - trigger: homeassistant
       event: start
-    - platform: state
-      entity_id: sensor.external_ip
-  action:
-    - service: notify.mobile_app_s22plus
+    - trigger: state
+      entity_id: sensor.fritz_box_7530_ax_ip_esterno
+  actions:
+    - action: notify.mobile_app_s22plus
       data:
         title: "Rete"
-        message: "Il nuovo indirizzo IP è {{ states.sensor.external_ip.state }}"
+        message: "Il nuovo indirizzo IP è {{ states.sensor.fritz_box_7530_ax_ip_esterno.state }}"
   mode: single
 
 # Day/Night Graph Cicle
 - alias: home_night
   initial_state: true
-  trigger:
-    - platform: sun
+  triggers:
+    - trigger: sun
       event: sunset
-  action:
-    - service: input_number.set_value
+  actions:
+    - action: input_number.set_value
       data:
         entity_id: input_number.night
         value: 1
 
 - alias: home_day
   initial_state: true
-  trigger:
-    - platform: sun
+  triggers:
+    - trigger: sun
       event: sunrise
-  action:
-    - service: input_number.set_value
+  actions:
+    - action: input_number.set_value
       data:
         entity_id: input_number.night
         value: 0

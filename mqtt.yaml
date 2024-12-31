@@ -7,11 +7,35 @@ sensor:
     unit_of_measurement: "°C"
     value_template: "{{ value | multiply(0.001) | round(2)}}"
 
+  # Nuc CPU
+  - name: nuc_cpu
+    state_topic: "nuc_monitor/cpu_load"
+    unit_of_measurement: "%"
+    value_template: "{{ value | float | round(2) }}"
+
+  # Nuc RAM
+  - name: nuc_ram
+    state_topic: "nuc_monitor/ram_usage"
+    unit_of_measurement: "%"
+    value_template: "{{ value | float | round(2) }}"
+
   # Nas Temperature
   - name: nas_temperature
     state_topic: "nas_monitor/temperature"
     unit_of_measurement: "°C"
     value_template: "{{ value | multiply(0.001) | round(2)}}"
+
+  # Nas CPU
+  - name: nas_cpu
+    state_topic: "nas_monitor/cpu_load"
+    unit_of_measurement: "%"
+    value_template: "{{ value | replace(',', '.') | float | round(2) }}"
+
+  # Nas RAM
+  - name: nas_ram
+    state_topic: "nas_monitor/ram_usage"
+    unit_of_measurement: "%"
+    value_template: "{{ value | replace(',', '.') | float | round(2) }}"
 
   # WemosA: Water Softener
   - name: main_softener

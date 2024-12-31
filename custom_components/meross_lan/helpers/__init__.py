@@ -14,13 +14,30 @@ import typing
 import zoneinfo
 
 from homeassistant import const as hac
-from homeassistant.core import callback
 from homeassistant.helpers import device_registry, entity_registry
+
+try:
+    # HA core compatibility patch (these were likely introduced in 2024.9)
+    from homeassistant.util.ssl import (
+        get_default_context as get_default_ssl_context,
+        get_default_no_verify_context as get_default_no_verify_ssl_context,
+    )
+except:
+
+    def get_default_ssl_context() -> "ssl.SSLContext | None":
+        """Return the default SSL context."""
+        return None
+
+    def get_default_no_verify_ssl_context() -> "ssl.SSLContext | None":
+        """Return the default SSL context that does not verify the server certificate."""
+        return None
+
 
 from .. import const as mlc
 
 if typing.TYPE_CHECKING:
     from datetime import tzinfo
+    import ssl
     from typing import Callable, Coroutine
 
     from homeassistant.core import HomeAssistant
@@ -201,9 +218,9 @@ class ConfigEntriesHelper:
             """Schedule a config entry to be reloaded."""
             if entry := self.config_entries.async_get_entry(entry_id):
                 entry.async_cancel_retry_setup()
-                Loggable.hass.async_create_task(
+                MerossApi.api.async_create_task(
                     self.config_entries.async_reload(entry_id),
-                    f"config entry reload {entry.title} {entry.domain} {entry.entry_id}",
+                    f".schedule_reload({entry.title},{entry_id})",
                 )
 
 

@@ -3,12 +3,12 @@
 # Radio Play On
 - alias: radio_on
   initial_state: true
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: input_boolean.radio_activate
       to: "on"
-  action:
-    - service: media_player.volume_set
+  actions:
+    - action: media_player.volume_set
       data_template:
         entity_id: >
           {% if is_state('input_select.radio_chromecast', 'Mansarda') %} media_player.loft
@@ -16,7 +16,7 @@
           {% elif is_state('input_select.radio_chromecast', 'Taverna') %} media_player.tavern
           {% endif %}
         volume_level: 0.25
-    - service: media_player.play_media
+    - action: media_player.play_media
       data_template:
         entity_id: >
           {% if is_state('input_select.radio_chromecast', 'Mansarda') %} media_player.loft
@@ -32,12 +32,12 @@
 # Radio Play Off
 - alias: radio_off
   initial_state: true
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: input_boolean.radio_activate
       to: "off"
-  action:
-    - service: media_player.turn_off
+  actions:
+    - action: media_player.turn_off
       data_template:
         entity_id: >
           {% if is_state('input_select.radio_chromecast', 'Mansarda') %} media_player.loft
@@ -48,11 +48,11 @@
 # Radio Volume
 - alias: radio_volume
   initial_state: true
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: input_number.radio_volume
-  action:
-    - service: media_player.volume_set
+  actions:
+    - action: media_player.volume_set
       data_template:
         entity_id: >
           {% if is_state('input_select.radio_chromecast', 'Mansarda') %} media_player.loft

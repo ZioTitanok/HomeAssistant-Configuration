@@ -118,6 +118,7 @@ ALL_CONDITIONS = {
     "time": "Time",
     "fire_index": "Fire Index",
     "fire_index_max": "Fire Index Max",
+    "fire_risk_level": "Fire Risk Level",
     "smoke": "Smoke",
     "smoke_max": "Smoke Max",
     "liquid_accumulation": "Liquid Accumulation",
@@ -134,6 +135,9 @@ ALL_CONDITIONS = {
     "hrrr_18_48_update_time": "HRRR 18-48 Update Time",
     "gfs_update_time": "GFS Update Time",
     "gefs_update_time": "GEFS Update Time",
+    "current_day_liquid": "Current Day Liquid Accumulation",
+    "current_day_snow": "Current Day Snow Accumulation",
+    "current_day_ice": "Current Day Ice Accumulation",
 }
 
 LANGUAGES = [
